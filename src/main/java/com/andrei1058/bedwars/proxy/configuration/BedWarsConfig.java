@@ -1,0 +1,109 @@
+package com.andrei1058.bedwars.proxy.configuration;
+
+import com.andrei1058.bedwars.proxy.BedWarsProxy;
+import com.andrei1058.bedwars.proxy.language.Language;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
+import java.util.Collections;
+
+public class BedWarsConfig extends PluginConfig {
+
+    public BedWarsConfig() {
+        super(BedWarsProxy.getPlugin(), "config", "plugins/" + BedWarsProxy.getPlugin().getName());
+
+        YamlConfiguration yml = getYml();
+        yml.addDefault("language", "en");
+        yml.addDefault(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_SERVER_IP, "yourServer.com");
+        yml.addDefault("storeLink", "https://www.spigotmc.org/resources/authors/39904/");
+
+        yml.addDefault("database.enable", false);
+        yml.addDefault("database.host", "localhost");
+        yml.addDefault("database.database", "bedWars");
+        yml.addDefault("database.user", "root");
+        yml.addDefault("database.pass", "");
+        yml.addDefault("database.port", 3306);
+        yml.addDefault("database.ssl", false);
+        yml.options().copyDefaults(true);
+
+        saveLobbyCommandItem("stats", "bw stats", false, String.valueOf(BedWarsProxy.getMaterialAdapter().getForCurrent("SKULL_ITEM", "SKULL_ITEM", "PLAYER_HEAD")), 3, 0);
+        saveLobbyCommandItem("arena-selector", "bw gui", true, "CHEST", 5, 4);
+        saveLobbyCommandItem("leave", "bw leave", false, String.valueOf(BedWarsProxy.getMaterialAdapter().getForCurrent("BED", "BED", "RED_BED")), 0, 8);
+
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_DISABLED_LANGUAGES, Collections.singletonList("your language iso here"));
+
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_SIZE, 27);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_SHOW_PLAYING, true);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_USE_SLOTS, "10,11,12,13,14,15,16");
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_MATERIAL.replace("%path%", "waiting"), String.valueOf(BedWarsProxy.getMaterialAdapter().getForCurrent("STAINED_GLASS_PANE", "CONCRETE", "LIME_CONCRETE")));
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_DATA.replace("%path%", "waiting"), 5);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_ENCHANTED.replace("%path%", "waiting"), false);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_MATERIAL.replace("%path%", "starting"), String.valueOf(BedWarsProxy.getMaterialAdapter().getForCurrent("STAINED_GLASS_PANE", "CONCRETE", "YELLOW_CONCRETE")));
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_DATA.replace("%path%", "starting"), 4);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_ENCHANTED.replace("%path%", "starting"), true);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_MATERIAL.replace("%path%", "playing"), String.valueOf(BedWarsProxy.getMaterialAdapter().getForCurrent("STAINED_GLASS_PANE", "CONCRETE", "RED_CONCRETE")));
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_DATA.replace("%path%", "playing"), 14);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_ENCHANTED.replace("%path%", "playing"), false);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_MATERIAL.replace("%path%", "skipped-slot"), String.valueOf(BedWarsProxy.getMaterialAdapter().getForCurrent("STAINED_GLASS_PANE", "STAINED_GLASS_PANE", "BLACK_STAINED_GLASS_PANE")));
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_DATA.replace("%path%", "skipped-slot"), 15);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_ENCHANTED.replace("%path%", "skipped-slot"), false);
+
+        save();
+
+        //set default server language
+        String whatLang = "en";
+        File[] langs = new File("plugins/" + BedWarsProxy.getPlugin().getDescription().getName() + "/Languages").listFiles();
+        if (langs != null) {
+            for (File f : langs) {
+                if (f.isFile()) {
+                    if (f.getName().contains("messages_") && f.getName().contains(".yml")) {
+                        String lang = f.getName().replace("messages_", "").replace(".yml", "");
+                        if (lang.equalsIgnoreCase(yml.getString("language"))) {
+                            whatLang = f.getName().replace("messages_", "").replace(".yml", "");
+                        }
+                        if (Language.getLang(lang) == null)new Language(BedWarsProxy.getPlugin(), lang);
+                    }
+                }
+            }
+        }
+        Language def = Language.getLang(whatLang);
+
+        if (def == null) throw new IllegalStateException("Could not found default language: " + whatLang);
+        Language.setDefaultLanguage(def);
+
+        //remove languages if disabled
+        //server language can t be disabled
+        for (String iso : yml.getStringList(ConfigPath.GENERAL_CONFIGURATION_DISABLED_LANGUAGES)) {
+            Language l = Language.getLang(iso);
+            if (l != null) {
+                if (l != def) Language.getLanguages().remove(l);
+            }
+        }
+        //
+    }
+
+    /**
+     * Add Lobby Command Item To
+     * This won't create the item back if you delete it.
+     */
+    @SuppressWarnings("WeakerAccess")
+    public void saveLobbyCommandItem(String name, String cmd, boolean enchanted, String material, int data, int slot) {
+        if (isFirstTime()) {
+            getYml().addDefault(ConfigPath.GENERAL_CONFIGURATION_LOBBY_ITEMS_COMMAND.replace("%path%", name), cmd);
+            getYml().addDefault(ConfigPath.GENERAL_CONFIGURATION_LOBBY_ITEMS_MATERIAL.replace("%path%", name), material);
+            getYml().addDefault(ConfigPath.GENERAL_CONFIGURATION_LOBBY_ITEMS_DATA.replace("%path%", name), data);
+            getYml().addDefault(ConfigPath.GENERAL_CONFIGURATION_LOBBY_ITEMS_ENCHANTED.replace("%path%", name), enchanted);
+            getYml().addDefault(ConfigPath.GENERAL_CONFIGURATION_LOBBY_ITEMS_SLOT.replace("%path%", name), slot);
+            getYml().options().copyDefaults(true);
+            save();
+        }
+    }
+
+    public String getLobbyWorldName() {
+        if (getYml().get("lobbyLoc") == null) return "";
+        String d = getYml().getString("lobbyLoc");
+        if (d == null) return "";
+        String[] data = d.replace("[", "").replace("]", "").split(",");
+        return data[data.length - 1];
+    }
+}
