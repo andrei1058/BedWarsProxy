@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -114,10 +115,10 @@ public class ArenaGUI {
         int size = BedWarsProxy.config.getYml().getInt(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_SIZE);
         if (size % 9 != 0) size = 27;
         if (size > 54) size = 54;
-        Inventory inv = Bukkit.createInventory(p, size, Language.getMsg(p, Messages.ARENA_GUI_INV_NAME));
+        Inventory inv = Bukkit.createInventory(new SelectorHolder(), size, Language.getMsg(p, Messages.ARENA_GUI_INV_NAME));
 
-        ItemStack i = BedWarsProxy.getItemAdapter().createItem(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_MATERIAL.replace("%path%", "skipped-slot"),
-        1, (byte) BedWarsProxy.config.getInt(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_DATA.replace("%path%", "skipped-slot")));
+        ItemStack i = BedWarsProxy.getItemAdapter().createItem(yml.getString(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_MATERIAL.replace("%path%", "skipped-slot")),
+                1, (byte) yml.getInt(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_DATA.replace("%path%", "skipped-slot")));
         if (i == null) i = new ItemStack(Material.BEDROCK);
         i = BedWarsProxy.getItemAdapter().addTag(i, "cancelClick", "true");
 
@@ -140,5 +141,12 @@ public class ArenaGUI {
 
     public static HashMap<Player, Object[]> getRefresh() {
         return refresh;
+    }
+
+    public static class SelectorHolder implements InventoryHolder {
+        @Override
+        public Inventory getInventory() {
+            return null;
+        }
     }
 }

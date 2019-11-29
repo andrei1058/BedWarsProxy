@@ -22,7 +22,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class BedWarsProxy extends JavaPlugin {
 
-    private static String defaultLanguage = "ro";
     private static Plugin plugin;
     public static BedWarsConfig config;
     private static Database remoteDatabase = null;
@@ -72,10 +71,6 @@ public class BedWarsProxy extends JavaPlugin {
     @Override
     public void onDisable() {
         ServerSocketTask.stopTasks();
-    }
-
-    public static String getDefaultLanguage() {
-        return defaultLanguage;
     }
 
     public static Plugin getPlugin() {
