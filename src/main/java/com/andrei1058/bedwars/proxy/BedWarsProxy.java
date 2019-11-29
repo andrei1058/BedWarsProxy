@@ -1,7 +1,6 @@
 package com.andrei1058.bedwars.proxy;
 
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaSelectorListener;
-import com.andrei1058.bedwars.proxy.arenamanager.RefreshGUI;
 import com.andrei1058.bedwars.proxy.configuration.BedWarsConfig;
 import com.andrei1058.bedwars.proxy.configuration.SoundsConfig;
 import com.andrei1058.bedwars.proxy.database.Database;
@@ -66,7 +65,7 @@ public class BedWarsProxy extends JavaPlugin {
             Language.addDefaultMessagesCommandItems(l);
         }
 
-        registerListeners(new LangListeners(), new RefreshGUI(), new ArenaSelectorListener());
+        registerListeners(new LangListeners(), new ArenaSelectorListener());
         new SoundsConfig();
     }
 
