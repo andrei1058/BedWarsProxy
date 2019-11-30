@@ -1,7 +1,13 @@
 package com.andrei1058.bedwars.proxy.arenamanager;
 
+import com.andrei1058.bedwars.proxy.BedWarsProxy;
+import com.andrei1058.bedwars.proxy.event.ArenaCacheUpdateEvent;
 import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.language.Messages;
+import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class LegacyArena implements CachedArena {
@@ -138,12 +144,42 @@ public class LegacyArena implements CachedArena {
 
     @Override
     public boolean addSpectator(Player player, String targetPlayer) {
-        //target for reporting plugins
-        return false;
+        ArenaSocketTask as = ArenaManager.getSocketByServer(getServer());
+        if (as == null) {
+            this.setStatus(ArenaStatus.UNKNOWN);
+            ArenaCacheUpdateEvent e = new ArenaCacheUpdateEvent(this);
+            Bukkit.getPluginManager().callEvent(e);
+            return false;
+        }
+
+        //pld,worldIdentifier,uuidUser,languageIso,targetPlayer
+        as.getOut().println("pld," + getRemoteIdentifier() + "," + player.getUniqueId() + "," + Language.getPlayerLanguage(player).getIso() + (targetPlayer == null ? "" : "," + targetPlayer));
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Connect");
+        out.writeUTF(getServer());
+        player.sendPluginMessage(BedWarsProxy.getPlugin(), "BungeeCord", out.toByteArray());
+        return true;
     }
 
     @Override
     public boolean addPlayer(Player player) {
-        return false;
+        ArenaSocketTask as = ArenaManager.getSocketByServer(getServer());
+        if (as == null) {
+            this.setStatus(ArenaStatus.UNKNOWN);
+            ArenaCacheUpdateEvent e = new ArenaCacheUpdateEvent(this);
+            Bukkit.getPluginManager().callEvent(e);
+            return false;
+        }
+
+        //pld,worldIdentifier,uuidUser,languageIso,partyOwner
+        //todo party support
+        as.getOut().println("pld," + getRemoteIdentifier() + "," + player.getUniqueId() + "," + Language.getPlayerLanguage(player).getIso());
+        //noinspection UnstableApiUsage
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Connect");
+        out.writeUTF(getServer());
+        player.sendPluginMessage(BedWarsProxy.getPlugin(), "BungeeCord", out.toByteArray());
+        player.sendMessage("connecting to server " + getServer());
+        return true;
     }
 }

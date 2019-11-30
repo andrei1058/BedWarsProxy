@@ -74,4 +74,8 @@ public class ArenaManager {
         });
         return sorted;
     }
+
+    public static ArenaSocketTask getSocketByServer(String server){
+        return getInstance().socketByServer.getOrDefault(server, null);
+    }
 }

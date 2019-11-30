@@ -5,11 +5,12 @@ import com.andrei1058.bedwars.proxy.arenamanager.ArenaManager;
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaStatus;
 import com.andrei1058.bedwars.proxy.arenamanager.CachedArena;
 import com.andrei1058.bedwars.proxy.arenamanager.LegacyArena;
-import com.andrei1058.bedwars.proxy.events.ArenaCacheCreateEvent;
-import com.andrei1058.bedwars.proxy.events.ArenaCacheUpdateEvent;
+import com.andrei1058.bedwars.proxy.event.ArenaCacheCreateEvent;
+import com.andrei1058.bedwars.proxy.event.ArenaCacheUpdateEvent;
 import org.bukkit.Bukkit;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -20,10 +21,12 @@ public class ArenaSocketTask implements Runnable {
 
     private Socket socket;
     private Scanner scanner;
+    private PrintWriter out;
 
     public ArenaSocketTask(Socket socket){
         this.socket = socket;
         try {
+            this.out = new PrintWriter(socket.getOutputStream(), true);
             this.scanner = new Scanner(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,12 +76,13 @@ public class ArenaSocketTask implements Runnable {
                             ca.setMaxInTeam(maxInTeam);
                             CachedArena finalCa = ca;
                             Bukkit.getScheduler().runTask(BedWarsProxy.getPlugin(), ()-> {
+                                ArenaManager.getInstance().registerServerSocket(data[1], this);
                                 ArenaCacheUpdateEvent e = new ArenaCacheUpdateEvent(finalCa);
                                 Bukkit.getPluginManager().callEvent(e);
                             });
                             return;
                         }
-                        ca = new LegacyArena(data[1], data[2],data[4], data[3], status, max, current, maxInTeam);
+                        ca = new LegacyArena(data[2], data[1],data[4], data[3], status, max, current, maxInTeam);
                         CachedArena finalCa = ca;
                         Bukkit.getScheduler().runTask(BedWarsProxy.getPlugin(), ()->{
                             ArenaManager.getInstance().registerServerSocket(data[1], this);
@@ -90,5 +94,9 @@ public class ArenaSocketTask implements Runnable {
                 }
             }
         }
+    }
+
+    public PrintWriter getOut() {
+        return out;
     }
 }

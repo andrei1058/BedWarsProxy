@@ -1,4 +1,4 @@
-package com.andrei1058.bedwars.proxy.events;
+package com.andrei1058.bedwars.proxy.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

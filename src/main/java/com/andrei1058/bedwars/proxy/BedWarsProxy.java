@@ -66,6 +66,8 @@ public class BedWarsProxy extends JavaPlugin {
 
         registerListeners(new LangListeners(), new ArenaSelectorListener());
         new SoundsConfig();
+
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     @Override

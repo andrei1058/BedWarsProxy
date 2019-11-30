@@ -1,7 +1,7 @@
 package com.andrei1058.bedwars.proxy.language;
 
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
-import com.andrei1058.bedwars.proxy.events.PlayerLangChangeEvent;
+import com.andrei1058.bedwars.proxy.event.PlayerLangChangeEvent;
 import com.andrei1058.bedwars.proxy.configuration.ConfigPath;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

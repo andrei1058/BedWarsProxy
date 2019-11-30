@@ -2,11 +2,10 @@ package com.andrei1058.bedwars.proxy.arenamanager;
 
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.andrei1058.bedwars.proxy.configuration.SoundsConfig;
-import com.andrei1058.bedwars.proxy.events.ArenaCacheCreateEvent;
-import com.andrei1058.bedwars.proxy.events.ArenaCacheUpdateEvent;
+import com.andrei1058.bedwars.proxy.event.ArenaCacheCreateEvent;
+import com.andrei1058.bedwars.proxy.event.ArenaCacheUpdateEvent;
 import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.language.Messages;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,9 +29,9 @@ public class ArenaSelectorListener implements Listener {
             if (i.getType() == Material.AIR) return;
 
             if (!BedWarsProxy.getItemAdapter().hasTag(i, "server")) return;
-            if (!BedWarsProxy.getItemAdapter().hasTag(i, "identifier")) return;
+            if (!BedWarsProxy.getItemAdapter().hasTag(i, "world_identifier")) return;
             String server = BedWarsProxy.getItemAdapter().getTag(i, "server");
-            String identifier = BedWarsProxy.getItemAdapter().getTag(i, "identifier");
+            String identifier = BedWarsProxy.getItemAdapter().getTag(i, "world_identifier");
 
             CachedArena a = ArenaManager.getInstance().getArena(server, identifier);
             if (a == null) return;
