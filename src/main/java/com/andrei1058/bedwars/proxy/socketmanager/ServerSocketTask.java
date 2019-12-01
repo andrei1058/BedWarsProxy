@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
 
 import static com.andrei1058.bedwars.proxy.BedWarsProxy.getPlugin;
 

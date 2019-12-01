@@ -136,6 +136,7 @@ public class ArenaGUI {
         refresh.put(p, new Object[]{inv, group});
         refreshInv(p, new Object[]{inv, group});
         p.openInventory(inv);
+        //p.updateInventory();
         SoundsConfig.playSound("arena-selector-open", p);
     }
 

@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -26,20 +27,25 @@ public class ArenaSocketTask implements Runnable {
     public ArenaSocketTask(Socket socket){
         this.socket = socket;
         try {
+            socket.setSoTimeout(3000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        try {
             this.out = new PrintWriter(socket.getOutputStream(), true);
             this.scanner = new Scanner(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(socket.toString());
     }
 
     @Override
     public void run() {
-        while (ServerSocketTask.compute){
-            if (scanner.hasNextLine()){
-                String message = scanner.nextLine();
+        while (ServerSocketTask.compute && socket.isConnected()){
+            if (scanner.hasNext()){
+                String message = scanner.next();
                 if (message.isEmpty()) continue;
-                getPlugin().getLogger().log(Level.WARNING, message);
                 //serverName,remoteIdentifier,arenaName,group,status,maxPlayers,currentPlayers,displayNamePerLanguage
                 //OPERATION,data
                 String[] data = message.split(",");
@@ -80,7 +86,7 @@ public class ArenaSocketTask implements Runnable {
                                 ArenaCacheUpdateEvent e = new ArenaCacheUpdateEvent(finalCa);
                                 Bukkit.getPluginManager().callEvent(e);
                             });
-                            return;
+                            break;
                         }
                         ca = new LegacyArena(data[2], data[1],data[4], data[3], status, max, current, maxInTeam);
                         CachedArena finalCa = ca;

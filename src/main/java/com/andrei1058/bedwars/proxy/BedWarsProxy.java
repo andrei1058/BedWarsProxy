@@ -11,6 +11,7 @@ import com.andrei1058.bedwars.proxy.language.English;
 import com.andrei1058.bedwars.proxy.language.LangListeners;
 import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.socketmanager.ServerSocketTask;
+import com.andrei1058.bedwars.proxy.socketmanager.TimeOutTask;
 import com.andrei1058.spigot.versionsupport.BlockSupport;
 import com.andrei1058.spigot.versionsupport.ItemStackSupport;
 import com.andrei1058.spigot.versionsupport.MaterialSupport;
@@ -68,6 +69,8 @@ public class BedWarsProxy extends JavaPlugin {
         new SoundsConfig();
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
+        Bukkit.getScheduler().runTaskTimer(this, new TimeOutTask(), 20L, 10L);
     }
 
     @Override
