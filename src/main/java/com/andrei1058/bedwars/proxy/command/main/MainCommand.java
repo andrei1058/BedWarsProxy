@@ -27,7 +27,7 @@ public class MainCommand extends ParentCommand {
         addSubCommand(new LangCMD("lang", ""));
         addSubCommand(new LangCMD("language", ""));
         addSubCommand(new JoinCMD("join", ""));
-        addSubCommand(new JoinCMD("rejoin", "bw.rejoin"));
+        addSubCommand(new ReJoinCMD("rejoin", "bw.rejoin"));
     }
 
     @Override
