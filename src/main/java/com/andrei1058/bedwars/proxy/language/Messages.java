@@ -4,6 +4,7 @@ public class Messages {
 
     public static final String ARENA_DISPLAY_GROUP_PATH = "display-group-";
     public static final String ARENA_DISPLAY_NAME_PATH = "display-name-";
+    public static String FORMATTING_STATS_DATE_FORMAT = "format-stats-time";
 
     public static String PREFIX = "prefix";
 
@@ -30,16 +31,12 @@ public class Messages {
     public static String COMMAND_LANG_USAGE = "cmd-lang-usage";
     public static String COMMAND_LANG_SELECTED_NOT_EXIST = "cmd-lang-not-exist";
     public static String COMMAND_LANG_SELECTED_SUCCESSFULLY = "cmd-lang-set";
-    public static String COMMAND_LANG_USAGE_DENIED = "cmd-lang-not-set";
     public static String COMMAND_JOIN_USAGE = "cmd-join-usage";
     public static String COMMAND_JOIN_GROUP_OR_ARENA_NOT_FOUND = "cmd-join-not-found";
     public static String COMMAND_JOIN_DENIED_IS_FULL = "cmd-join-arena-full";
     public static String COMMAND_JOIN_NO_EMPTY_FOUND = "cmd-join-arenas-full";
-    public static String COMMAND_JOIN_DENIED_IS_FULL_OF_VIPS = "cmd-join-arena-full-vips";
     public static String COMMAND_JOIN_DENIED_PARTY_TOO_BIG = "cmd-join-party-big";
     public static String COMMAND_JOIN_DENIED_NOT_PARTY_LEADER = "cmd-join-not-leader";
-    public static String COMMAND_JOIN_PLAYER_JOIN_MSG = "cmd-join-success";
-    public static String COMMAND_JOIN_SPECTATOR_MSG = "cmd-join-spectate";
     public static String COMMAND_JOIN_SPECTATOR_DENIED_MSG = "cmd-join-spectate-denied";
     public static String REJOIN_NO_ARENA = "cmd-rejoin-no-arena";
     public static String REJOIN_DENIED = "cmd-rejoin-denied";

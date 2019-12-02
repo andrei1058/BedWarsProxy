@@ -172,26 +172,6 @@ public class Language extends PluginConfig {
     }*/
 
     /**
-     * Create missing name/ lore for items: multi arena lobby, waiting, spectating
-     */
-    public static void addDefaultMessagesCommandItems(Language language) {
-        if (language == null) return;
-        YamlConfiguration yml = language.getYml();
-        if (yml == null) return;
-        if (BedWarsProxy.config.getYml().get(ConfigPath.GENERAL_CONFIGURATION_LOBBY_ITEMS_PATH) != null) {
-            for (String item : BedWarsProxy.config.getYml().getConfigurationSection(ConfigPath.GENERAL_CONFIGURATION_LOBBY_ITEMS_PATH).getKeys(false)) {
-               if (item.isEmpty()) continue;
-                String p1 = Messages.GENERAL_CONFIGURATION_LOBBY_ITEMS_NAME.replace("%path%", item);
-                String p2 = Messages.GENERAL_CONFIGURATION_LOBBY_ITEMS_LORE.replace("%path%", item);
-                if (yml.getDefaults() == null || !yml.getDefaults().contains(p1)) yml.addDefault(p1, "&cName not set at: &f" + p1);
-                if (yml.getDefaults() == null || !yml.getDefaults().contains(p1)) yml.addDefault(p2, Arrays.asList("&cLore not set at:", " &f" + p2));
-            }
-        }
-        yml.options().copyDefaults(true);
-        language.save();
-    }
-
-    /**
      * Change a player language and refresh
      * scoreboard and custom join items.
      */

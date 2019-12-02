@@ -37,7 +37,7 @@ public class ArenaSelectorListener implements Listener {
             if (a == null) return;
 
             if (e.getClick() == ClickType.LEFT) {
-                if ((a.getStatus() == ArenaStatus.WAITING || a.getStatus() == ArenaStatus.STARTING) && a.addPlayer(p)) {
+                if ((a.getStatus() == ArenaStatus.WAITING || a.getStatus() == ArenaStatus.STARTING) && a.addPlayer(p, false)) {
                     SoundsConfig.playSound("join-allowed", p);
                 } else {
                     SoundsConfig.playSound("join-denied", p);
@@ -59,11 +59,6 @@ public class ArenaSelectorListener implements Listener {
     public void onArenaSelectorClose(InventoryCloseEvent e) {
         if (!(e.getPlayer() instanceof Player)) return;
         ArenaGUI.getRefresh().remove(e.getPlayer());
-    }
-
-    @EventHandler
-    public void onShit(PlayerToggleSneakEvent e) {
-        ArenaGUI.openGui(e.getPlayer(), "default");
     }
 
     @EventHandler

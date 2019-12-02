@@ -1,12 +1,9 @@
 package com.andrei1058.bedwars.proxy.arenamanager;
 
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
-import com.andrei1058.bedwars.proxy.configuration.ConfigPath;
 import com.andrei1058.bedwars.proxy.language.Messages;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 

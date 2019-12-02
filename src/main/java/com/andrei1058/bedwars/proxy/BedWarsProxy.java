@@ -20,6 +20,7 @@ import com.andrei1058.bedwars.proxy.party.Parties;
 import com.andrei1058.bedwars.proxy.party.Party;
 import com.andrei1058.bedwars.proxy.socketmanager.ServerSocketTask;
 import com.andrei1058.bedwars.proxy.socketmanager.TimeOutTask;
+import com.andrei1058.bedwars.proxy.support.papi.SupportPAPI;
 import com.andrei1058.spigot.versionsupport.BlockSupport;
 import com.andrei1058.spigot.versionsupport.ItemStackSupport;
 import com.andrei1058.spigot.versionsupport.MaterialSupport;
@@ -78,11 +79,6 @@ public class BedWarsProxy extends JavaPlugin {
             //todo could not register socket on given port
         }
 
-        //Leave this code at the end of the enable method
-        for (Language l : Language.getLanguages()) {
-            Language.addDefaultMessagesCommandItems(l);
-        }
-
         registerListeners(new LangListeners(), new ArenaSelectorListener());
         new SoundsConfig();
 
@@ -114,6 +110,12 @@ public class BedWarsProxy extends JavaPlugin {
             commandMap.register("bw", new MainCommand("bw"));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
+        }
+
+        /* PlaceholderAPI Support */
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            getLogger().info("Hook into PlaceholderAPI support!");
+            new SupportPAPI().register();
         }
     }
 
@@ -158,6 +160,10 @@ public class BedWarsProxy extends JavaPlugin {
 
     public static Party getParty() {
         return party;
+    }
+
+    public static Level getLevelManager() {
+        return levelManager;
     }
 
     /**

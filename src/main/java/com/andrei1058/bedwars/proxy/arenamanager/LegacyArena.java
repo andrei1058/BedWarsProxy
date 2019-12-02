@@ -7,12 +7,15 @@ import com.andrei1058.bedwars.proxy.language.Messages;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 import static com.andrei1058.bedwars.proxy.BedWarsProxy.getParty;
+import static com.andrei1058.bedwars.proxy.language.Language.getMsg;
 
 public class LegacyArena implements CachedArena {
 
@@ -21,6 +24,7 @@ public class LegacyArena implements CachedArena {
     private String server, group, arenaName;
     private ArenaStatus status;
     private int maxPlayers, currentPlayers, maxInTeam;
+    private boolean allowSpectate = true;
 
     public LegacyArena(String remoteIdentifier, String server, String group, String arenaName, ArenaStatus status, int maxPlayers, int currentPlayers, int maxInTeam) {
         this.remoteIdentifier = remoteIdentifier;
@@ -156,6 +160,13 @@ public class LegacyArena implements CachedArena {
             return false;
         }
 
+        if (getStatus() != ArenaStatus.PLAYING) return false;
+
+        if (!allowSpectate){
+            player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_SPECTATOR_DENIED_MSG));
+            return false;
+        }
+
         //pld,worldIdentifier,uuidUser,languageIso,targetPlayer
         as.getOut().println("pld," + getRemoteIdentifier() + "," + player.getUniqueId() + "," + Language.getPlayerLanguage(player).getIso() + (targetPlayer == null ? "" : "," + targetPlayer));
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -175,14 +186,26 @@ public class LegacyArena implements CachedArena {
             return false;
         }
 
+        if (!(getStatus() == ArenaStatus.WAITING || getStatus() == ArenaStatus.STARTING)) return false;
+
         if (!skipOwnerCheck) {
             if (getParty().hasParty(player)) {
-                if (getMaxPlayers() - getCurrentPlayers() >= getParty().getMembers(player).size()) return false;
+                if (getMaxPlayers() - getCurrentPlayers() >= getParty().getMembers(player).size()){
+                    player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_PARTY_TOO_BIG));
+                    return false;
+                }
                 for (Player mem : getParty().getMembers(player)) {
                     if (mem == player) continue;
                     addPlayer(player, true);
                 }
             }
+        }
+
+        if (getCurrentPlayers() >= getMaxPlayers() && !isVip(player)) {
+            TextComponent text = new TextComponent(getMsg(player, Messages.COMMAND_JOIN_DENIED_IS_FULL));
+            text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, BedWarsProxy.config.getYml().getString("storeLink")));
+            player.spigot().sendMessage(text);
+            return false;
         }
 
         //pld,worldIdentifier,uuidUser,languageIso,partyOwner
@@ -191,14 +214,16 @@ public class LegacyArena implements CachedArena {
             UUID pw = getParty().getOwner(player);
             if (pw != null) owner = pw.toString();
         }
-        //todo party support
         as.getOut().println("pld," + getRemoteIdentifier() + "," + player.getUniqueId() + "," + Language.getPlayerLanguage(player).getIso() + owner);
         //noinspection UnstableApiUsage
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(getServer());
         player.sendPluginMessage(BedWarsProxy.getPlugin(), "BungeeCord", out.toByteArray());
-        player.sendMessage("connecting to server " + getServer());
         return true;
+    }
+
+    private static boolean isVip(Player p) {
+        return p.hasPermission("bw.*") || p.hasPermission("bw.vip");
     }
 }
