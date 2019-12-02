@@ -27,6 +27,7 @@ public class MainCommand extends ParentCommand {
         addSubCommand(new LangCMD("lang", ""));
         addSubCommand(new LangCMD("language", ""));
         addSubCommand(new JoinCMD("join", ""));
+        addSubCommand(new JoinCMD("rejoin", "bw.rejoin"));
     }
 
     @Override
@@ -42,6 +43,9 @@ public class MainCommand extends ParentCommand {
         }
         if (hasSubCommand("lang")) {
             p.spigot().sendMessage(BedWarsProxy.createTC(Language.getMsg(p, Messages.COMMAND_LANGUAGE_DISPLAY), "/bw lang", Language.getMsg(p, Messages.COMMAND_LANGUAGE_HOVER)));
+        }
+        if (hasSubCommand("rejoin")) {
+            p.spigot().sendMessage(BedWarsProxy.createTC(Language.getMsg(p, Messages.COMMAND_REJOIN_DISPLAY), "/bw rejoin", Language.getMsg(p, Messages.COMMAND_REJOIN_HOVER)));
         }
     }
 

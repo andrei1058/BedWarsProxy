@@ -32,6 +32,8 @@ public class English extends Language {
         yml.addDefault(Messages.COMMAND_GUI_HOVER, "&fChoose an arena\n&fand play.");
         yml.addDefault(Messages.COMMAND_LANGUAGE_DISPLAY, "&8- &f/bw language &o<iso> &echange language.");
         yml.addDefault(Messages.COMMAND_LANGUAGE_HOVER, "&fChange your language.");
+        yml.addDefault(Messages.COMMAND_REJOIN_DISPLAY, "&8- &f/bw rejoin &ereconnect to a game.");
+        yml.addDefault(Messages.COMMAND_REJOIN_HOVER, "&fReconnect to the game from where you got disconnected.");
 
         yml.addDefault(Messages.COMMAND_LANG_LIST_HEADER, "{prefix} &2Available languages:");
         yml.addDefault(Messages.COMMAND_LANG_LIST_FORMAT, "&a▪  &7{iso} - &f{name}");

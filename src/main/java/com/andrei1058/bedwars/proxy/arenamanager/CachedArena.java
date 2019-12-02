@@ -1,6 +1,7 @@
 package com.andrei1058.bedwars.proxy.arenamanager;
 
 import com.andrei1058.bedwars.proxy.language.Language;
+import com.andrei1058.bedwars.proxy.rejoin.RemoteReJoin;
 import org.bukkit.entity.Player;
 
 public interface CachedArena {
@@ -46,4 +47,6 @@ public interface CachedArena {
     boolean addSpectator(Player player, String targetPlayer);
 
     boolean addPlayer(Player player, boolean skipOwnerCheck);
+
+    boolean reJoin(RemoteReJoin player);
 }

@@ -7,6 +7,10 @@ import com.andrei1058.bedwars.proxy.arenamanager.CachedArena;
 import com.andrei1058.bedwars.proxy.arenamanager.LegacyArena;
 import com.andrei1058.bedwars.proxy.event.ArenaCacheCreateEvent;
 import com.andrei1058.bedwars.proxy.event.ArenaCacheUpdateEvent;
+import com.andrei1058.bedwars.proxy.rejoin.RemoteReJoin;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import org.bukkit.Bukkit;
 
 import java.io.IOException;
@@ -14,9 +18,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Scanner;
+import java.util.UUID;
 import java.util.logging.Level;
-
-import static com.andrei1058.bedwars.proxy.BedWarsProxy.getPlugin;
 
 public class ArenaSocketTask implements Runnable {
 
@@ -46,52 +49,52 @@ public class ArenaSocketTask implements Runnable {
             if (scanner.hasNext()){
                 String message = scanner.next();
                 if (message.isEmpty()) continue;
+                final JsonObject json;
+                try {
+                    json = new JsonParser().parse(message).getAsJsonObject();
+                } catch (JsonSyntaxException e){
+                    BedWarsProxy.getPlugin().getLogger().log(Level.WARNING, "Received bad data from: " + socket.getInetAddress().toString());
+                    continue;
+                }
                 //serverName,remoteIdentifier,arenaName,group,status,maxPlayers,currentPlayers,displayNamePerLanguage
                 //OPERATION,data
-                String[] data = message.split(",");
-                if (data.length <= 1) continue;
-                switch (data[0]){
-                    case "alive":
-                        CachedArena ca2 = ArenaManager.getInstance().getArena(data[1], data[2]);
-                        ca2.setLastUpdate(System.currentTimeMillis());
+                if (!json.has("type")) continue;
+                switch (json.get("type").getAsString()){
+                    case "RC":
+                        CachedArena arena = ArenaManager.getInstance().getArena(json.get("server").getAsString(), json.get("arena_id").getAsString());
+                        if (arena == null) continue;
+                        RemoteReJoin rrj2 = RemoteReJoin.getReJoin(UUID.fromString(json.get("uuid").getAsString()));
+                        if (rrj2 != null) rrj2.destroy();
+                        new RemoteReJoin(UUID.fromString(json.get("uuid").getAsString()), arena);
                         break;
-                    case "d_name":
-                        //d_name,serverName,arenaName,iso,name
+                    case "RD":
+                        RemoteReJoin rrj = RemoteReJoin.getReJoin(UUID.fromString(json.get("uuid").getAsString()));
+                        if (rrj == null) continue;
+                        if (rrj.getArena().getServer().equals(json.get("server").getAsString())) rrj.destroy();
                         break;
-                    case "update":
-                        if (data.length != 9) break;
+                    case "UPDATE":
                         //update,serverName,remoteIdentifier,arenaName,group,status,maxP,currP,maxInTeam (for parties)
-                        CachedArena ca = ArenaManager.getInstance().getArena(data[1], data[2]);
-                        int max, current, maxInTeam;
-                        ArenaStatus status;
-                        try {
-                            max = Integer.parseInt(data[6]);
-                            current = Integer.parseInt(data[7]);
-                            status = ArenaStatus.valueOf(data[5].toUpperCase());
-                            maxInTeam = Integer.parseInt(data[8]);
-                        } catch (Exception ex){
-                            getPlugin().getLogger().log(Level.WARNING, "Received bad data from: " + socket.toString());
-                            break;
-                        }
+                        CachedArena ca = ArenaManager.getInstance().getArena(json.get("server_name").getAsString(), json.get("arena_identifier").getAsString());
                         if (ca != null){
-                            ca.setMaxPlayers(max);
-                            ca.setCurrentPlayers(current);
-                            ca.setStatus(status);
-                            ca.setArenaGroup(data[4]);
-                            ca.setArenaName(data[3]);
-                            ca.setMaxInTeam(maxInTeam);
+                            ca.setMaxPlayers(json.get("arena_max_players").getAsInt());
+                            ca.setCurrentPlayers(json.get("arena_current_players").getAsInt());
+                            ca.setStatus(ArenaStatus.valueOf(json.get("arena_status").getAsString()));
+                            ca.setArenaGroup(json.get("arena_group").getAsString());
+                            ca.setArenaName(json.get("arena_name").getAsString());
+                            ca.setMaxInTeam(json.get("arena_max_in_team").getAsInt());
                             CachedArena finalCa = ca;
                             Bukkit.getScheduler().runTask(BedWarsProxy.getPlugin(), ()-> {
-                                ArenaManager.getInstance().registerServerSocket(data[1], this);
+                                ArenaManager.getInstance().registerServerSocket(json.get("server_name").getAsString(), this);
                                 ArenaCacheUpdateEvent e = new ArenaCacheUpdateEvent(finalCa);
                                 Bukkit.getPluginManager().callEvent(e);
                             });
                             break;
                         }
-                        ca = new LegacyArena(data[2], data[1],data[4], data[3], status, max, current, maxInTeam);
+                        ca = new LegacyArena(json.get("arena_identifier").getAsString(), json.get("server_name").getAsString(),json.get("arena_group").getAsString(), json.get("arena_name").getAsString(),
+                                ArenaStatus.valueOf(json.get("arena_status").getAsString()), json.get("arena_max_players").getAsInt(), json.get("arena_current_players").getAsInt(), json.get("arena_max_in_team").getAsInt());
                         CachedArena finalCa = ca;
                         Bukkit.getScheduler().runTask(BedWarsProxy.getPlugin(), ()->{
-                            ArenaManager.getInstance().registerServerSocket(data[1], this);
+                            ArenaManager.getInstance().registerServerSocket(json.get("server_name").getAsString(), this);
                             ArenaManager.getInstance().registerArena(finalCa);
                             ArenaCacheCreateEvent e = new ArenaCacheCreateEvent(finalCa);
                             Bukkit.getPluginManager().callEvent(e);

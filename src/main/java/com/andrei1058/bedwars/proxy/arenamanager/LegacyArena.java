@@ -4,14 +4,19 @@ import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.andrei1058.bedwars.proxy.event.ArenaCacheUpdateEvent;
 import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.language.Messages;
+import com.andrei1058.bedwars.proxy.rejoin.RemoteReJoin;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.google.gson.JsonObject;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.andrei1058.bedwars.proxy.BedWarsProxy.getParty;
@@ -107,7 +112,17 @@ public class LegacyArena implements CachedArena {
 
     @Override
     public void setStatus(ArenaStatus arenaStatus) {
+        if (status == arenaStatus) return;
         this.status = arenaStatus;
+        if (status != ArenaStatus.PLAYING){
+            List<RemoteReJoin> toRemove = new ArrayList<>();
+            for (Map.Entry<UUID, RemoteReJoin> rrj : RemoteReJoin.getRejoinByUUID().entrySet()){
+                if (rrj.getValue().getArena() == this){
+                    toRemove.add(rrj.getValue());
+                }
+            }
+            toRemove.forEach(RemoteReJoin::destroy);
+        }
     }
 
     @Override
@@ -168,7 +183,13 @@ public class LegacyArena implements CachedArena {
         }
 
         //pld,worldIdentifier,uuidUser,languageIso,targetPlayer
-        as.getOut().println("pld," + getRemoteIdentifier() + "," + player.getUniqueId() + "," + Language.getPlayerLanguage(player).getIso() + (targetPlayer == null ? "" : "," + targetPlayer));
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "PLD");
+        json.addProperty("uuid", player.getUniqueId().toString());
+        json.addProperty("lang_iso", Language.getPlayerLanguage(player).getIso());
+        json.addProperty("target", targetPlayer == null ? "" : targetPlayer);
+        json.addProperty("arena_identifier", getRemoteIdentifier());
+        as.getOut().println(json.toString());
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(getServer());
@@ -214,8 +235,50 @@ public class LegacyArena implements CachedArena {
             UUID pw = getParty().getOwner(player);
             if (pw != null) owner = pw.toString();
         }
-        as.getOut().println("pld," + getRemoteIdentifier() + "," + player.getUniqueId() + "," + Language.getPlayerLanguage(player).getIso() + owner);
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "PLD");
+        json.addProperty("uuid", player.getUniqueId().toString());
+        json.addProperty("lang_iso", Language.getPlayerLanguage(player).getIso());
+        json.addProperty("target", owner);
+        json.addProperty("arena_identifier", getRemoteIdentifier());
+        as.getOut().println(json.toString());
         //noinspection UnstableApiUsage
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Connect");
+        out.writeUTF(getServer());
+        player.sendPluginMessage(BedWarsProxy.getPlugin(), "BungeeCord", out.toByteArray());
+        return true;
+    }
+
+    @Override
+    public boolean reJoin(RemoteReJoin rj) {
+        ArenaSocketTask as = ArenaManager.getSocketByServer(getServer());
+        if (as == null) {
+            this.setStatus(ArenaStatus.UNKNOWN);
+            ArenaCacheUpdateEvent e = new ArenaCacheUpdateEvent(this);
+            Bukkit.getPluginManager().callEvent(e);
+            rj.destroy();
+            return false;
+        }
+
+        Player player = Bukkit.getPlayer(rj.getUuid());
+        if (player == null){
+            rj.destroy();
+            return false;
+        }
+
+        if (status != ArenaStatus.PLAYING){
+            rj.destroy();
+            return false;
+        }
+
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "PLD");
+        json.addProperty("uuid", player.getUniqueId().toString());
+        json.addProperty("lang_iso", Language.getPlayerLanguage(player).getIso());
+        json.addProperty("target", "");
+        json.addProperty("arena_identifier", getRemoteIdentifier());
+        as.getOut().println(json.toString());
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(getServer());

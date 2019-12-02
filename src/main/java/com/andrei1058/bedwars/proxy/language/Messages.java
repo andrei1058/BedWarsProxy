@@ -46,6 +46,8 @@ public class Messages {
     public static String COMMAND_GUI_HOVER = "cmd-arena-gui-hover";
     public static String COMMAND_LANGUAGE_DISPLAY = "cmd-lang-display";
     public static String COMMAND_LANGUAGE_HOVER = "cmd-lang-hover";
+    public static String COMMAND_REJOIN_DISPLAY = "cmd-rejoin-display";
+    public static String COMMAND_REJOIN_HOVER = "cmd-rejoin-hover";
 
     public static String COMMAND_PARTY_HELP = "cmd-party-help";
     public static String COMMAND_PARTY_INVITE_USAGE = "cmd-party-invite-usage";

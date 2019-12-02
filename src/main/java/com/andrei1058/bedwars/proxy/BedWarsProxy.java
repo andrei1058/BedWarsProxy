@@ -1,6 +1,7 @@
 package com.andrei1058.bedwars.proxy;
 
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaSelectorListener;
+import com.andrei1058.bedwars.proxy.command.RejoinCommand;
 import com.andrei1058.bedwars.proxy.command.main.MainCommand;
 import com.andrei1058.bedwars.proxy.configuration.BedWarsConfig;
 import com.andrei1058.bedwars.proxy.configuration.ConfigPath;
@@ -108,6 +109,7 @@ public class BedWarsProxy extends JavaPlugin {
             bukkitCommandMap.setAccessible(true);
             CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
             commandMap.register("bw", new MainCommand("bw"));
+            commandMap.register("rejoin", new RejoinCommand("rejoin"));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
