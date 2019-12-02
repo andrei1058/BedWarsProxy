@@ -1,7 +1,9 @@
 package com.andrei1058.bedwars.proxy;
 
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaSelectorListener;
+import com.andrei1058.bedwars.proxy.command.main.MainCommand;
 import com.andrei1058.bedwars.proxy.configuration.BedWarsConfig;
+import com.andrei1058.bedwars.proxy.configuration.ConfigPath;
 import com.andrei1058.bedwars.proxy.configuration.SoundsConfig;
 import com.andrei1058.bedwars.proxy.database.Database;
 import com.andrei1058.bedwars.proxy.database.MySQL;
@@ -10,16 +12,29 @@ import com.andrei1058.bedwars.proxy.database.StatsCache;
 import com.andrei1058.bedwars.proxy.language.English;
 import com.andrei1058.bedwars.proxy.language.LangListeners;
 import com.andrei1058.bedwars.proxy.language.Language;
+import com.andrei1058.bedwars.proxy.levels.Level;
+import com.andrei1058.bedwars.proxy.levels.internal.InternalLevel;
+import com.andrei1058.bedwars.proxy.levels.internal.LevelListeners;
+import com.andrei1058.bedwars.proxy.party.Internal;
+import com.andrei1058.bedwars.proxy.party.Parties;
+import com.andrei1058.bedwars.proxy.party.Party;
 import com.andrei1058.bedwars.proxy.socketmanager.ServerSocketTask;
 import com.andrei1058.bedwars.proxy.socketmanager.TimeOutTask;
 import com.andrei1058.spigot.versionsupport.BlockSupport;
 import com.andrei1058.spigot.versionsupport.ItemStackSupport;
 import com.andrei1058.spigot.versionsupport.MaterialSupport;
 import com.andrei1058.spigot.versionsupport.SoundSupport;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.Field;
 
 public class BedWarsProxy extends JavaPlugin {
 
@@ -32,6 +47,9 @@ public class BedWarsProxy extends JavaPlugin {
     private static MaterialSupport materialAdapter;
     private static BlockSupport blockAdapter;
     private static ItemStackSupport itemAdapter;
+
+    private static Party party;
+    private static Level levelManager;
 
     @Override
     public void onLoad() {
@@ -71,6 +89,32 @@ public class BedWarsProxy extends JavaPlugin {
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
         Bukkit.getScheduler().runTaskTimer(this, new TimeOutTask(), 20L, 10L);
+
+        //Party support
+        if (config.getYml().getBoolean(ConfigPath.GENERAL_CONFIGURATION_ALLOW_PARTIES)) {
+            if (Bukkit.getPluginManager().getPlugin("Parties") != null) {
+                if (getServer().getPluginManager().getPlugin("Parties").isEnabled()) {
+                    getLogger().info("Hook into Parties (by AlessioDP) support!");
+                    party = new Parties();
+                }
+            }
+        }
+        if (party == null) {
+            party = new Internal();
+            getLogger().info("Loading internal Party system. /party");
+        }
+
+        levelManager = new InternalLevel();
+        Bukkit.getPluginManager().registerEvents(new LevelListeners(), this);
+
+        try {
+            Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            bukkitCommandMap.setAccessible(true);
+            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+            commandMap.register("bw", new MainCommand("bw"));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -110,5 +154,19 @@ public class BedWarsProxy extends JavaPlugin {
         for (Listener listener : listeners){
             Bukkit.getPluginManager().registerEvents(listener, getPlugin());
         }
+    }
+
+    public static Party getParty() {
+        return party;
+    }
+
+    /**
+     * Create a text component.
+     */
+    public static TextComponent createTC(String text, String suggest, String shot_text) {
+        TextComponent tx = new TextComponent(text);
+        tx.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggest));
+        tx.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(shot_text).create()));
+        return tx;
     }
 }

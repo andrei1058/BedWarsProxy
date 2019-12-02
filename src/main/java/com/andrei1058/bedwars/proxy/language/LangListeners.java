@@ -47,7 +47,6 @@ public class LangListeners implements Listener {
 
     @EventHandler
     public void onLanguageChangeEvent(PlayerLangChangeEvent e){
-        if (BedWarsProxy.config.getLobbyWorldName().equalsIgnoreCase(e.getPlayer().getWorld().getName())){
             /*Arena.sendLobbyCommandItems(e.getPlayer());
             for (SBoard sb : new ArrayList<>(SBoard.getScoreboards())) {
                 if (sb.getP().getUniqueId().equals(e.getPlayer().getUniqueId())) {
@@ -58,6 +57,5 @@ public class LangListeners implements Listener {
                 Misc.giveLobbySb(e.getPlayer());
             }*/
             //todo
-        }
     }
 }

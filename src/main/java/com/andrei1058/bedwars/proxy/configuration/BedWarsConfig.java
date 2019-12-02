@@ -16,7 +16,7 @@ public class BedWarsConfig extends PluginConfig {
         yml.addDefault("language", "en");
         yml.addDefault(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_SERVER_IP, "yourServer.com");
         yml.addDefault("storeLink", "https://www.spigotmc.org/resources/authors/39904/");
-
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ALLOW_PARTIES, true);
         yml.addDefault("database.enable", false);
         yml.addDefault("database.host", "localhost");
         yml.addDefault("database.database", "bedWars");
@@ -26,9 +26,15 @@ public class BedWarsConfig extends PluginConfig {
         yml.addDefault("database.ssl", false);
         yml.options().copyDefaults(true);
 
-        saveLobbyCommandItem("stats", "bw stats", false, String.valueOf(BedWarsProxy.getMaterialAdapter().getForCurrent("SKULL_ITEM", "SKULL_ITEM", "PLAYER_HEAD")), 3, 0);
-        saveLobbyCommandItem("arena-selector", "bw gui", true, "CHEST", 5, 4);
-        saveLobbyCommandItem("leave", "bw leave", false, String.valueOf(BedWarsProxy.getMaterialAdapter().getForCurrent("BED", "BED", "RED_BED")), 0, 8);
+        yml.addDefault("levels-settings.default-name", "&7[{number}✩] ");
+        yml.addDefault("levels-settings.progress-bar-symbol", "■");
+        yml.addDefault("levels-settings.progress-bar-unlocked-color", "&b");
+        yml.addDefault("levels-settings.progress-bar-locked-color", "&7");
+        yml.addDefault("levels-settings.progress-bar-format", "&8 [{progress}&8]");
+
+        //saveLobbyCommandItem("stats", "bw stats", false, String.valueOf(BedWarsProxy.getMaterialAdapter().getForCurrent("SKULL_ITEM", "SKULL_ITEM", "PLAYER_HEAD")), 3, 0);
+        //saveLobbyCommandItem("arena-selector", "bw gui", true, "CHEST", 5, 4);
+        //saveLobbyCommandItem("leave", "bw leave", false, String.valueOf(BedWarsProxy.getMaterialAdapter().getForCurrent("BED", "BED", "RED_BED")), 0, 8);
 
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_DISABLED_LANGUAGES, Collections.singletonList("your language iso here"));
 
@@ -82,12 +88,11 @@ public class BedWarsConfig extends PluginConfig {
         //
     }
 
-    /**
+    /*
      * Add Lobby Command Item To
      * This won't create the item back if you delete it.
      */
-    @SuppressWarnings("WeakerAccess")
-    public void saveLobbyCommandItem(String name, String cmd, boolean enchanted, String material, int data, int slot) {
+    /*public void saveLobbyCommandItem(String name, String cmd, boolean enchanted, String material, int data, int slot) {
         if (isFirstTime()) {
             getYml().addDefault(ConfigPath.GENERAL_CONFIGURATION_LOBBY_ITEMS_COMMAND.replace("%path%", name), cmd);
             getYml().addDefault(ConfigPath.GENERAL_CONFIGURATION_LOBBY_ITEMS_MATERIAL.replace("%path%", name), material);
@@ -97,13 +102,13 @@ public class BedWarsConfig extends PluginConfig {
             getYml().options().copyDefaults(true);
             save();
         }
-    }
+    }*/
 
-    public String getLobbyWorldName() {
+    /*public String getLobbyWorldName() {
         if (getYml().get("lobbyLoc") == null) return "";
         String d = getYml().getString("lobbyLoc");
         if (d == null) return "";
         String[] data = d.replace("[", "").replace("]", "").split(",");
         return data[data.length - 1];
-    }
+    }*/
 }

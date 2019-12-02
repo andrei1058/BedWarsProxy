@@ -10,6 +10,10 @@ import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
+import static com.andrei1058.bedwars.proxy.BedWarsProxy.getParty;
+
 public class LegacyArena implements CachedArena {
 
     private String remoteIdentifier;
@@ -162,7 +166,7 @@ public class LegacyArena implements CachedArena {
     }
 
     @Override
-    public boolean addPlayer(Player player) {
+    public boolean addPlayer(Player player, boolean skipOwnerCheck) {
         ArenaSocketTask as = ArenaManager.getSocketByServer(getServer());
         if (as == null) {
             this.setStatus(ArenaStatus.UNKNOWN);
@@ -171,9 +175,24 @@ public class LegacyArena implements CachedArena {
             return false;
         }
 
+        if (!skipOwnerCheck) {
+            if (getParty().hasParty(player)) {
+                if (getMaxPlayers() - getCurrentPlayers() >= getParty().getMembers(player).size()) return false;
+                for (Player mem : getParty().getMembers(player)) {
+                    if (mem == player) continue;
+                    addPlayer(player, true);
+                }
+            }
+        }
+
         //pld,worldIdentifier,uuidUser,languageIso,partyOwner
+        String owner = "";
+        if (getParty().hasParty(player)){
+            UUID pw = getParty().getOwner(player);
+            if (pw != null) owner = pw.toString();
+        }
         //todo party support
-        as.getOut().println("pld," + getRemoteIdentifier() + "," + player.getUniqueId() + "," + Language.getPlayerLanguage(player).getIso());
+        as.getOut().println("pld," + getRemoteIdentifier() + "," + player.getUniqueId() + "," + Language.getPlayerLanguage(player).getIso() + owner);
         //noinspection UnstableApiUsage
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
