@@ -12,7 +12,6 @@ import com.andrei1058.bedwars.proxy.database.NoDatabase;
 import com.andrei1058.bedwars.proxy.database.StatsCache;
 import com.andrei1058.bedwars.proxy.language.English;
 import com.andrei1058.bedwars.proxy.language.LangListeners;
-import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.levels.Level;
 import com.andrei1058.bedwars.proxy.levels.internal.InternalLevel;
 import com.andrei1058.bedwars.proxy.levels.internal.LevelListeners;
@@ -68,7 +67,7 @@ public class BedWarsProxy extends JavaPlugin {
         itemAdapter = ItemStackSupport.SupportBuilder.load();
 
         config = new BedWarsConfig();
-        if (config.getBoolean("database.enable")){
+        if (config.getBoolean("database.enable")) {
             Bukkit.getScheduler().runTaskAsynchronously(this, () -> remoteDatabase = new MySQL());
         } else {
             remoteDatabase = new NoDatabase();
@@ -76,7 +75,7 @@ public class BedWarsProxy extends JavaPlugin {
         statsCache = new StatsCache();
 
         //todo make port configurable
-        if (!ServerSocketTask.init(25569)){
+        if (!ServerSocketTask.init(25569)) {
             //todo could not register socket on given port
         }
 
@@ -90,10 +89,8 @@ public class BedWarsProxy extends JavaPlugin {
         //Party support
         if (config.getYml().getBoolean(ConfigPath.GENERAL_CONFIGURATION_ALLOW_PARTIES)) {
             if (Bukkit.getPluginManager().getPlugin("Parties") != null) {
-                if (getServer().getPluginManager().getPlugin("Parties").isEnabled()) {
-                    getLogger().info("Hook into Parties (by AlessioDP) support!");
-                    party = new Parties();
-                }
+                getLogger().info("Hook into Parties (by AlessioDP) support!");
+                party = new Parties();
             }
         }
         if (party == null) {
@@ -154,8 +151,8 @@ public class BedWarsProxy extends JavaPlugin {
         return soundAdapter;
     }
 
-    private static void registerListeners(Listener... listeners){
-        for (Listener listener : listeners){
+    private static void registerListeners(Listener... listeners) {
+        for (Listener listener : listeners) {
             Bukkit.getPluginManager().registerEvents(listener, getPlugin());
         }
     }

@@ -3,6 +3,7 @@ package com.andrei1058.bedwars.proxy.arenamanager;
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.andrei1058.bedwars.proxy.configuration.SoundsConfig;
 import com.andrei1058.bedwars.proxy.event.ArenaCacheCreateEvent;
+import com.andrei1058.bedwars.proxy.event.ArenaCacheRemoveEvent;
 import com.andrei1058.bedwars.proxy.event.ArenaCacheUpdateEvent;
 import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.language.Messages;
@@ -69,6 +70,13 @@ public class ArenaSelectorListener implements Listener {
 
     @EventHandler
     public void onCacheUpdate(ArenaCacheUpdateEvent e) {
+        for (Player p : ArenaGUI.getRefresh().keySet()) {
+            ArenaGUI.refreshInv(p, ArenaGUI.getRefresh().get(p));
+        }
+    }
+
+    @EventHandler
+    public void onCacheDelete(ArenaCacheRemoveEvent e) {
         for (Player p : ArenaGUI.getRefresh().keySet()) {
             ArenaGUI.refreshInv(p, ArenaGUI.getRefresh().get(p));
         }

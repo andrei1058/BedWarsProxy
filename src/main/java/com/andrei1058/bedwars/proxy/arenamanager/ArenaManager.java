@@ -1,8 +1,10 @@
 package com.andrei1058.bedwars.proxy.arenamanager;
 
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
+import com.andrei1058.bedwars.proxy.event.ArenaCacheRemoveEvent;
 import com.andrei1058.bedwars.proxy.language.Messages;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -45,8 +47,8 @@ public class ArenaManager {
         return null;
     }
 
-    public static LinkedList<CachedArena> getArenas() {
-        return getInstance().arenas;
+    public static Collection<CachedArena> getArenas() {
+        return Collections.unmodifiableCollection(getInstance().arenas);
     }
 
     public static List<CachedArena> getSorted(List<CachedArena> arenas) {
@@ -209,5 +211,10 @@ public class ArenaManager {
         }
 
         return true;
+    }
+
+    public void disableArena(CachedArena a){
+        arenas.remove(a);
+        Bukkit.getPluginManager().callEvent(new ArenaCacheRemoveEvent(a));
     }
 }
