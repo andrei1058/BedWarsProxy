@@ -30,11 +30,6 @@ public class ArenaSocketTask implements Runnable {
     public ArenaSocketTask(Socket socket){
         this.socket = socket;
         try {
-            socket.setSoTimeout(3000);
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-        try {
             this.out = new PrintWriter(socket.getOutputStream(), true);
             this.scanner = new Scanner(socket.getInputStream());
         } catch (IOException e) {

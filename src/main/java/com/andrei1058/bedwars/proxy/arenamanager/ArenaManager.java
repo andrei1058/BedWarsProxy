@@ -39,7 +39,7 @@ public class ArenaManager {
     }
 
     public CachedArena getArena(String server, String remoteIdentifier){
-        for (CachedArena ca : arenas){
+        for (CachedArena ca : getArenas()){
             if (ca.getServer().equals(server) && ca.getRemoteIdentifier().equals(remoteIdentifier)) return ca;
         }
         return null;
