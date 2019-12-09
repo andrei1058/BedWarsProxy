@@ -6,7 +6,12 @@ import com.andrei1058.bedwars.proxy.arenamanager.CachedArena;
 import com.andrei1058.bedwars.proxy.event.ArenaCacheUpdateEvent;
 import org.bukkit.Bukkit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TimeOutTask implements Runnable {
+
+    private static List<CachedArena> toRemove = new ArrayList<>();
 
     @Override
     public void run() {
@@ -19,10 +24,14 @@ public class TimeOutTask implements Runnable {
                 } else if (ca.getStatus() == ArenaStatus.RESTARTING){
                     if (ca.getLastUpdate()+5000 < time){
                         ca.setStatus(ArenaStatus.UNKNOWN);
-                        ArenaManager.getInstance().disableArena(ca);
+                        toRemove.add(ca);
                     }
                 }
             }
+        }
+        if (!toRemove.isEmpty()){
+            toRemove.forEach(ca -> ArenaManager.getInstance().disableArena(ca));
+            toRemove.clear();
         }
     }
 }
