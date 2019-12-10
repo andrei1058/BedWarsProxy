@@ -29,7 +29,7 @@ public class InviteCMD extends SubCommand {
     public void execute(CommandSender s, String[] args) {
         if (!(s instanceof Player)) return;
         Player p = (Player) s;
-        if (args.length == 1) {
+        if (args.length == 0) {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INVITE_USAGE));
             return;
         }
@@ -37,22 +37,22 @@ public class InviteCMD extends SubCommand {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INSUFFICIENT_PERMISSIONS));
             return;
         }
-        if (Bukkit.getPlayer(args[1]) != null && Bukkit.getPlayer(args[1]).isOnline()) {
-            if (p == Bukkit.getPlayer(args[1])) {
+        if (Bukkit.getPlayer(args[0]) != null && Bukkit.getPlayer(args[0]).isOnline()) {
+            if (p == Bukkit.getPlayer(args[0])) {
                 p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INVITE_DENIED_CANNOT_INVITE_YOURSELF));
                 return;
             }
-            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INVITE_SENT).replace("{player}", args[1]));
+            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INVITE_SENT).replace("{player}", args[0]));
             TextComponent tc = new TextComponent(getMsg(p, Messages.COMMAND_PARTY_INVITE_SENT_TARGET_RECEIVE_MSG).replace("{player}", p.getName()));
             tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party accept " + p.getName()));
-            Bukkit.getPlayer(args[1]).spigot().sendMessage(tc);
+            Bukkit.getPlayer(args[0]).spigot().sendMessage(tc);
             if (PartyCommand.getPartySessionRequest().containsKey(p.getUniqueId())) {
-                PartyCommand.getPartySessionRequest().replace(p.getUniqueId(), Bukkit.getPlayer(args[1]).getUniqueId());
+                PartyCommand.getPartySessionRequest().replace(p.getUniqueId(), Bukkit.getPlayer(args[0]).getUniqueId());
             } else {
-                PartyCommand.getPartySessionRequest().put(p.getUniqueId(), Bukkit.getPlayer(args[1]).getUniqueId());
+                PartyCommand.getPartySessionRequest().put(p.getUniqueId(), Bukkit.getPlayer(args[0]).getUniqueId());
             }
         } else {
-            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INVITE_DENIED_PLAYER_OFFLINE).replace("{player}", args[1]));
+            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INVITE_DENIED_PLAYER_OFFLINE).replace("{player}", args[0]));
         }
     }
 

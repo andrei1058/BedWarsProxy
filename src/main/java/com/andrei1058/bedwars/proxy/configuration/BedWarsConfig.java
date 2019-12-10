@@ -32,6 +32,7 @@ public class BedWarsConfig extends PluginConfig {
         yml.addDefault("levels-settings.progress-bar-unlocked-color", "&b");
         yml.addDefault("levels-settings.progress-bar-locked-color", "&7");
         yml.addDefault("levels-settings.progress-bar-format", "&8 [{progress}&8]");
+        yml.addDefault(ConfigPath.GENERAL_ENABLE_PARTY_CMD, true);
 
         //saveLobbyCommandItem("stats", "bw stats", false, String.valueOf(BedWarsProxy.getMaterialAdapter().getForCurrent("SKULL_ITEM", "SKULL_ITEM", "PLAYER_HEAD")), 3, 0);
         //saveLobbyCommandItem("arena-selector", "bw gui", true, "CHEST", 5, 4);

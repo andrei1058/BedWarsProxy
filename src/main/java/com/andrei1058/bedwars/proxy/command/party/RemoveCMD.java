@@ -20,7 +20,7 @@ public class RemoveCMD extends SubCommand {
         if (!(s instanceof Player)) return;
         Player p = (Player) s;
 
-        if (args.length == 1) {
+        if (args.length == 0) {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_USAGE));
             return;
         }
@@ -28,13 +28,13 @@ public class RemoveCMD extends SubCommand {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INSUFFICIENT_PERMISSIONS));
             return;
         }
-        Player target = Bukkit.getPlayer(args[1]);
+        Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER).replace("{player}", args[1]));
+            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER).replace("{player}", args[0]));
             return;
         }
         if (!getParty().isMember(p, target)) {
-            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER).replace("{player}", args[1]));
+            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER).replace("{player}", args[0]));
             return;
         }
         getParty().removePlayer(p, target);

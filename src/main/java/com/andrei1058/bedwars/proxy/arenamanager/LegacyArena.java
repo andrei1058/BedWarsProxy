@@ -175,6 +175,11 @@ public class LegacyArena implements CachedArena {
             return false;
         }
 
+        if (getParty().hasParty(player)){
+            player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
+            return false;
+        }
+
         if (getStatus() != ArenaStatus.PLAYING) return false;
 
         if (!allowSpectate){
@@ -207,11 +212,16 @@ public class LegacyArena implements CachedArena {
             return false;
         }
 
+        if (getParty().hasParty(player) && !getParty().isOwner(player)){
+            player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
+            return false;
+        }
+
         if (!(getStatus() == ArenaStatus.WAITING || getStatus() == ArenaStatus.STARTING)) return false;
 
         if (!skipOwnerCheck) {
             if (getParty().hasParty(player)) {
-                if (getMaxPlayers() - getCurrentPlayers() >= getParty().getMembers(player).size()){
+                if (getMaxPlayers() - getCurrentPlayers() < getParty().getMembers(player).size()){
                     player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_PARTY_TOO_BIG));
                     return false;
                 }
@@ -233,7 +243,7 @@ public class LegacyArena implements CachedArena {
         String owner = "";
         if (getParty().hasParty(player)){
             UUID pw = getParty().getOwner(player);
-            if (pw != null) owner = pw.toString();
+            if (pw != null) owner = Bukkit.getPlayer(pw).getName();
         }
         JsonObject json = new JsonObject();
         json.addProperty("type", "PLD");
@@ -247,6 +257,7 @@ public class LegacyArena implements CachedArena {
         out.writeUTF("Connect");
         out.writeUTF(getServer());
         player.sendPluginMessage(BedWarsProxy.getPlugin(), "BungeeCord", out.toByteArray());
+        Bukkit.broadcastMessage(json.toString());
         return true;
     }
 

@@ -4,6 +4,7 @@ public class ConfigPath {
 
     public static final String GENERAL_CONFIGURATION_DISABLED_LANGUAGES = "disabled-languages";
     public static final String GENERAL_CONFIGURATION_PORT = "port";
+    public static final String GENERAL_ENABLE_PARTY_CMD = "enable-party-cmd";
 
     public static final String GENERAL_CONFIGURATION_ALLOW_PARTIES = "allow-parties";
     public static final String GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_SERVER_IP = "server-ip";
