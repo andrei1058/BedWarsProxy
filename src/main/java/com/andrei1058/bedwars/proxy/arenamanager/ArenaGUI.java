@@ -40,6 +40,8 @@ public class ArenaGUI {
             }
         }
 
+        arenas.removeIf(a -> a.getStatus() == ArenaStatus.PLAYING && !BedWarsProxy.config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_SHOW_PLAYING));
+
         arenas = ArenaManager.getSorted(arenas);
 
         int arenaKey = 0;
@@ -133,9 +135,9 @@ public class ArenaGUI {
             inv.setItem(x, i);
         }
 
+        p.openInventory(inv);
         refresh.put(p, new Object[]{inv, group});
         refreshInv(p, new Object[]{inv, group});
-        p.openInventory(inv);
         //p.updateInventory();
         SoundsConfig.playSound("arena-selector-open", p);
     }

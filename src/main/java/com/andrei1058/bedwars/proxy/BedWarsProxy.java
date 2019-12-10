@@ -75,7 +75,7 @@ public class BedWarsProxy extends JavaPlugin {
         statsCache = new StatsCache();
 
         //todo make port configurable
-        if (!ServerSocketTask.init(25569)) {
+        if (!ServerSocketTask.init(config.getInt(ConfigPath.GENERAL_CONFIGURATION_PORT))) {
             //todo could not register socket on given port
         }
 

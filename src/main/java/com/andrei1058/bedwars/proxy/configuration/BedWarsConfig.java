@@ -13,6 +13,7 @@ public class BedWarsConfig extends PluginConfig {
         super(BedWarsProxy.getPlugin(), "config", "plugins/" + BedWarsProxy.getPlugin().getName());
 
         YamlConfiguration yml = getYml();
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_PORT, 2019);
         yml.addDefault("language", "en");
         yml.addDefault(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_SERVER_IP, "yourServer.com");
         yml.addDefault("storeLink", "https://www.spigotmc.org/resources/authors/39904/");
