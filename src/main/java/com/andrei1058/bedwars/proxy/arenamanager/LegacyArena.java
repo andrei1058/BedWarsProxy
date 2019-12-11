@@ -246,7 +246,8 @@ public class LegacyArena implements CachedArena {
         String owner = "";
         if (getParty().hasParty(player)){
             UUID pw = getParty().getOwner(player);
-            if (pw != null) owner = Bukkit.getPlayer(pw).getName();
+            Player pp = Bukkit.getPlayer(pw);
+            if (pp != null) owner = pp.getName();
         }
         JsonObject json = new JsonObject();
         json.addProperty("type", "PLD");
