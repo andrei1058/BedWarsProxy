@@ -34,7 +34,7 @@ public class TpRequest {
     public static TpRequest getTpRequest(UUID requester){
         for (TpRequest tr : requests){
             if (tr.requester.equals(requester)){
-                if (tr.millis < System.currentTimeMillis()){
+                if (tr.millis > System.currentTimeMillis()){
                     return tr;
                 } else {
                     requests.remove(tr);

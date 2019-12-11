@@ -46,10 +46,10 @@ public class TpCommand extends SubCommand {
         Bukkit.getScheduler().runTaskLater(BedWarsProxy.getPlugin(), () -> {
             if (pl.isOnline()){
                 if (finalTr.getArena() == null){
-                    s.sendMessage(Language.getMsg(pl, Messages.COMMAND_TP_NOT_FOUND).replace("{player}", finalTr.getTarget()));
+                    pl.sendMessage(Language.getMsg(pl, Messages.COMMAND_TP_NOT_FOUND).replace("{player}", finalTr.getTarget()));
                 } else {
                     if (finalTr.getArena().getStatus() != ArenaStatus.PLAYING){
-                        s.sendMessage(Language.getMsg(pl, Messages.COMMAND_TP_FAIL2).replace("{player}",
+                        pl.sendMessage(Language.getMsg(pl, Messages.COMMAND_TP_FAIL2).replace("{player}",
                                 finalTr.getTarget()).replace("{server}", finalTr.getArena().getServer()));
                     } else {
                         finalTr.getArena().addSpectator(pl, finalTr.getTarget());
