@@ -212,9 +212,11 @@ public class LegacyArena implements CachedArena {
             return false;
         }
 
-        if (getParty().hasParty(player) && !getParty().isOwner(player)){
-            player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
-            return false;
+        if (!skipOwnerCheck){
+            if (getParty().hasParty(player) && !getParty().isOwner(player)){
+                player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
+                return false;
+            }
         }
 
         if (!(getStatus() == ArenaStatus.WAITING || getStatus() == ArenaStatus.STARTING)) return false;
@@ -227,7 +229,7 @@ public class LegacyArena implements CachedArena {
                 }
                 for (Player mem : getParty().getMembers(player)) {
                     if (mem == player) continue;
-                    addPlayer(player, true);
+                    addPlayer(mem, true);
                 }
             }
         }
@@ -257,7 +259,6 @@ public class LegacyArena implements CachedArena {
         out.writeUTF("Connect");
         out.writeUTF(getServer());
         player.sendPluginMessage(BedWarsProxy.getPlugin(), "BungeeCord", out.toByteArray());
-        Bukkit.broadcastMessage(json.toString());
         return true;
     }
 
