@@ -46,7 +46,8 @@ public interface CachedArena {
 
     boolean addSpectator(Player player, String targetPlayer);
 
-    boolean addPlayer(Player player, boolean skipOwnerCheck);
+    // NULL if not party
+    boolean addPlayer(Player player, String partyOwnerName);
 
     boolean reJoin(RemoteReJoin player);
 }

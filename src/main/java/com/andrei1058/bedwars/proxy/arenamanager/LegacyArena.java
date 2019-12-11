@@ -114,10 +114,10 @@ public class LegacyArena implements CachedArena {
     public void setStatus(ArenaStatus arenaStatus) {
         if (status == arenaStatus) return;
         this.status = arenaStatus;
-        if (status != ArenaStatus.PLAYING){
+        if (status != ArenaStatus.PLAYING) {
             List<RemoteReJoin> toRemove = new ArrayList<>();
-            for (Map.Entry<UUID, RemoteReJoin> rrj : RemoteReJoin.getRejoinByUUID().entrySet()){
-                if (rrj.getValue().getArena() == this){
+            for (Map.Entry<UUID, RemoteReJoin> rrj : RemoteReJoin.getRejoinByUUID().entrySet()) {
+                if (rrj.getValue().getArena() == this) {
                     toRemove.add(rrj.getValue());
                 }
             }
@@ -175,14 +175,14 @@ public class LegacyArena implements CachedArena {
             return false;
         }
 
-        if (getParty().hasParty(player)){
+        if (getParty().hasParty(player)) {
             player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
         }
 
         if (getStatus() != ArenaStatus.PLAYING) return false;
 
-        if (!allowSpectate){
+        if (!allowSpectate) {
             player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_SPECTATOR_DENIED_MSG));
             return false;
         }
@@ -204,7 +204,7 @@ public class LegacyArena implements CachedArena {
     }
 
     @Override
-    public boolean addPlayer(Player player, boolean skipOwnerCheck) {
+    public boolean addPlayer(Player player, String partyOwnerName) {
         ArenaSocketTask as = ArenaManager.getSocketByServer(getServer());
         if (as == null) {
             this.setStatus(ArenaStatus.UNKNOWN);
@@ -213,24 +213,23 @@ public class LegacyArena implements CachedArena {
             return false;
         }
 
-        if (!skipOwnerCheck){
-            if (getParty().hasParty(player) && !getParty().isOwner(player)){
-                player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
-                return false;
-            }
+        if (getParty().hasParty(player) && !getParty().isOwner(player)) {
+            player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
+            return false;
         }
 
         if (!(getStatus() == ArenaStatus.WAITING || getStatus() == ArenaStatus.STARTING)) return false;
 
-        if (!skipOwnerCheck) {
+        if (partyOwnerName == null) {
             if (getParty().hasParty(player)) {
-                if (getMaxPlayers() - getCurrentPlayers() < getParty().getMembers(player).size()){
+                if (getMaxPlayers() - getCurrentPlayers() < getParty().getMembers(player).size()) {
                     player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_PARTY_TOO_BIG));
                     return false;
                 }
+                partyOwnerName = player.getName();
                 for (Player mem : getParty().getMembers(player)) {
                     if (mem == player) continue;
-                    addPlayer(mem, true);
+                    addPlayer(mem, player.getName());
                 }
             }
         }
@@ -243,17 +242,12 @@ public class LegacyArena implements CachedArena {
         }
 
         //pld,worldIdentifier,uuidUser,languageIso,partyOwner
-        String owner = "";
-        if (getParty().hasParty(player)){
-            UUID pw = getParty().getOwner(player);
-            Player pp = Bukkit.getPlayer(pw);
-            if (pp != null) owner = pp.getName();
-        }
+
         JsonObject json = new JsonObject();
         json.addProperty("type", "PLD");
         json.addProperty("uuid", player.getUniqueId().toString());
         json.addProperty("lang_iso", Language.getPlayerLanguage(player).getIso());
-        json.addProperty("target", owner);
+        json.addProperty("target", partyOwnerName);
         json.addProperty("arena_identifier", getRemoteIdentifier());
         as.getOut().println(json.toString());
         //noinspection UnstableApiUsage
@@ -276,12 +270,12 @@ public class LegacyArena implements CachedArena {
         }
 
         Player player = Bukkit.getPlayer(rj.getUuid());
-        if (player == null){
+        if (player == null) {
             rj.destroy();
             return false;
         }
 
-        if (status != ArenaStatus.PLAYING){
+        if (status != ArenaStatus.PLAYING) {
             rj.destroy();
             return false;
         }

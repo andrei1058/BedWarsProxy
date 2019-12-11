@@ -145,7 +145,7 @@ public class ArenaManager {
         for (CachedArena a : arenaList) {
             if (a.getCurrentPlayers() >= a.getMaxPlayers()) continue;
             if (a.getMaxPlayers() - a.getCurrentPlayers() >= amount) {
-                a.addPlayer(p, false);
+                a.addPlayer(p, null);
                 return true;
             }
         }
@@ -205,7 +205,7 @@ public class ArenaManager {
         for (CachedArena a : arenaList) {
             if (a.getCurrentPlayers() >= a.getMaxPlayers()) continue;
             if (a.getMaxPlayers() - a.getCurrentPlayers() >= amount) {
-                a.addPlayer(p, false);
+                a.addPlayer(p, null);
                 break;
             }
         }

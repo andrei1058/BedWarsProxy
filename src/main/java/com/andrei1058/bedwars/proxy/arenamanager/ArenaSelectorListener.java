@@ -37,7 +37,7 @@ public class ArenaSelectorListener implements Listener {
             if (a == null) return;
 
             if (e.getClick() == ClickType.LEFT) {
-                if ((a.getStatus() == ArenaStatus.WAITING || a.getStatus() == ArenaStatus.STARTING) && a.addPlayer(p, false)) {
+                if ((a.getStatus() == ArenaStatus.WAITING || a.getStatus() == ArenaStatus.STARTING) && a.addPlayer(p, null)) {
                     SoundsConfig.playSound("join-allowed", p);
                 } else {
                     SoundsConfig.playSound("join-denied", p);
