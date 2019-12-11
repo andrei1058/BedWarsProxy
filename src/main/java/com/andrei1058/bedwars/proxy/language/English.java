@@ -18,8 +18,8 @@ public class English extends Language {
         yml.addDefault(Messages.ARENA_STATUS_OFFLINE_NAME, "&8Offline");
         yml.addDefault(Messages.ARENA_STATUS_PLAYING_NAME, "&cPlaying");
         yml.addDefault(Messages.ARENA_STATUS_RESTARTING_NAME, "&4Restarting");
-        yml.addDefault(Messages.ARENA_STATUS_WAITING_NAME, "&2Waiting §c{full}");
-        yml.addDefault(Messages.ARENA_STATUS_STARTING_NAME, "&6Starting §c{full}");
+        yml.addDefault(Messages.ARENA_STATUS_WAITING_NAME, "&2Waiting");
+        yml.addDefault(Messages.ARENA_STATUS_STARTING_NAME, "&6Starting");
         yml.addDefault(Messages.ARENA_GUI_INV_NAME, "&8Click to join");
         yml.addDefault(Messages.ARENA_GUI_ARENA_CONTENT_NAME, "&a&l{name}");
         yml.addDefault(Messages.ARENA_GUI_ARENA_CONTENT_LORE, Arrays.asList("", "&7Status: {status}", "&7Players: &f{on}&7/&f{max}", "&7Type: &a{group}", "", "&aLeft-Click to join.", "&eRight-Click to spectate."));

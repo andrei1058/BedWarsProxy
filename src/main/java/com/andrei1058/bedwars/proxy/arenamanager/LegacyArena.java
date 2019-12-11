@@ -107,7 +107,7 @@ public class LegacyArena implements CachedArena {
                 s = lang.m(Messages.ARENA_STATUS_PLAYING_NAME);
                 break;
         }
-        return s.replace("{full}", this.getMaxInTeam() == this.getMaxPlayers() ? lang.m(Messages.MEANING_FULL) : "");
+        return s;
     }
 
     @Override
