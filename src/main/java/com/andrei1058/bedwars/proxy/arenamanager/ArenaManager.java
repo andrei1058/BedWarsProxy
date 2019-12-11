@@ -217,4 +217,8 @@ public class ArenaManager {
         arenas.remove(a);
         Bukkit.getPluginManager().callEvent(new ArenaCacheRemoveEvent(a));
     }
+
+    public HashMap<String, ArenaSocketTask> getSocketByServer() {
+        return socketByServer;
+    }
 }

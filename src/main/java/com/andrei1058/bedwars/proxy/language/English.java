@@ -34,6 +34,8 @@ public class English extends Language {
         yml.addDefault(Messages.COMMAND_LANGUAGE_HOVER, "&fChange your language.");
         yml.addDefault(Messages.COMMAND_REJOIN_DISPLAY, "&8- &f/bw rejoin &ereconnect to a game.");
         yml.addDefault(Messages.COMMAND_REJOIN_HOVER, "&fReconnect to the game from where you got disconnected.");
+        yml.addDefault(Messages.COMMAND_TP_DISPLAY, "&8- &f/bw tp <name> &eteleport to a player as spectator.");
+        yml.addDefault(Messages.COMMAND_TP_HOVER, "&fSpectate on a player. Used for moderators to check hackers.");
 
         yml.addDefault(Messages.COMMAND_LANG_LIST_HEADER, "{prefix} &2Available languages:");
         yml.addDefault(Messages.COMMAND_LANG_LIST_FORMAT, "&a▪  &7{iso} - &f{name}");
@@ -74,7 +76,9 @@ public class English extends Language {
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_USAGE, "{prefix}&7Usage: &e/party remove <player>");
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_SUCCESS, "{prefix}&7{player} &ewas removed from the party,");
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER, "{prefix}&7{player} &eis not in your party!");
-
+        yml.addDefault(Messages.COMMAND_TP_USAGE, "{prefix}&7Usage: &e/bw tp <name>");
+        yml.addDefault(Messages.COMMAND_TP_NOT_FOUND, "{prefix}&7{player}&e was not found in bed-wars arenas.");
+        yml.addDefault(Messages.COMMAND_TP_FAIL2, "{prefix}&7{player}&e was found on &7{server}&e but you can't join at this time.");
         save();
         setPrefix(m(Messages.PREFIX));
     }

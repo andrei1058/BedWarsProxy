@@ -1,6 +1,5 @@
 package com.andrei1058.bedwars.proxy.socketmanager;
 
-import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import org.bukkit.Bukkit;
 
 import java.io.IOException;

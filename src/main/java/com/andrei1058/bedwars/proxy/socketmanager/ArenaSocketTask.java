@@ -1,10 +1,7 @@
 package com.andrei1058.bedwars.proxy.socketmanager;
 
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
-import com.andrei1058.bedwars.proxy.arenamanager.ArenaManager;
-import com.andrei1058.bedwars.proxy.arenamanager.ArenaStatus;
-import com.andrei1058.bedwars.proxy.arenamanager.CachedArena;
-import com.andrei1058.bedwars.proxy.arenamanager.LegacyArena;
+import com.andrei1058.bedwars.proxy.arenamanager.*;
 import com.andrei1058.bedwars.proxy.event.ArenaCacheCreateEvent;
 import com.andrei1058.bedwars.proxy.event.ArenaCacheUpdateEvent;
 import com.andrei1058.bedwars.proxy.rejoin.RemoteReJoin;
@@ -16,7 +13,6 @@ import org.bukkit.Bukkit;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Scanner;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -107,6 +103,14 @@ public class ArenaSocketTask implements Runnable {
                             ArenaCacheCreateEvent e = new ArenaCacheCreateEvent(finalCa);
                             Bukkit.getPluginManager().callEvent(e);
                         });
+                        break;
+                    case "Q":
+                        TpRequest tr = TpRequest.getTpRequest(UUID.fromString(json.get("requester").getAsString()));
+                        if (tr != null && tr.getTarget().equalsIgnoreCase(json.get("name").getAsString())){
+                            CachedArena ar = ArenaManager.getInstance().getArena(json.get("server_name").getAsString(),
+                                    json.get("arena_id").getAsString());
+                            if (ar != null) tr.setArena(ar);
+                        }
                         break;
                 }
             }

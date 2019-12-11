@@ -29,6 +29,9 @@ public class Messages {
     public static String COMMAND_LANG_LIST_HEADER = "cmd-lang-list-header";
     public static String COMMAND_LANG_LIST_FORMAT = "cmd-lang-list-format";
     public static String COMMAND_LANG_USAGE = "cmd-lang-usage";
+    public static String COMMAND_TP_USAGE = "cmd-tp-usage";
+    public static String COMMAND_TP_NOT_FOUND = "cmd-tp-fail";
+    public static String COMMAND_TP_FAIL2 = "cmd-tp-fai2";
     public static String COMMAND_LANG_SELECTED_NOT_EXIST = "cmd-lang-not-exist";
     public static String COMMAND_LANG_SELECTED_SUCCESSFULLY = "cmd-lang-set";
     public static String COMMAND_JOIN_USAGE = "cmd-join-usage";
@@ -48,6 +51,8 @@ public class Messages {
     public static String COMMAND_LANGUAGE_HOVER = "cmd-lang-hover";
     public static String COMMAND_REJOIN_DISPLAY = "cmd-rejoin-display";
     public static String COMMAND_REJOIN_HOVER = "cmd-rejoin-hover";
+    public static String COMMAND_TP_DISPLAY = "cmd-tp-display";
+    public static String COMMAND_TP_HOVER = "cmd-tp-hover";
 
     public static String COMMAND_PARTY_HELP = "cmd-party-help";
     public static String COMMAND_PARTY_INVITE_USAGE = "cmd-party-invite-usage";
