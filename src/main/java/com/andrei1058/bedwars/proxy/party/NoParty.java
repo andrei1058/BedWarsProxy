@@ -8,22 +8,22 @@ import java.util.UUID;
 
 public class NoParty implements Party {
     @Override
-    public boolean hasParty(Player p) {
+    public boolean hasParty(UUID p) {
         return false;
     }
 
     @Override
-    public int partySize(Player p) {
+    public int partySize(UUID p) {
         return 0;
     }
 
     @Override
-    public boolean isOwner(Player p) {
+    public boolean isOwner(UUID p) {
         return false;
     }
 
     @Override
-    public List<Player> getMembers(Player owner) {
+    public List<UUID> getMembers(UUID owner) {
         return new ArrayList<>();
     }
 
@@ -33,27 +33,27 @@ public class NoParty implements Party {
     }
 
     @Override
-    public void addMember(Player owner, Player member) {
+    public void addMember(UUID owner, Player member) {
 
     }
 
     @Override
-    public void removeFromParty(Player member) {
+    public void removeFromParty(UUID member) {
 
     }
 
     @Override
-    public void disband(Player owner) {
+    public void disband(UUID owner) {
 
     }
 
     @Override
-    public boolean isMember(Player owner, Player check) {
+    public boolean isMember(UUID owner, UUID check) {
         return false;
     }
 
     @Override
-    public void removePlayer(Player owner, Player target) {
+    public void removePlayer(UUID owner, UUID target) {
 
     }
 
@@ -63,7 +63,7 @@ public class NoParty implements Party {
     }
 
     @Override
-    public UUID getOwner(Player player) {
+    public UUID getOwner(UUID player) {
         return null;
     }
 }

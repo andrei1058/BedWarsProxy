@@ -41,7 +41,7 @@ public class JoinCMD extends SubCommand {
             ArenaManager.joinRandomFromGroup(p, args[0]);
             return;
         } else  {
-            if (getParty().hasParty(p) && !getParty().isOwner(p)) {
+            if (getParty().hasParty(p.getUniqueId()) && !getParty().isOwner(p.getUniqueId())) {
                 p.sendMessage(getMsg(p, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
                 return;
             }

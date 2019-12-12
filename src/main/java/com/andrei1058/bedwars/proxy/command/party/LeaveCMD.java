@@ -18,14 +18,14 @@ public class LeaveCMD extends SubCommand {
     public void execute(CommandSender s, String[] args) {
         if (!(s instanceof Player)) return;
         Player p = (Player) s;
-        if (!getParty().hasParty(p)) {
+        if (!getParty().hasParty(p.getUniqueId())) {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_GENERAL_DENIED_NOT_IN_PARTY));
             return;
         }
-        if (getParty().isOwner(p)) {
+        if (getParty().isOwner(p.getUniqueId())) {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_LEAVE_DENIED_IS_OWNER_NEEDS_DISBAND));
             return;
         }
-        getParty().removeFromParty(p);
+        getParty().removeFromParty(p.getUniqueId());
     }
 }

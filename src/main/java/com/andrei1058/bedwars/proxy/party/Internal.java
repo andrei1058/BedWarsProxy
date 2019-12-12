@@ -1,6 +1,7 @@
 package com.andrei1058.bedwars.proxy.party;
 
 import com.andrei1058.bedwars.proxy.language.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -9,20 +10,21 @@ import java.util.UUID;
 
 import static com.andrei1058.bedwars.proxy.language.Language.getMsg;
 
-public class Internal implements Party {
-    private static List<Party> parites = new ArrayList<>();
+public class Internal implements com.andrei1058.bedwars.proxy.party.Party {
+
+    static List<InternalParty> parties = new ArrayList<>();
 
     @Override
-    public boolean hasParty(Player p) {
-        for (Party party : parites) {
+    public boolean hasParty(UUID p) {
+        for (InternalParty party : parties) {
             if (party.members.contains(p)) return true;
         }
         return false;
     }
 
     @Override
-    public int partySize(Player p) {
-        for (Party party : parites) {
+    public int partySize(UUID p) {
+        for (InternalParty party : parties) {
             if (party.members.contains(p)) {
                 return party.members.size();
             }
@@ -31,8 +33,8 @@ public class Internal implements Party {
     }
 
     @Override
-    public boolean isOwner(Player p) {
-        for (Party party : parites) {
+    public boolean isOwner(UUID p) {
+        for (InternalParty party : parties) {
             if (party.members.contains(p)) {
                 if (party.owner == p) return true;
             }
@@ -41,8 +43,8 @@ public class Internal implements Party {
     }
 
     @Override
-    public List<Player> getMembers(Player owner) {
-        for (Party party : parites) {
+    public List<UUID> getMembers(UUID owner) {
+        for (InternalParty party : parties) {
             if (party.members.contains(owner)) {
                 return party.members;
             }
@@ -52,7 +54,7 @@ public class Internal implements Party {
 
     @Override
     public void createParty(Player owner, Player... members) {
-        Party p = new Party(owner);
+        InternalParty p = new InternalParty(owner.getUniqueId());
         p.addMember(owner);
         for (Player mem : members) {
             p.addMember(mem);
@@ -60,23 +62,29 @@ public class Internal implements Party {
     }
 
     @Override
-    public void addMember(Player owner, Player member) {
+    public void addMember(UUID owner, Player member) {
         getParty(owner).addMember(member);
     }
 
     @Override
-    public void removeFromParty(Player member) {
-        for (Party p : getParites()) {
+    public void removeFromParty(UUID member) {
+        for (InternalParty p : parties) {
             if (p.owner == member) {
                 disband(member);
             } else if (p.members.contains(member)) {
-                for (Player mem : p.members) {
-                    mem.sendMessage(getMsg(mem, Messages.COMMAND_PARTY_LEAVE_SUCCESS).replace("{player}", member.getName()));
+                Player p1, target = Bukkit.getPlayer(member);
+                if (target != null){
+                    for (UUID mem : p.members) {
+                        p1 = Bukkit.getPlayer(mem);
+                        if (p1 != null) {
+                            p1.sendMessage(getMsg(p1, Messages.COMMAND_PARTY_LEAVE_SUCCESS).replace("{player}", target.getName()));
+                        }
+                    }
                 }
                 p.members.remove(member);
                 if (p.members.isEmpty() || p.members.size() == 1) {
                     disband(p.owner);
-                    getParites().remove(p);
+                    parties.remove(p);
                 }
                 return;
             }
@@ -84,18 +92,24 @@ public class Internal implements Party {
     }
 
     @Override
-    public void disband(Player owner) {
-        for (Player p : getParty(owner).members) {
-            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_DISBAND_SUCCESS));
+    public void disband(UUID owner) {
+        InternalParty party = getParty(owner);
+        if (party != null) {
+            Player player;
+            for (UUID p : party.members) {
+                player = Bukkit.getPlayer(p);
+                if (player != null)
+                    player.sendMessage(getMsg(player, Messages.COMMAND_PARTY_DISBAND_SUCCESS));
+            }
+            party.members.clear();
+            parties.remove(party);
         }
-        getParty(owner).members.clear();
-        getParites().remove(this);
     }
 
     @Override
-    public boolean isMember(Player owner, Player check) {
-        for (Party p : parites) {
-            if (p.owner == owner) {
+    public boolean isMember(UUID owner, UUID check) {
+        for (InternalParty p : parties) {
+            if (p.owner.equals(owner)) {
                 if (p.members.contains(check)) return true;
             }
         }
@@ -103,17 +117,23 @@ public class Internal implements Party {
     }
 
     @Override
-    public void removePlayer(Player owner, Player target) {
-        Party p = getParty(owner);
+    public void removePlayer(UUID owner, UUID target) {
+        InternalParty p = getParty(owner);
         if (p != null) {
             if (p.members.contains(target)) {
-                for (Player mem : p.members) {
-                    mem.sendMessage(getMsg(mem, Messages.COMMAND_PARTY_REMOVE_SUCCESS).replace("{player}", target.getName()));
+                Player pl, t1 = Bukkit.getPlayer(target);
+                if (t1 != null) {
+                    for (UUID mem : p.members) {
+                        pl = Bukkit.getPlayer(mem);
+                        if (pl != null) {
+                            pl.sendMessage(getMsg(pl, Messages.COMMAND_PARTY_REMOVE_SUCCESS).replace("{player}", t1.getName()));
+                        }
+                    }
                 }
-                p.members.remove(p);
+                p.members.remove(target);
                 if (p.members.isEmpty() || p.members.size() == 1) {
                     disband(p.owner);
-                    getParites().remove(p);
+                    parties.remove(p);
                 }
             }
         }
@@ -125,39 +145,35 @@ public class Internal implements Party {
     }
 
     @Override
-    public UUID getOwner(Player player) {
-        Party p = getParty(player);
+    public UUID getOwner(UUID player) {
+        InternalParty p = getParty(player);
         if (p == null) return null;
-        return p.getOwner().getUniqueId();
+        return p.getOwner();
     }
 
-    private Party getParty(Player owner) {
-        for (Party p : getParites()) {
-            if (p.getOwner() == owner) return p;
+    private InternalParty getParty(UUID owner) {
+        for (InternalParty p : parties) {
+            if (p.getOwner().equals(owner)) return p;
         }
         return null;
     }
+}
 
-    public static List<Party> getParites() {
-        return parites;
+class InternalParty {
+
+    List<UUID> members = new ArrayList<>();
+    UUID owner;
+
+    public InternalParty(UUID p) {
+        owner = p;
+        Internal.parties.add(this);
     }
 
-    class Party {
+    public UUID getOwner() {
+        return owner;
+    }
 
-        private List<Player> members = new ArrayList<>();
-        private Player owner;
-
-        public Party(Player p) {
-            owner = p;
-            Internal.parites.add(this);
-        }
-
-        public Player getOwner() {
-            return owner;
-        }
-
-        void addMember(Player p) {
-            members.add(p);
-        }
+    void addMember(Player p) {
+        members.add(p.getUniqueId());
     }
 }

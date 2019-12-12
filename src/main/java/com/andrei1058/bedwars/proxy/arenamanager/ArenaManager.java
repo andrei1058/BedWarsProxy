@@ -103,7 +103,7 @@ public class ArenaManager {
      * Add a player to the most filled arena from a group.
      */
     public static boolean joinRandomFromGroup(Player p, String group) {
-        if (getParty().hasParty(p) && !getParty().isOwner(p)) {
+        if (getParty().hasParty(p.getUniqueId()) && !getParty().isOwner(p.getUniqueId())) {
             p.sendMessage(getMsg(p, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
         }
@@ -141,7 +141,7 @@ public class ArenaManager {
             } else return 1;
         });
 
-        int amount = BedWarsProxy.getParty().hasParty(p) ? BedWarsProxy.getParty().getMembers(p).size() : 1;
+        int amount = BedWarsProxy.getParty().hasParty(p.getUniqueId()) ? BedWarsProxy.getParty().getMembers(p.getUniqueId()).size() : 1;
         for (CachedArena a : arenaList) {
             if (a.getCurrentPlayers() >= a.getMaxPlayers()) continue;
             if (a.getMaxPlayers() - a.getCurrentPlayers() >= amount) {
@@ -166,7 +166,7 @@ public class ArenaManager {
      * Check if is the party owner first.
      */
     public static boolean joinRandomArena(Player p) {
-        if (getParty().hasParty(p) && !getParty().isOwner(p)) {
+        if (getParty().hasParty(p.getUniqueId()) && !getParty().isOwner(p.getUniqueId())) {
             p.sendMessage(getMsg(p, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
         }
@@ -201,7 +201,7 @@ public class ArenaManager {
             } else return 1;
         });
 
-        int amount = BedWarsProxy.getParty().hasParty(p) ? BedWarsProxy.getParty().getMembers(p).size() : 1;
+        int amount = BedWarsProxy.getParty().hasParty(p.getUniqueId()) ? BedWarsProxy.getParty().getMembers(p.getUniqueId()).size() : 1;
         for (CachedArena a : arenaList) {
             if (a.getCurrentPlayers() >= a.getMaxPlayers()) continue;
             if (a.getMaxPlayers() - a.getCurrentPlayers() >= amount) {

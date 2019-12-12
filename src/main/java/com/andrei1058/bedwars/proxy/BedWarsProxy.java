@@ -30,6 +30,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.event.Listener;
@@ -120,6 +121,8 @@ public class BedWarsProxy extends JavaPlugin {
             getLogger().info("Hook into PlaceholderAPI support!");
             new SupportPAPI().register();
         }
+
+        new Metrics(this);
     }
 
     @Override

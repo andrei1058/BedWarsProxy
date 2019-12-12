@@ -7,27 +7,27 @@ import java.util.UUID;
 
 public interface Party {
 
-    boolean hasParty(Player p);
+    boolean hasParty(UUID p);
 
-    int partySize(Player p);
+    int partySize(UUID p);
 
-    boolean isOwner(Player p);
+    boolean isOwner(UUID p);
 
-    List<Player> getMembers(Player owner);
+    List<UUID> getMembers(UUID owner);
 
     void createParty(Player owner, Player... members);
 
-    void addMember(Player owner, Player member);
+    void addMember(UUID owner, Player member);
 
-    void removeFromParty(Player member);
+    void removeFromParty(UUID member);
 
-    void disband(Player owner);
+    void disband(UUID owner);
 
-    boolean isMember(Player owner, Player check);
+    boolean isMember(UUID owner, UUID check);
 
-    void removePlayer(Player owner, Player target);
+    void removePlayer(UUID owner, UUID target);
 
     boolean isInternal();
 
-    UUID getOwner(Player player);
+    UUID getOwner(UUID player);
 }

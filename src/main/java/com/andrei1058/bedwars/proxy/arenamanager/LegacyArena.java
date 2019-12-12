@@ -175,7 +175,7 @@ public class LegacyArena implements CachedArena {
             return false;
         }
 
-        if (getParty().hasParty(player)) {
+        if (getParty().hasParty(player.getUniqueId())) {
             player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
         }
@@ -213,7 +213,7 @@ public class LegacyArena implements CachedArena {
             return false;
         }
 
-        if (getParty().hasParty(player) && !getParty().isOwner(player)) {
+        if (getParty().hasParty(player.getUniqueId()) && !getParty().isOwner(player.getUniqueId()) && partyOwnerName == null) {
             player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
         }
@@ -221,15 +221,18 @@ public class LegacyArena implements CachedArena {
         if (!(getStatus() == ArenaStatus.WAITING || getStatus() == ArenaStatus.STARTING)) return false;
 
         if (partyOwnerName == null) {
-            if (getParty().hasParty(player)) {
-                if (getMaxPlayers() - getCurrentPlayers() < getParty().getMembers(player).size()) {
+            if (getParty().hasParty(player.getUniqueId())) {
+                if (getMaxPlayers() - getCurrentPlayers() < getParty().getMembers(player.getUniqueId()).size()) {
                     player.sendMessage(getMsg(player, Messages.COMMAND_JOIN_DENIED_PARTY_TOO_BIG));
                     return false;
                 }
                 partyOwnerName = player.getName();
-                for (Player mem : getParty().getMembers(player)) {
-                    if (mem == player) continue;
-                    addPlayer(mem, player.getName());
+                for (UUID mem : getParty().getMembers(player.getUniqueId())) {
+                    if (mem.equals(player.getUniqueId())) continue;
+                    Player pl = Bukkit.getPlayer(mem);
+                    if (pl != null) {
+                        addPlayer(pl, player.getName());
+                    }
                 }
             }
         }

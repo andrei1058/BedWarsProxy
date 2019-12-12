@@ -33,7 +33,7 @@ public class InviteCMD extends SubCommand {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INVITE_USAGE));
             return;
         }
-        if (getParty().hasParty(p) && !getParty().isOwner(p)) {
+        if (getParty().hasParty(p.getUniqueId()) && !getParty().isOwner(p.getUniqueId())) {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INSUFFICIENT_PERMISSIONS));
             return;
         }

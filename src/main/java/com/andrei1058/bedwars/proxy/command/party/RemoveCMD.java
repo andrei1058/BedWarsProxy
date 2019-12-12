@@ -24,7 +24,7 @@ public class RemoveCMD extends SubCommand {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_USAGE));
             return;
         }
-        if (getParty().hasParty(p) && !getParty().isOwner(p)) {
+        if (getParty().hasParty(p.getUniqueId()) && !getParty().isOwner(p.getUniqueId())) {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INSUFFICIENT_PERMISSIONS));
             return;
         }
@@ -33,10 +33,10 @@ public class RemoveCMD extends SubCommand {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER).replace("{player}", args[0]));
             return;
         }
-        if (!getParty().isMember(p, target)) {
+        if (!getParty().isMember(p.getUniqueId(), target.getUniqueId())) {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER).replace("{player}", args[0]));
             return;
         }
-        getParty().removePlayer(p, target);
+        getParty().removePlayer(p.getUniqueId(), target.getUniqueId());
     }
 }

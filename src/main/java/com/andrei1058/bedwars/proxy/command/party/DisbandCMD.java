@@ -19,14 +19,14 @@ public class DisbandCMD extends SubCommand {
         if (!(s instanceof Player)) return;
         Player p = (Player) s;
 
-        if (!getParty().hasParty(p)) {
+        if (!getParty().hasParty(p.getUniqueId())) {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_GENERAL_DENIED_NOT_IN_PARTY));
             return;
         }
-        if (!getParty().isOwner(p)) {
+        if (!getParty().isOwner(p.getUniqueId())) {
             p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INSUFFICIENT_PERMISSIONS));
             return;
         }
-        getParty().disband(p);
+        getParty().disband(p.getUniqueId());
     }
 }
