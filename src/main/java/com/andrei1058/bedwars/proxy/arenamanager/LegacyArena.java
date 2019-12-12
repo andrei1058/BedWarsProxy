@@ -250,7 +250,7 @@ public class LegacyArena implements CachedArena {
         json.addProperty("type", "PLD");
         json.addProperty("uuid", player.getUniqueId().toString());
         json.addProperty("lang_iso", Language.getPlayerLanguage(player).getIso());
-        json.addProperty("target", partyOwnerName);
+        json.addProperty("target", partyOwnerName == null ? "" : partyOwnerName);
         json.addProperty("arena_identifier", getRemoteIdentifier());
         as.getOut().println(json.toString());
         //noinspection UnstableApiUsage
