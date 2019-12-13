@@ -199,7 +199,6 @@ public class LegacyArena implements CachedArena {
         out.writeUTF("Connect");
         out.writeUTF(getServer());
         player.sendPluginMessage(BedWarsProxy.getPlugin(), "BungeeCord", out.toByteArray());
-        player.sendMessage("adding you as spectator");
         return true;
     }
 
