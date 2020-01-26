@@ -7,10 +7,7 @@ import com.andrei1058.bedwars.proxy.command.party.PartyCommand;
 import com.andrei1058.bedwars.proxy.configuration.BedWarsConfig;
 import com.andrei1058.bedwars.proxy.configuration.ConfigPath;
 import com.andrei1058.bedwars.proxy.configuration.SoundsConfig;
-import com.andrei1058.bedwars.proxy.database.Database;
-import com.andrei1058.bedwars.proxy.database.MySQL;
-import com.andrei1058.bedwars.proxy.database.NoDatabase;
-import com.andrei1058.bedwars.proxy.database.StatsCache;
+import com.andrei1058.bedwars.proxy.database.*;
 import com.andrei1058.bedwars.proxy.language.English;
 import com.andrei1058.bedwars.proxy.language.LangListeners;
 import com.andrei1058.bedwars.proxy.levels.Level;
@@ -81,7 +78,7 @@ public class BedWarsProxy extends JavaPlugin {
             //todo could not register socket on given port
         }
 
-        registerListeners(new LangListeners(), new ArenaSelectorListener());
+        registerListeners(new LangListeners(), new ArenaSelectorListener(), new CacheListener());
         new SoundsConfig();
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
