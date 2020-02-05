@@ -10,4 +10,4 @@ maven-job:
     - 'mvn -DbuildNumber=$CI_PIPELINE_ID clean install -s ci_settings.xml'
   artifacts:
     paths:
-      - '*/target/*.jar'
+      - 'target/*.jar'
