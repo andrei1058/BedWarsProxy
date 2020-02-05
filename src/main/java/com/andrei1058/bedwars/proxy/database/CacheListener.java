@@ -12,6 +12,7 @@ public class CacheListener implements Listener {
     @EventHandler
     // Create cache for player if does not exist yet.
     public void onLogin(PlayerLoginEvent e) {
+        if (e == null) return;
         final Player p = e.getPlayer();
         //create cache row for player
         BedWarsProxy.getStatsCache().createStatsCache(p);

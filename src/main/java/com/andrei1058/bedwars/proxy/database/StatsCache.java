@@ -3,6 +3,7 @@ package com.andrei1058.bedwars.proxy.database;
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class StatsCache {
         }
         try {
             ClassLoader cl = Bukkit.getServer().getClass().getClassLoader();
-            @SuppressWarnings("deprecation") Driver d = (Driver) cl.loadClass("org.sqlite.JDBC").newInstance();
+            Driver d = (Driver) cl.loadClass("org.sqlite.JDBC").newInstance();
             DriverManager.registerDriver(d);
             connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
         } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
@@ -111,7 +112,7 @@ public class StatsCache {
      * @return true if the player did not have cache and it was created.
      */
     @SuppressWarnings("UnusedReturnValue")
-    public boolean createStatsCache(Player player) {
+    public boolean createStatsCache(@NotNull Player player) {
         if (isPlayerSet(player.getUniqueId())) return false;
         if (!isConnected()) connect();
 
