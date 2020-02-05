@@ -21,8 +21,8 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>gitlab-maven</id>
-            <url>https://gitlab.com/api/v4/projects/14877570/packages/maven</url>
+            <id>andrei1058-repo</id>
+            <url>http://repo.andrei1058.com/releases</url>
         </repository>
         <repository>
             <id>codemc-repo</id>
@@ -54,31 +54,31 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.14.4-R0.1-SNAPSHOT</version>
+            <version>1.15-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.andrei1058.mcversionsupport</groupId>
+            <groupId>com.andrei1058.spigot.versionsupport</groupId>
             <artifactId>itemstack-version</artifactId>
-            <version>1.1</version>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.andrei1058.mcversionsupport</groupId>
+            <groupId>com.andrei1058.spigot.versionsupport</groupId>
             <artifactId>sounds-version</artifactId>
-            <version>1.1</version>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.andrei1058.mcversionsupport</groupId>
+            <groupId>com.andrei1058.spigot.versionsupport</groupId>
             <artifactId>material-version</artifactId>
-            <version>1.1</version>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.andrei1058.mcversionsupport</groupId>
+            <groupId>com.andrei1058.spigot.versionsupport</groupId>
             <artifactId>block-version</artifactId>
-            <version>1.1</version>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

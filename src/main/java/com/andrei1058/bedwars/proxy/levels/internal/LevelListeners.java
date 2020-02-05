@@ -28,7 +28,7 @@ public class LevelListeners implements Listener {
             //if (PlayerLevel.getLevelByPlayer(e.getPlayer().getUniqueId()) != null) return;
             Object[] levelData = BedWarsProxy.getRemoteDatabase().getLevelData(u);
             if (levelData.length == 0) return;
-            PlayerLevel.getLevelByPlayer(u).lazyLoad((Integer) levelData[0], (Integer) levelData[1], (String) levelData[2], (Integer)levelData[1]);
+            PlayerLevel.getLevelByPlayer(u).lazyLoad((Integer) levelData[0], (Integer) levelData[1], (String) levelData[2], (Integer)levelData[3]);
             //new PlayerLevel(e.getPlayer().getUniqueId(), (Integer)levelData[0], (Integer)levelData[1]);
             //Bukkit.broadcastMessage("LAZY LOAD");
         });

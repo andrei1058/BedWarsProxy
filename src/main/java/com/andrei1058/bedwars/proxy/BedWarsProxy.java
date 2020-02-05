@@ -33,6 +33,7 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
@@ -73,9 +74,8 @@ public class BedWarsProxy extends JavaPlugin {
         }
         statsCache = new StatsCache();
 
-        //todo make port configurable
         if (!ServerSocketTask.init(config.getInt(ConfigPath.GENERAL_CONFIGURATION_PORT))) {
-            //todo could not register socket on given port
+            getLogger().severe("Could not register port: " + config.getInt(ConfigPath.GENERAL_CONFIGURATION_PORT));
         }
 
         registerListeners(new LangListeners(), new ArenaSelectorListener(), new CacheListener());
@@ -155,7 +155,7 @@ public class BedWarsProxy extends JavaPlugin {
         return soundAdapter;
     }
 
-    private static void registerListeners(Listener... listeners) {
+    private static void registerListeners(@NotNull Listener... listeners) {
         for (Listener listener : listeners) {
             Bukkit.getPluginManager().registerEvents(listener, getPlugin());
         }
@@ -172,6 +172,7 @@ public class BedWarsProxy extends JavaPlugin {
     /**
      * Create a text component.
      */
+    @NotNull
     public static TextComponent createTC(String text, String suggest, String shot_text) {
         TextComponent tx = new TextComponent(text);
         tx.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggest));

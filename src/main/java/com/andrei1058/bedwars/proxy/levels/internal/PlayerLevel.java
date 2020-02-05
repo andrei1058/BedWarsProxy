@@ -3,6 +3,7 @@ package com.andrei1058.bedwars.proxy.levels.internal;
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -40,6 +41,7 @@ public class PlayerLevel {
     /**
      * Update the player progress bar.
      */
+    @SuppressWarnings("ConstantConditions")
     private void updateProgressBar() {
         double l1 = ((nextLevelCost - currentXp) / (double) (nextLevelCost)) * 10;
         int locked = (int) l1;
@@ -154,7 +156,7 @@ public class PlayerLevel {
         //SpigotMain.remoteDatabase.setLevelData(uuid, level, currentXp);
     }
 
-    public void lazyLoad(int level, int currentXp, String levelName, int nextLevelCost) {
+    public void lazyLoad(int level, int currentXp, @NotNull String levelName, int nextLevelCost) {
         this.levelName = ChatColor.translateAlternateColorCodes('&', levelName.replace("{number}", String.valueOf(level)));
         this.nextLevelCost = nextLevelCost;
         this.level = level;
