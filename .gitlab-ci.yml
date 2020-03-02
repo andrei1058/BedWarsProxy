@@ -7,7 +7,7 @@ image: "maven:latest"
 
 maven-job:
   script:
-    - 'mvn -DbuildNumber=$CI_PIPELINE_ID clean install -s ci_settings.xml'
+    - 'mvn -DgitVer=git-$CI_COMMIT_SHORT_SHA- clean install -s ci_settings.xml'
   artifacts:
     paths:
       - 'target/*.jar'

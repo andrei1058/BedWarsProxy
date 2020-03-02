@@ -52,6 +52,9 @@ public class ArenaSocketTask implements Runnable {
                 if (!json.has("type")) continue;
                 switch (json.get("type").getAsString()) {
                     case "RC":
+                        if (!json.has("server")) break;
+                        if (!json.has("arena_id")) break;
+                        if (!json.has("uuid")) break;
                         CachedArena arena = ArenaManager.getInstance().getArena(json.get("server").getAsString(), json.get("arena_id").getAsString());
                         if (arena == null) continue;
                         RemoteReJoin rrj2 = RemoteReJoin.getReJoin(UUID.fromString(json.get("uuid").getAsString()));
@@ -59,11 +62,22 @@ public class ArenaSocketTask implements Runnable {
                         new RemoteReJoin(UUID.fromString(json.get("uuid").getAsString()), arena);
                         break;
                     case "RD":
+                        if (!json.has("server")) break;
+                        if (!json.has("uuid")) break;
                         RemoteReJoin rrj = RemoteReJoin.getReJoin(UUID.fromString(json.get("uuid").getAsString()));
                         if (rrj == null) continue;
                         if (rrj.getArena().getServer().equals(json.get("server").getAsString())) rrj.destroy();
                         break;
                     case "UPDATE":
+                        if (!json.has("server_name")) break;
+                        if (!json.has("arena_identifier")) break;
+                        if (!json.has("arena_max_players")) break;
+                        if (!json.has("arena_current_players")) break;
+                        if (!json.has("arena_status")) break;
+                        if (!json.has("server_name")) break;
+                        if (!json.has("arena_group")) break;
+                        if (!json.has("arena_current_players")) break;
+                        if (!json.has("arena_max_in_team")) break;
                         //update,serverName,remoteIdentifier,arenaName,group,status,maxP,currP,maxInTeam (for parties)
                         CachedArena ca = ArenaManager.getInstance().getArena(json.get("server_name").getAsString(), json.get("arena_identifier").getAsString());
                         if (ca != null) {
@@ -105,6 +119,10 @@ public class ArenaSocketTask implements Runnable {
                         });
                         break;
                     case "Q":
+                        if (!json.has("requester")) break;
+                        if (!json.has("name")) break;
+                        if (!json.has("server_name")) break;
+                        if (!json.has("arena_id")) break;
                         TpRequest tr = TpRequest.getTpRequest(UUID.fromString(json.get("requester").getAsString()));
                         if (tr != null && tr.getTarget().equalsIgnoreCase(json.get("name").getAsString())){
                             CachedArena ar = ArenaManager.getInstance().getArena(json.get("server_name").getAsString(),
