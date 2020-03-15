@@ -3,3 +3,6 @@ target
 */target
 BedWarsProxy.iml
 proxy.iml
+/dependency-reduced-pom.xml
+/proxy (1).iml
+/proxy (2).iml

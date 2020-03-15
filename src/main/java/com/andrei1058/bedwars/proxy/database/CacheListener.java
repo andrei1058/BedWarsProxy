@@ -14,9 +14,11 @@ public class CacheListener implements Listener {
     public void onLogin(PlayerLoginEvent e) {
         if (e == null) return;
         final Player p = e.getPlayer();
-        //create cache row for player
-        BedWarsProxy.getStatsCache().createStatsCache(p);
-        //update local cache for player
-        Bukkit.getScheduler().runTaskAsynchronously(BedWarsProxy.getPlugin(), () -> BedWarsProxy.getRemoteDatabase().updateLocalCache(p.getUniqueId()));
+        Bukkit.getScheduler().runTaskAsynchronously(BedWarsProxy.getPlugin(), () -> {
+            //create cache row for player
+            BedWarsProxy.getStatsCache().createStatsCache(p);
+            //update local cache for player
+            BedWarsProxy.getRemoteDatabase().updateLocalCache(p.getUniqueId());
+        });
     }
 }

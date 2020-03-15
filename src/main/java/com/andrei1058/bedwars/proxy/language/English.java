@@ -79,6 +79,11 @@ public class English extends Language {
         yml.addDefault(Messages.COMMAND_TP_USAGE, "{prefix}&7Usage: &e/bw tp <name>");
         yml.addDefault(Messages.COMMAND_TP_NOT_FOUND, "{prefix}&7{player}&e was not found in bed-wars arenas.");
         yml.addDefault(Messages.COMMAND_TP_FAIL2, "{prefix}&7{player}&e was found on &7{server}&e but you can't join at this time.");
+
+        yml.addDefault(Messages.SIGN_DYNAMIC_WAITING, Arrays.asList("&2[BedWars-{id}]", "&9{group}", "&2{map}", "&5{current}/{max}"));
+        yml.addDefault(Messages.SIGN_DYNAMIC_STARTING, Arrays.asList("&6[BedWars-{id}]", "&9{group}", "&2{map}", "&5{current}/{max}"));
+        yml.addDefault(Messages.SIGN_DYNAMIC_SEARCHING, Arrays.asList("&4▆▆▆▆▆▆", "&1BOOTING", "", "&4▆▆▆▆▆▆"));
+        yml.addDefault(Messages.SIGN_DYNAMIC_NO_GAMES, Arrays.asList("", "&7&lWaiting for", "&7&lopen lobby", ""));
         save();
         setPrefix(m(Messages.PREFIX));
     }

@@ -72,4 +72,10 @@ public class Messages {
     public static String COMMAND_PARTY_REMOVE_USAGE = "cmd-party-remove-usage";
     public static String COMMAND_PARTY_REMOVE_SUCCESS = "cmd-party-remove";
     public static String COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER = "cmd-party-remove-not-in";
+
+
+    public static String SIGN_DYNAMIC_WAITING = "sign-dynamic-content.waiting";
+    public static String SIGN_DYNAMIC_STARTING = "sign-dynamic-content.starting";
+    public static String SIGN_DYNAMIC_SEARCHING = "sign-dynamic-content.searching";
+    public static String SIGN_DYNAMIC_NO_GAMES = "sign-dynamic-content.no-games";
 }

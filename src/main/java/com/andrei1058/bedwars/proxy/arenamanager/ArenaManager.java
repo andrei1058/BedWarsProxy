@@ -47,8 +47,8 @@ public class ArenaManager {
         return null;
     }
 
-    public static Collection<CachedArena> getArenas() {
-        return Collections.unmodifiableCollection(getInstance().arenas);
+    public static List<CachedArena> getArenas() {
+        return Collections.unmodifiableList(getInstance().arenas);
     }
 
     public static List<CachedArena> getSorted(List<CachedArena> arenas) {

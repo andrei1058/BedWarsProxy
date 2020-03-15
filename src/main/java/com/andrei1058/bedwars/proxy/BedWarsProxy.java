@@ -1,6 +1,7 @@
 package com.andrei1058.bedwars.proxy;
 
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaSelectorListener;
+import com.andrei1058.bedwars.proxy.arenasign.SignManager;
 import com.andrei1058.bedwars.proxy.command.RejoinCommand;
 import com.andrei1058.bedwars.proxy.command.main.MainCommand;
 import com.andrei1058.bedwars.proxy.command.party.PartyCommand;
@@ -120,6 +121,7 @@ public class BedWarsProxy extends JavaPlugin {
         }
 
         new Metrics(this);
+        //SignManager.init();
     }
 
     @Override

@@ -36,14 +36,14 @@ public class LegacyArena implements CachedArena {
         this.lastUpdate = System.currentTimeMillis();
         this.server = server;
         this.status = status;
-        this.group = group;
+        this.group = group.toLowerCase();
         this.arenaName = arenaName;
         this.maxPlayers = maxPlayers;
         this.currentPlayers = currentPlayers;
         this.maxInTeam = maxInTeam;
 
-        Language.saveIfNotExists(Messages.ARENA_DISPLAY_GROUP_PATH + getArenaGroup(), group);
-        Language.saveIfNotExists(Messages.ARENA_DISPLAY_NAME_PATH + getArenaName(), arenaName);
+        Language.saveIfNotExists(Messages.ARENA_DISPLAY_GROUP_PATH + getArenaGroup().toLowerCase(), group);
+        Language.saveIfNotExists(Messages.ARENA_DISPLAY_NAME_PATH + getArenaName().toLowerCase(), arenaName);
     }
 
     @Override
