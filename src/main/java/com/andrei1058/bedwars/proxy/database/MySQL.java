@@ -25,6 +25,9 @@ public class MySQL implements Database{
         this.pass = BedWarsProxy.config.getYml().getString("database.pass");
         this.port = BedWarsProxy.config.getYml().getInt("database.port");
         this.ssl = BedWarsProxy.config.getYml().getBoolean("database.ssl");
+        if (!connect()){
+            BedWarsProxy.setRemoteDatabase(new NoDatabase());
+        }
     }
 
     /**
@@ -61,19 +64,19 @@ public class MySQL implements Database{
      */
     public boolean hasStats(UUID uuid) {
         if (!isConnected()) connect();
-        try {
-            ResultSet rs = connection.createStatement().executeQuery("SELECT id FROM global_stats WHERE uuid = '" + uuid.toString() + "';");
-            return rs.next();
+        boolean result = false;
+        try (ResultSet rs = connection.createStatement().executeQuery("SELECT id FROM global_stats WHERE uuid = '" + uuid.toString() + "';")) {
+            result =  rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return result;
     }
 
     public void init() {
         if (!isConnected()) connect();
-        try {
-            connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS global_stats (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+        try (Statement s = connection.createStatement()) {
+            s.executeUpdate("CREATE TABLE IF NOT EXISTS global_stats (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
                     "name VARCHAR(200), uuid VARCHAR(200), first_play TIMESTAMP NULL DEFAULT NULL, " +
                     "last_play TIMESTAMP NULL DEFAULT NULL, wins INT(200), kills INT(200), " +
                     "final_kills INT(200), looses INT(200), deaths INT(200), final_deaths INT(200), beds_destroyed INT(200), games_played INT(200));");
@@ -81,8 +84,8 @@ public class MySQL implements Database{
             e.printStackTrace();
         }
 
-        try {
-            connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS quick_buy (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(200), " +
+        try (Statement s = connection.createStatement()) {
+            s.executeUpdate("CREATE TABLE IF NOT EXISTS quick_buy (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(200), " +
                     "slot_19 VARCHAR(200), slot_20 VARCHAR(200), slot_21 VARCHAR(200), slot_22 VARCHAR(200), slot_23 VARCHAR(200), slot_24 VARCHAR(200), slot_25 VARCHAR(200)," +
                     "slot_28 VARCHAR(200), slot_29 VARCHAR(200), slot_30 VARCHAR(200), slot_31 VARCHAR(200), slot_32 VARCHAR(200), slot_33 VARCHAR(200), slot_34 VARCHAR(200)," +
                     "slot_37 VARCHAR(200), slot_38 VARCHAR(200), slot_39 VARCHAR(200), slot_40 VARCHAR(200), slot_41 VARCHAR(200), slot_42 VARCHAR(200), slot_43 VARCHAR(200));");
@@ -90,15 +93,15 @@ public class MySQL implements Database{
             e.printStackTrace();
         }
 
-        try {
-            connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS player_levels (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(200), " +
+        try (Statement s = connection.createStatement()) {
+            s.executeUpdate("CREATE TABLE IF NOT EXISTS player_levels (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(200), " +
                     "level INT(200), xp INT(200), name VARCHAR(200) CHARACTER SET utf8, next_cost INT(200));");
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        try {
-            connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS player_language (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(200), " +
+        try (Statement s = connection.createStatement()) {
+            s.executeUpdate("CREATE TABLE IF NOT EXISTS player_language (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(200), " +
                     "iso VARCHAR(200));");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,8 +112,7 @@ public class MySQL implements Database{
 
     public void updateLocalCache(UUID uuid) {
         if (!isConnected()) connect();
-        try {
-            ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM global_stats WHERE uuid = '" + uuid.toString() + "';");
+        try (ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM global_stats WHERE uuid = '" + uuid.toString() + "';")) {
             if (rs.next()) {
                 StatsCache cs = BedWarsProxy.getStatsCache();
                 cs.setFirstPlay(uuid, rs.getTimestamp("first_play"));
@@ -124,7 +126,6 @@ public class MySQL implements Database{
                 cs.setBedsDestroyed(uuid, rs.getInt("beds_destroyed"));
                 cs.setGamesPlayed(uuid, rs.getInt("games_played"));
             }
-            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -143,8 +144,7 @@ public class MySQL implements Database{
     public Object[] getLevelData(UUID player) {
         if (!isConnected()) connect();
         Object[] r = new Object[]{1, 0, "", 0};
-        try {
-            ResultSet rs = connection.prepareStatement("SELECT level, xp, name, next_cost FROM player_levels WHERE uuid = '" + player.toString() + "';").executeQuery();
+        try (ResultSet rs = connection.prepareStatement("SELECT level, xp, name, next_cost FROM player_levels WHERE uuid = '" + player.toString() + "';").executeQuery()) {
             if (rs.next()) {
                 r[0] = rs.getInt("level");
                 r[1] = rs.getInt("xp");
@@ -159,8 +159,7 @@ public class MySQL implements Database{
 
     public void setLevelData(UUID player, int level, int xp, String displayName, int nextCost) {
         if (!isConnected()) connect();
-        try {
-            ResultSet rs = connection.prepareStatement("SELECT id from player_levels WHERE uuid = '" + player.toString() + "';").executeQuery();
+        try  (ResultSet rs = connection.prepareStatement("SELECT id from player_levels WHERE uuid = '" + player.toString() + "';").executeQuery()) {
             if (!rs.next()) {
                 PreparedStatement ps = connection.prepareStatement("INSERT INTO player_levels VALUES (?, ?, ?, ?, ?, ?);");
                 ps.setInt(1, 0);
@@ -184,6 +183,7 @@ public class MySQL implements Database{
                     ps.setInt(4, nextCost);
                 }
                 ps.executeUpdate();
+                ps.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -192,14 +192,14 @@ public class MySQL implements Database{
 
     public void setLanguage(UUID player, String iso) {
         if (!isConnected()) connect();
-        try {
-            ResultSet rs = connection.createStatement().executeQuery("SELECT iso FROM player_language WHERE uuid = '" + player.toString() + "';");
+        try (ResultSet rs = connection.createStatement().executeQuery("SELECT iso FROM player_language WHERE uuid = '" + player.toString() + "';")) {
+            Statement s = connection.createStatement();
             if (rs.next()) {
-                connection.createStatement().executeUpdate("UPDATE player_language SET iso='" + iso + "' WHERE uuid = '" + player.toString() + "';");
+                s.executeUpdate("UPDATE player_language SET iso='" + iso + "' WHERE uuid = '" + player.toString() + "';");
             } else {
-                connection.createStatement().executeUpdate("INSERT INTO player_language VALUES (0, '" + player.toString() + "', '" + iso + "');");
+                s.executeUpdate("INSERT INTO player_language VALUES (0, '" + player.toString() + "', '" + iso + "');");
             }
-            rs.close();
+            s.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -208,12 +208,10 @@ public class MySQL implements Database{
     public String getLanguage(UUID player) {
         if (!isConnected()) connect();
         String iso = Language.getDefaultLanguage().getIso();
-        try {
-            ResultSet rs = connection.createStatement().executeQuery("SELECT iso FROM player_language WHERE uuid = '" + player.toString() + "';");
+        try (ResultSet rs = connection.createStatement().executeQuery("SELECT iso FROM player_language WHERE uuid = '" + player.toString() + "';")) {
             if (rs.next()) {
                 iso = rs.getString("iso");
             }
-            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -224,8 +222,8 @@ public class MySQL implements Database{
      * Ping the database in order to keep the session open.
      */
     public void ping() {
-        try {
-            connection.createStatement().execute("SELECT id FROM player_levels WHERE id=0;");
+        try (Statement s = connection.createStatement()) {
+            s.execute("SELECT id FROM player_levels WHERE id=0;");
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,13 +1,11 @@
 package com.andrei1058.bedwars.proxy.arenasign;
 
-import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaManager;
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaStatus;
 import com.andrei1058.bedwars.proxy.arenamanager.CachedArena;
 import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.language.Messages;
 import com.andrei1058.spigot.signapi.ASign;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 

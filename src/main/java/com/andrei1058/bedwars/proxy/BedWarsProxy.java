@@ -181,4 +181,8 @@ public class BedWarsProxy extends JavaPlugin {
         tx.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(shot_text).create()));
         return tx;
     }
+
+    public static void setRemoteDatabase(Database remoteDatabase) {
+        BedWarsProxy.remoteDatabase = remoteDatabase;
+    }
 }
