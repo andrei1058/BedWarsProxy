@@ -10,7 +10,7 @@ import java.util.Collections;
 public class BedWarsConfig extends PluginConfig {
 
     public BedWarsConfig() {
-        super(BedWarsProxy.getPlugin(), "config", "plugins/" + BedWarsProxy.getPlugin().getName());
+        super(BedWarsProxy.getPlugin(), "config", BedWarsProxy.getPlugin().getDataFolder().getPath());
 
         YamlConfiguration yml = getYml();
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_PORT, 2019);

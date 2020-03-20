@@ -1,8 +1,6 @@
 package com.andrei1058.bedwars.proxy.arenasign;
 
-import com.andrei1058.spigot.signapi.SignBoard;
-
-public interface ArenaSign extends SignBoard {
+public interface ArenaSign {
 
     String getGroup();
 
@@ -11,4 +9,6 @@ public interface ArenaSign extends SignBoard {
     void refresh();
 
     void remove();
+
+    boolean equals(String world, int x, int y, int z);
 }

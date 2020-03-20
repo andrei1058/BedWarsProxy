@@ -121,7 +121,7 @@ public class BedWarsProxy extends JavaPlugin {
         }
 
         new Metrics(this);
-        //SignManager.init();
+        SignManager.init();
     }
 
     @Override

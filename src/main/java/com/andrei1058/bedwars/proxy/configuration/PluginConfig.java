@@ -72,7 +72,7 @@ public class PluginConfig {
      * Use {@link #stringLocationArenaFormat(Location)} for arena locations
      */
     public String stringLocationConfigFormat(Location loc) {
-        return loc.getX() + "," + loc.getY() + "," + loc.getZ() + "," + (double) loc.getYaw() + "," + (double) loc.getPitch() + "," + loc.getWorld().getName();
+        return loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + "," + (double) loc.getYaw() + "," + (double) loc.getPitch() + "," + loc.getWorld().getName();
     }
 
     /**

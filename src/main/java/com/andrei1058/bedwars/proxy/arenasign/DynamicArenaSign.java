@@ -5,19 +5,21 @@ import com.andrei1058.bedwars.proxy.arenamanager.ArenaStatus;
 import com.andrei1058.bedwars.proxy.arenamanager.CachedArena;
 import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.language.Messages;
-import com.andrei1058.spigot.signapi.ASign;
+import com.andrei1058.spigot.signapi.PacketSign;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DynamicArenaSign extends ASign implements ArenaSign {
+public class DynamicArenaSign extends PacketSign implements ArenaSign {
 
     private String group;
     private CachedArena arena;
-    private SignStatus status = SignStatus.REFRESHING;
+    private SignStatus status = SignStatus.NO_DATA;
 
     /**
      * Create a dynamic sign.
@@ -50,16 +52,33 @@ public class DynamicArenaSign extends ASign implements ArenaSign {
                         .replace("{current}", String.valueOf(arena.getCurrentPlayers()))
                         .replace("{max}", String.valueOf(arena.getMaxPlayers()))
                         .replace("{map}", arena.getDisplayName(l))
-                        .replace("{status}", arena.getDisplayStatus(l)));
+                        .replace("{status}", arena.getDisplayStatus(l))
+                        .replace("{id}", arena.getServer()));
                 return msg;
             }
         });
+
+        this.setClickListener(new SignClickEvent() {
+            @Override
+            public void onInteract(Player player, Action action) {
+                if (action != Action.RIGHT_CLICK_BLOCK) return;
+                if (getCachedArena() != null) {
+                    getCachedArena().addPlayer(player, null);
+                }
+            }
+        });
+
         SignManager.get().add(this);
     }
 
     @Override
     public void remove() {
         SignManager.get().remove(this);
+    }
+
+    @Override
+    public boolean equals(@NotNull String world, int x, int y, int z) {
+        return world.equals(getWorld()) && x == getLocation().getBlockX() && y == getLocation().getBlockY() && z == getLocation().getBlockZ();
     }
 
     @Override
@@ -72,19 +91,31 @@ public class DynamicArenaSign extends ASign implements ArenaSign {
         return arena == null ? null : arena.getRemoteIdentifier();
     }
 
-    public static synchronized void assignArena(DynamicArenaSign sign) {
-        List<CachedArena> arenas = ArenaManager.getSorted(ArenaManager.getArenas()).stream().filter(p -> p.getArenaGroup().equals(sign.getGroup())).collect(Collectors.toList());
-        if (arenas.isEmpty()) return;
+    public CachedArena getCachedArena() {
+        return arena;
+    }
+
+    public static synchronized void assignArena(@NotNull DynamicArenaSign sign) {
+        sign.setArena(null);
+        sign.setStatus(SignStatus.REFRESHING);
+        sign.refresh();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        List<CachedArena> arenas = ArenaManager.getSorted(ArenaManager.getArenas()).stream().filter(p -> p.getArenaGroup().equals(sign.getGroup()))
+                .filter(p -> p.getStatus() == ArenaStatus.WAITING || p.getStatus() == ArenaStatus.STARTING).collect(Collectors.toList());
+        if (arenas.isEmpty()) {
+            sign.setStatus(SignStatus.NO_DATA);
+            return;
+        }
 
         List<CachedArena> toRemove = new ArrayList<>();
         for (ArenaSign as : SignManager.get().getArenaSigns()) {
             if (as instanceof DynamicArenaSign) {
                 if (as.getArena() == null) continue;
-                for (CachedArena ca : arenas) {
-                    if (ca.getArenaName().equals(as.getArena())) {
-                        toRemove.add(ca);
-                    }
-                }
+                toRemove.add(((DynamicArenaSign) as).getCachedArena());
             }
         }
         arenas.removeAll(toRemove);
@@ -92,6 +123,7 @@ public class DynamicArenaSign extends ASign implements ArenaSign {
             sign.setStatus(SignStatus.NO_DATA);
         } else {
             sign.setArena(arenas.get(0));
+            sign.setStatus(SignStatus.FOUND);
         }
     }
 

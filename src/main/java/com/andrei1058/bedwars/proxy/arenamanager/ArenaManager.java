@@ -6,6 +6,7 @@ import com.andrei1058.bedwars.proxy.language.Messages;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -221,4 +222,15 @@ public class ArenaManager {
     public HashMap<String, ArenaSocketTask> getSocketByServer() {
         return socketByServer;
     }
+
+    @Nullable
+    public static CachedArena getArenaByIdentifier(String identifier){
+        for (CachedArena ca : getArenas()){
+            if (ca.getRemoteIdentifier().equals(identifier)){
+                return ca;
+            }
+        }
+        return null;
+    }
+
 }

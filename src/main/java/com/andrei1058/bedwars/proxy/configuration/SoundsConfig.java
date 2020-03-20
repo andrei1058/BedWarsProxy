@@ -16,7 +16,7 @@ public class SoundsConfig {
         saveDefaultSounds();
     }
 
-    private static PluginConfig sounds = new PluginConfig(BedWarsProxy.getPlugin(), "sounds", "plugins/" + BedWarsProxy.getPlugin().getName());
+    private static PluginConfig sounds = new PluginConfig(BedWarsProxy.getPlugin(), "sounds", BedWarsProxy.getPlugin().getDataFolder().getPath());
 
     @SuppressWarnings("WeakerAccess")
     public static void saveDefaultSounds() {
