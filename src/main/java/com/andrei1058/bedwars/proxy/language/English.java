@@ -4,7 +4,6 @@ import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 public class English extends Language {
     public English() {
@@ -84,6 +83,12 @@ public class English extends Language {
         yml.addDefault(Messages.SIGN_DYNAMIC_STARTING, Arrays.asList("&4&l[BedWars-{id}]", "&9{group}", "&1{map}", "&5{current}/{max}"));
         yml.addDefault(Messages.SIGN_DYNAMIC_SEARCHING, Arrays.asList("&4▆▆▆▆▆▆", "&1&lBOOTING", "", "&4▆▆▆▆▆▆"));
         yml.addDefault(Messages.SIGN_DYNAMIC_NO_GAMES, Arrays.asList("", "&8&lWaiting for", "&7&lopen lobby", ""));
+
+        yml.addDefault(Messages.SIGN_STATIC_WAITING, Arrays.asList("&4&l[BedWars-{id}]", "&9{group}", "&1{map}", "&5{current}/{max}"));
+        yml.addDefault(Messages.SIGN_STATIC_STARTING, Arrays.asList("&4&l[BedWars-{id}]", "&9{group}", "&1{map}", "&5{current}/{max}"));
+        yml.addDefault(Messages.SIGN_STATIC_PLAYING, Arrays.asList("&4&l[BedWars-{id}]", "&9{group}", "&1{map}", "{status}"));
+        yml.addDefault(Messages.SIGN_STATIC_SEARCHING, Arrays.asList("&4▆▆▆▆▆▆", "&1&lBOOTING", "", "&4▆▆▆▆▆▆"));
+        yml.addDefault(Messages.SIGN_STATIC_NO_GAMES, Arrays.asList("", "&8&lWaiting for", "&7&lopen lobby", ""));
         save();
         setPrefix(m(Messages.PREFIX));
     }

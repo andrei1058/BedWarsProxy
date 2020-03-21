@@ -13,6 +13,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +30,10 @@ public class LegacyArena implements CachedArena {
     private String server, group, arenaName;
     private ArenaStatus status;
     private int maxPlayers, currentPlayers, maxInTeam;
+    //todo allow spectate take from remote or override existing local configuration for remote
     private boolean allowSpectate = true;
 
-    public LegacyArena(String remoteIdentifier, String server, String group, String arenaName, ArenaStatus status, int maxPlayers, int currentPlayers, int maxInTeam) {
+    public LegacyArena(String remoteIdentifier, String server, @NotNull String group, String arenaName, ArenaStatus status, int maxPlayers, int currentPlayers, int maxInTeam) {
         this.remoteIdentifier = remoteIdentifier;
         this.lastUpdate = System.currentTimeMillis();
         this.server = server;
@@ -296,7 +298,12 @@ public class LegacyArena implements CachedArena {
         return true;
     }
 
-    private static boolean isVip(Player p) {
+    @Override
+    public boolean equals(@NotNull CachedArena arena) {
+        return getServer().equals(arena.getServer()) && getRemoteIdentifier().equals(arena.getRemoteIdentifier()) && getArenaGroup().equalsIgnoreCase(arena.getArenaGroup()) && getArenaName().equalsIgnoreCase(arena.getArenaName());
+    }
+
+    private static boolean isVip(@NotNull Player p) {
         return p.hasPermission("bw.*") || p.hasPermission("bw.vip");
     }
 }

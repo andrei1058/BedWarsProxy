@@ -17,5 +17,6 @@ public class ConfigPath {
     public static final String GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_DATA = GENERAL_CONFIGURATION_ARENA_SELECTOR_PATH + ".%path%.data";
     public static final String GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_ENCHANTED = GENERAL_CONFIGURATION_ARENA_SELECTOR_PATH + ".%path%.enchanted";
 
-    public static final String SIGNS_CONFIG_PATH = "signs";
+    public static final String SIGNS_LIST_PATH = "signs-list";
+    public static final String SIGNS_SETTINGS_STATIC_SHOW_PLAYING = "signs-settings.static-signs.show-playing";
 }

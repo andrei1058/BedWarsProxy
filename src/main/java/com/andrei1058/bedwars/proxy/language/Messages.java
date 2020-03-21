@@ -24,8 +24,6 @@ public class Messages {
     public static String ARENA_SPECTATE_DENIED_SELECTOR = "arena-spectate-denied-selector";
 
     // meanings
-    public static String MEANING_FULL = "meaning-full";
-
     public static String COMMAND_LANG_LIST_HEADER = "cmd-lang-list-header";
     public static String COMMAND_LANG_LIST_FORMAT = "cmd-lang-list-format";
     public static String COMMAND_LANG_USAGE = "cmd-lang-usage";
@@ -74,8 +72,15 @@ public class Messages {
     public static String COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER = "cmd-party-remove-not-in";
 
 
+    // signs related
     public static String SIGN_DYNAMIC_WAITING = "sign-dynamic-content.waiting";
     public static String SIGN_DYNAMIC_STARTING = "sign-dynamic-content.starting";
     public static String SIGN_DYNAMIC_SEARCHING = "sign-dynamic-content.searching";
     public static String SIGN_DYNAMIC_NO_GAMES = "sign-dynamic-content.no-games";
+
+    public static String SIGN_STATIC_WAITING = "sign-static-content.waiting";
+    public static String SIGN_STATIC_STARTING = "sign-static-content.starting";
+    public static String SIGN_STATIC_PLAYING = "sign-static-content.playing";
+    public static String SIGN_STATIC_SEARCHING = "sign-static-content.searching";
+    public static String SIGN_STATIC_NO_GAMES = "sign-static-content.no-games";
 }

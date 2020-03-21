@@ -7,7 +7,6 @@ import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.language.Messages;
 import com.andrei1058.spigot.signapi.PacketSign;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,13 +57,10 @@ public class DynamicArenaSign extends PacketSign implements ArenaSign {
             }
         });
 
-        this.setClickListener(new SignClickEvent() {
-            @Override
-            public void onInteract(Player player, Action action) {
-                if (action != Action.RIGHT_CLICK_BLOCK) return;
-                if (getCachedArena() != null) {
-                    getCachedArena().addPlayer(player, null);
-                }
+        this.setClickListener((player, action) -> {
+            if (action != Action.RIGHT_CLICK_BLOCK) return;
+            if (getAssignedArena() != null) {
+                getAssignedArena().addPlayer(player, null);
             }
         });
 
@@ -91,16 +87,14 @@ public class DynamicArenaSign extends PacketSign implements ArenaSign {
         return arena == null ? null : arena.getRemoteIdentifier();
     }
 
-    public CachedArena getCachedArena() {
+    public CachedArena getAssignedArena() {
         return arena;
     }
 
-    public static synchronized void assignArena(@NotNull DynamicArenaSign sign) {
-        sign.setArena(null);
+    protected static synchronized void assignArena(@NotNull DynamicArenaSign sign) {
         sign.setStatus(SignStatus.REFRESHING);
-        sign.refresh();
         try {
-            Thread.sleep(1500);
+            Thread.sleep(800);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -113,10 +107,9 @@ public class DynamicArenaSign extends PacketSign implements ArenaSign {
 
         List<CachedArena> toRemove = new ArrayList<>();
         for (ArenaSign as : SignManager.get().getArenaSigns()) {
-            if (as instanceof DynamicArenaSign) {
-                if (as.getArena() == null) continue;
-                toRemove.add(((DynamicArenaSign) as).getCachedArena());
-            }
+            if (as.getAssignedArena() == null) continue;
+            if (!(as instanceof DynamicArenaSign)) continue;
+            toRemove.add(as.getAssignedArena());
         }
         arenas.removeAll(toRemove);
         if (arenas.isEmpty()) {
@@ -127,9 +120,6 @@ public class DynamicArenaSign extends PacketSign implements ArenaSign {
         }
     }
 
-    enum SignStatus {
-        REFRESHING, NO_DATA, FOUND
-    }
 
     public void setStatus(SignStatus status) {
         if (status == SignStatus.NO_DATA || status == SignStatus.REFRESHING) {
@@ -137,6 +127,11 @@ public class DynamicArenaSign extends PacketSign implements ArenaSign {
         }
         this.status = status;
         refresh();
+    }
+
+    @Override
+    public SignStatus getStatus() {
+        return status;
     }
 
     public void setArena(CachedArena arena) {

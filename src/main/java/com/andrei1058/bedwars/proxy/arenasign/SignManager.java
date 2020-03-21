@@ -30,7 +30,7 @@ public class SignManager {
         signAPI.setDelay(20);
         Bukkit.getPluginManager().registerEvents(new SignListener(), BedWarsProxy.getPlugin());
 
-        for (String s : getConfig().getList(ConfigPath.SIGNS_CONFIG_PATH)){
+        for (String s : getConfig().getList(ConfigPath.SIGNS_LIST_PATH)){
             String[] data = s.split(",");
             World w = Bukkit.getWorld(data[5]);
             if (w == null) continue;
@@ -54,6 +54,8 @@ public class SignManager {
             for (ArenaSign as : arenaSigns){
                 if (as instanceof DynamicArenaSign) {
                     DynamicArenaSign.assignArena((DynamicArenaSign) as);
+                } else if (as instanceof StaticArenaSign){
+                    StaticArenaSign.assignArena((StaticArenaSign) as);
                 }
             }
         }, 20*10L);
@@ -89,7 +91,7 @@ public class SignManager {
 
     public void loadSignsForWorld(World world){
         List<ArenaSign> signs = new ArrayList<>();
-        for (String s : getConfig().getList(ConfigPath.SIGNS_CONFIG_PATH)){
+        for (String s : getConfig().getList(ConfigPath.SIGNS_LIST_PATH)){
             String[] data = s.split(",");
             if (!data[5].equalsIgnoreCase(world.getName())) continue;
             Block b;
@@ -112,6 +114,8 @@ public class SignManager {
             for (ArenaSign as : signs){
                 if (as instanceof DynamicArenaSign) {
                     DynamicArenaSign.assignArena((DynamicArenaSign) as);
+                } else if (as instanceof StaticArenaSign){
+                    StaticArenaSign.assignArena((StaticArenaSign) as);
                 }
             }
         }, 20*10L);

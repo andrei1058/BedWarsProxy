@@ -50,4 +50,6 @@ public interface CachedArena {
     boolean addPlayer(Player player, String partyOwnerName);
 
     boolean reJoin(RemoteReJoin player);
+
+    boolean equals(CachedArena arena);
 }
