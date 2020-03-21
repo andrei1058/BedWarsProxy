@@ -20,6 +20,7 @@ import com.andrei1058.bedwars.proxy.party.Party;
 import com.andrei1058.bedwars.proxy.socketmanager.ServerSocketTask;
 import com.andrei1058.bedwars.proxy.socketmanager.TimeOutTask;
 import com.andrei1058.bedwars.proxy.support.papi.SupportPAPI;
+import com.andrei1058.spigot.updater.SpigotUpdater;
 import com.andrei1058.spigot.versionsupport.BlockSupport;
 import com.andrei1058.spigot.versionsupport.ItemStackSupport;
 import com.andrei1058.spigot.versionsupport.MaterialSupport;
@@ -125,6 +126,8 @@ public class BedWarsProxy extends JavaPlugin {
 
         new Metrics(this);
         SignManager.init();
+
+        new SpigotUpdater(this, 66642, true).checkUpdate();
     }
 
     @Override
