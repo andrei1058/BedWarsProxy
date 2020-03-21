@@ -108,8 +108,13 @@ public class ArenaSocketTask implements Runnable {
                             }
                             break;
                         }
-                        ca = new LegacyArena(json.get("arena_identifier").getAsString(), json.get("server_name").getAsString(), json.get("arena_group").getAsString(), json.get("arena_name").getAsString(),
-                                ArenaStatus.valueOf(json.get("arena_status").getAsString()), json.get("arena_max_players").getAsInt(), json.get("arena_current_players").getAsInt(), json.get("arena_max_in_team").getAsInt());
+                        if (json.get("spectate") == null) {
+                            ca = new LegacyArena(json.get("arena_identifier").getAsString(), json.get("server_name").getAsString(), json.get("arena_group").getAsString(), json.get("arena_name").getAsString(),
+                                    ArenaStatus.valueOf(json.get("arena_status").getAsString()), json.get("arena_max_players").getAsInt(), json.get("arena_current_players").getAsInt(), json.get("arena_max_in_team").getAsInt());
+                        } else {
+                            ca = new LegacyArena(json.get("arena_identifier").getAsString(), json.get("server_name").getAsString(), json.get("arena_group").getAsString(), json.get("arena_name").getAsString(),
+                                    ArenaStatus.valueOf(json.get("arena_status").getAsString()), json.get("arena_max_players").getAsInt(), json.get("arena_current_players").getAsInt(), json.get("arena_max_in_team").getAsInt(), json.get("spectate").getAsBoolean());
+                        }
                         CachedArena finalCa = ca;
                         Bukkit.getScheduler().runTask(BedWarsProxy.getPlugin(), () -> {
                             ArenaManager.getInstance().registerServerSocket(json.get("server_name").getAsString(), this);

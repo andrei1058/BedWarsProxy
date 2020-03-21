@@ -77,7 +77,10 @@ public class BedWarsProxy extends JavaPlugin {
 
         if (!ServerSocketTask.init(config.getInt(ConfigPath.GENERAL_CONFIGURATION_PORT))) {
             getLogger().severe("Could not register port: " + config.getInt(ConfigPath.GENERAL_CONFIGURATION_PORT));
+            getLogger().severe("Please change it in config! Port already in use!");
         }
+
+        getLogger().info("Listening for BedWars1058 arenas on port: " + config.getInt(ConfigPath.GENERAL_CONFIGURATION_PORT));
 
         registerListeners(new LangListeners(), new ArenaSelectorListener(), new CacheListener());
         new SoundsConfig();

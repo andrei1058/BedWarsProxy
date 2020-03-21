@@ -30,8 +30,7 @@ public class LegacyArena implements CachedArena {
     private String server, group, arenaName;
     private ArenaStatus status;
     private int maxPlayers, currentPlayers, maxInTeam;
-    //todo allow spectate take from remote or override existing local configuration for remote
-    private boolean allowSpectate = true;
+    private boolean allowSpectate = false;
 
     public LegacyArena(String remoteIdentifier, String server, @NotNull String group, String arenaName, ArenaStatus status, int maxPlayers, int currentPlayers, int maxInTeam) {
         this.remoteIdentifier = remoteIdentifier;
@@ -46,6 +45,11 @@ public class LegacyArena implements CachedArena {
 
         Language.saveIfNotExists(Messages.ARENA_DISPLAY_GROUP_PATH + getArenaGroup().toLowerCase(), group);
         Language.saveIfNotExists(Messages.ARENA_DISPLAY_NAME_PATH + getArenaName().toLowerCase(), arenaName);
+    }
+
+    public LegacyArena(String remoteIdentifier, String server, @NotNull String group, String arenaName, ArenaStatus status, int maxPlayers, int currentPlayers, int maxInTeam, boolean allowSpectate) {
+        this(remoteIdentifier, server, group, arenaName, status, maxPlayers, currentPlayers, maxInTeam);
+        this.allowSpectate = allowSpectate;
     }
 
     @Override
