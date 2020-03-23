@@ -97,6 +97,8 @@ public class DynamicArenaSign extends PacketSign implements ArenaSign {
             Thread.sleep(800);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            sign.setStatus(SignStatus.NO_DATA);
+            return;
         }
         List<CachedArena> arenas = ArenaManager.getSorted(ArenaManager.getArenas()).stream().filter(p -> p.getArenaGroup().equals(sign.getGroup()))
                 .filter(p -> p.getStatus() == ArenaStatus.WAITING || p.getStatus() == ArenaStatus.STARTING).collect(Collectors.toList());

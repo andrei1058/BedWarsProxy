@@ -21,9 +21,11 @@ public class TimeOutTask implements Runnable {
                 if (ca.getStatus() != ArenaStatus.RESTARTING && ca.getStatus() != ArenaStatus.UNKNOWN){
                     ca.setStatus(ArenaStatus.UNKNOWN);
                     Bukkit.getPluginManager().callEvent(new ArenaCacheUpdateEvent(ca));
-                } else if (ca.getStatus() == ArenaStatus.RESTARTING){
+                } else if (ca.getStatus() == ArenaStatus.RESTARTING || ca.getStatus() == ArenaStatus.UNKNOWN){
                     if (ca.getLastUpdate()+5000 < time){
-                        ca.setStatus(ArenaStatus.UNKNOWN);
+                        if (ca.getStatus() != ArenaStatus.UNKNOWN) {
+                            ca.setStatus(ArenaStatus.UNKNOWN);
+                        }
                         toRemove.add(ca);
                     }
                 }

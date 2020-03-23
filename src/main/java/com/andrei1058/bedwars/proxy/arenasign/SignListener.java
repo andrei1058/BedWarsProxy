@@ -32,8 +32,7 @@ public class SignListener implements Listener {
                 if (as == null) continue;
                 if (as.getAssignedArena() == null) continue;
                 if (ca.equals(as.getAssignedArena())) {
-                    if (e.getArena().getStatus() == ArenaStatus.PLAYING || e.getArena().getStatus() == ArenaStatus.RESTARTING) {
-                        as.setStatus(DynamicArenaSign.SignStatus.NO_DATA);
+                    if (e.getArena().getStatus() == ArenaStatus.PLAYING || e.getArena().getStatus() == ArenaStatus.RESTARTING || e.getArena().getStatus() == ArenaStatus.UNKNOWN) {
                         DynamicArenaSign.assignArena((DynamicArenaSign) as);
                     }
                     as.refresh();
@@ -46,8 +45,7 @@ public class SignListener implements Listener {
                 if (as.getAssignedArena() == null) continue;
                 if (ca.equals(as.getAssignedArena())) {
                     if (e.getArena().getStatus() == ArenaStatus.PLAYING && !SignManager.get().getConfig().getBoolean(ConfigPath.SIGNS_SETTINGS_STATIC_SHOW_PLAYING)
-                            || e.getArena().getStatus() == ArenaStatus.RESTARTING) {
-                        as.setStatus(DynamicArenaSign.SignStatus.NO_DATA);
+                            || e.getArena().getStatus() == ArenaStatus.RESTARTING || e.getArena().getStatus() == ArenaStatus.UNKNOWN) {
                         StaticArenaSign.assignArena((StaticArenaSign) as);
                     }
                     as.refresh();
@@ -91,10 +89,9 @@ public class SignListener implements Listener {
                 }
             }
             for (ArenaSign as : toRemove) {
-                as.setStatus(ArenaSign.SignStatus.NO_DATA);
                 if (as instanceof DynamicArenaSign) {
                     DynamicArenaSign.assignArena((DynamicArenaSign) as);
-                } else {
+                } else if (as instanceof StaticArenaSign){
                     StaticArenaSign.assignArena((StaticArenaSign) as);
                 }
             }
