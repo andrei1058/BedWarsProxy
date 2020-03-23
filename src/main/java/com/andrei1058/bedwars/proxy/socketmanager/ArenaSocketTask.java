@@ -5,6 +5,7 @@ import com.andrei1058.bedwars.proxy.arenamanager.*;
 import com.andrei1058.bedwars.proxy.event.ArenaCacheCreateEvent;
 import com.andrei1058.bedwars.proxy.event.ArenaCacheUpdateEvent;
 import com.andrei1058.bedwars.proxy.rejoin.RemoteReJoin;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -42,7 +43,8 @@ public class ArenaSocketTask implements Runnable {
                 if (message.isEmpty()) continue;
                 final JsonObject json;
                 try {
-                    json = new JsonParser().parse(message).getAsJsonObject();
+                    JsonElement jse = new JsonParser().parse(message);
+                    json = jse.getAsJsonObject();
                 } catch (JsonSyntaxException e) {
                     BedWarsProxy.getPlugin().getLogger().log(Level.WARNING, "Received bad data from: " + socket.getInetAddress().toString());
                     continue;
