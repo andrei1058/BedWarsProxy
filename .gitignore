@@ -6,3 +6,6 @@ proxy.iml
 /dependency-reduced-pom.xml
 /proxy (1).iml
 /proxy (2).iml
+/bwp-plugin/bwp-plugin.iml
+/bwp-api/bwp-api.iml
+/bwp-plugin/proxy-plugin.iml
