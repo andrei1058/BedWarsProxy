@@ -5,9 +5,25 @@ variables:
 
 image: "maven:latest"
 
-maven-job:
+development-job:
+  except:
+    - 'tags'
   script:
+    - 'mvn versions:set -DnewVersion=1.0.0-SNAPSHOT'
+    - 'mvn versions:update-child-modules'
     - 'mvn -DgitVer=git-$CI_COMMIT_SHORT_SHA- clean install -s ci_settings.xml'
   artifacts:
     paths:
-      - 'target/*.jar'
+      - '*/target/*.jar'
+
+release-job:
+  only:
+    - 'tags'
+  script:
+    - 'mvn versions:set -DnewVersion=1.0.0'
+    - 'mvn versions:update-child-modules'
+    - 'mvn clean deploy -s ci_settings.xml javadoc:javadoc'
+  artifacts:
+    paths:
+      - '*/target/*.jar'
+      - '*/target/site/*'
