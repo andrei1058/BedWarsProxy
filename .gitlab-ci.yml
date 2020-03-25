@@ -22,7 +22,7 @@ release-job:
   script:
     - 'mvn versions:set -DnewVersion=1.0.0'
     - 'mvn versions:update-child-modules'
-    - 'mvn clean deploy -s ci_settings.xml javadoc:javadoc'
+    - 'mvn -DgitVer='''' clean deploy -s ci_settings.xml javadoc:javadoc'
   artifacts:
     paths:
       - '*/target/*.jar'
