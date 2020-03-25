@@ -20,7 +20,7 @@ release-job:
   only:
     - 'tags'
   script:
-    - 'mvn versions:set -DnewVersion=1.0.0'
+    - 'mvn versions:set -DnewVersion=1.0.1'
     - 'mvn versions:update-child-modules'
     - 'mvn -DgitVer='''' clean deploy -s ci_settings.xml javadoc:javadoc'
   artifacts:
