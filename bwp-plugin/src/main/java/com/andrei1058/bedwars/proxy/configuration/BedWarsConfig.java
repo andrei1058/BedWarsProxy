@@ -1,5 +1,6 @@
 package com.andrei1058.bedwars.proxy.configuration;
 
+import com.andrei1058.bedwars.proxy.language.English;
 import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.andrei1058.bedwars.proxy.language.LanguageManager;
@@ -61,16 +62,17 @@ public class BedWarsConfig extends PluginConfig {
 
         //set default server language
         String whatLang = "en";
+        new English();
         File[] langs = new File("plugins/" + BedWarsProxy.getPlugin().getDescription().getName() + "/Languages").listFiles();
         if (langs != null) {
             for (File f : langs) {
                 if (f.isFile()) {
-                    if (f.getName().contains("messages_") && f.getName().contains(".yml")) {
+                    if (f.getName().startsWith("messages_") && f.getName().endsWith(".yml")) {
                         String lang = f.getName().replace("messages_", "").replace(".yml", "");
                         if (lang.equalsIgnoreCase(yml.getString("language"))) {
                             whatLang = f.getName().replace("messages_", "").replace(".yml", "");
                         }
-                        if (LanguageManager.get().getLang(lang) == null)new Language(BedWarsProxy.getPlugin(), lang);
+                        if (LanguageManager.get().getLang(lang) == null) new Language(BedWarsProxy.getPlugin(), lang);
                     }
                 }
             }
