@@ -4,6 +4,7 @@ import com.andrei1058.bedwars.proxy.api.*;
 import com.andrei1058.bedwars.proxy.api.event.ArenaCacheUpdateEvent;
 import com.andrei1058.bedwars.proxy.api.event.PlayerReJoinEvent;
 import com.andrei1058.bedwars.proxy.language.LanguageManager;
+import com.andrei1058.bedwars.proxy.party.Party;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.google.common.io.ByteArrayDataOutput;
@@ -229,6 +230,7 @@ public class LegacyArena implements CachedArena {
                         addPlayer(pl, player.getName());
                     }
                 }
+                getParty().disband(player.getUniqueId());
             }
         }
 

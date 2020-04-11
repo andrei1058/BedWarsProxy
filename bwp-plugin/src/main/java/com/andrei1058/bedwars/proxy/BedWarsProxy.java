@@ -140,6 +140,7 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
     @Override
     public void onDisable() {
         ServerSocketTask.stopTasks();
+        Bukkit.getScheduler().cancelTasks(this);
     }
 
     public static Plugin getPlugin() {
