@@ -140,6 +140,22 @@ public class ArenaSocketTask implements Runnable {
                         }
                         break;
                 }
+                return;
+            }
+            // this should close port scanner tools or unauthorised connections
+            if (socket != null){
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (socket != null){
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
