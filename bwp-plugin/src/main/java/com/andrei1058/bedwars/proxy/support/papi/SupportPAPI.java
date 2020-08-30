@@ -93,9 +93,11 @@ public class SupportPAPI extends PlaceholderExpansion {
                 replay = String.valueOf(BedWarsProxy.getLevelManager().getCurrentXp(p));
                 break;
             case "player_rerq_xp_formatted":
+            case "player_req_xp_formatted":
                 replay = BedWarsProxy.getLevelManager().getRequiredXpFormatted(p);
                 break;
             case "player_rerq_xp":
+            case "player_req_xp":
                 replay = String.valueOf(BedWarsProxy.getLevelManager().getRequiredXp(p));
                 break;
         }
