@@ -39,7 +39,7 @@ public class ArenaSocketTask implements Runnable {
 
     @Override
     public void run() {
-        while (ServerSocketTask.compute && socket.isConnected()) {
+        while (ServerSocketTask.compute && (socket != null && socket.isConnected())) {
             if (scanner.hasNext()) {
                 String message = scanner.next();
                 if (message.isEmpty()) continue;
@@ -142,18 +142,11 @@ public class ArenaSocketTask implements Runnable {
                 }
                 return;
             }
-            // this should close port scanner tools or unauthorised connections
-            if (socket != null){
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         if (socket != null){
             try {
                 socket.close();
+                BedWarsProxy.getPlugin().getLogger().info("Socket closed: " + socket.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
