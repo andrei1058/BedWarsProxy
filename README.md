@@ -19,6 +19,7 @@
 - API for developers
 
 **HOW TO USE**
+
 All the information you need can be found on its [documentation/ wiki](https://andrei1058.gitbook.io/bedwarsproxy/).
 
 **DOWNLOAD**
