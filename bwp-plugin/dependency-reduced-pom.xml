@@ -32,6 +32,7 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+          <compilerId>eclipse</compilerId>
         </configuration>
       </plugin>
       <plugin>
