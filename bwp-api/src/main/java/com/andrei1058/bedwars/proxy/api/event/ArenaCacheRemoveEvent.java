@@ -4,8 +4,6 @@ import com.andrei1058.bedwars.proxy.api.CachedArena;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import javax.validation.constraints.NotNull;
-
 public class ArenaCacheRemoveEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
 

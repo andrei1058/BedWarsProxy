@@ -2,8 +2,6 @@ package com.andrei1058.bedwars.proxy.api;
 
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,7 +80,6 @@ public interface BedWars {
          * @param iso language code. Ex: ro, en.
          * @return NULL if not found.
          */
-        @Nullable
         Language getLang(String iso);
 
         /**
@@ -115,7 +112,6 @@ public interface BedWars {
          * @param player player uuid.
          * @return NULL if not found.
          */
-        @Nullable
         RemoteReJoin getReJoin(UUID player);
 
         /**
@@ -125,7 +121,6 @@ public interface BedWars {
          * @param remoteIdentifier remote map identifier.
          * @return arena.
          */
-        @Nullable
         CachedArena getArena(String server, String remoteIdentifier);
 
         /**
@@ -135,7 +130,7 @@ public interface BedWars {
          * @param group arena group.
          * @return true if joined successfully.
          */
-        boolean joinRandomFromGroup(@NotNull Player p, String group);
+        boolean joinRandomFromGroup(Player p, String group);
 
         /**
          * Add a player to the most filled arena.
@@ -144,7 +139,7 @@ public interface BedWars {
          * @param p target player.
          * @return true if joined successfully.
          */
-        boolean joinRandomArena(@NotNull Player p);
+        boolean joinRandomArena(Player p);
 
         /**
          * Remove an arena and destroy its data.

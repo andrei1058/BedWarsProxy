@@ -15,7 +15,7 @@ development-job:
   artifacts:
     paths:
       - '*/target/*.jar'
-      - 'proxy-api/target/apidocs'
+      - 'bwp-api/target/apidocs'
 
 release-job:
   only:
@@ -30,4 +30,4 @@ release-job:
   artifacts:
     paths:
       - '*/target/*.jar'
-      - 'proxy-api/target/apidocs'
+      - 'bwp-api/target/apidocs'
