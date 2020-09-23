@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,7 +40,7 @@ public class ArenaSocketTask implements Runnable {
 
     @Override
     public void run() {
-        while (ServerSocketTask.compute && (socket != null && socket.isConnected())) {
+        while (ServerSocketTask.compute && socket.isConnected()) {
             if (scanner.hasNext()) {
                 String message = scanner.next();
                 if (message.isEmpty()) continue;
@@ -140,15 +141,16 @@ public class ArenaSocketTask implements Runnable {
                         }
                         break;
                 }
-                return;
-            }
-        }
-        if (socket != null){
-            try {
-                socket.close();
-                BedWarsProxy.getPlugin().getLogger().info("Socket closed: " + socket.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
+            } else {
+                try {
+                    socket.close();
+                    BedWarsProxy.getPlugin().getLogger().info("Socket closed: " + socket.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Thread.currentThread().interrupt();
+                break;
             }
         }
     }
@@ -157,3 +159,4 @@ public class ArenaSocketTask implements Runnable {
         return out;
     }
 }
+
