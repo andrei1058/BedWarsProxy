@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>proxy-plugin</artifactId>
+    <artifactId>bwp-plugin</artifactId>
     <version>${parent.version}</version>
 
     <repositories>
