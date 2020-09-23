@@ -9,21 +9,22 @@ development-job:
   except:
     - 'tags'
   script:
-    - 'mvn versions:set -DnewVersion=1.1.1-SNAPSHOT'
+    - 'mvn versions:set -DnewVersion=1.1.3-SNAPSHOT'
     - 'mvn versions:update-child-modules'
     - 'mvn -DgitVer=git-$CI_COMMIT_SHORT_SHA- clean install -s ci_settings.xml'
   artifacts:
     paths:
       - '*/target/*.jar'
+      - 'proxy-api/target/site/apidocs'
 
 release-job:
   only:
     - 'tags'
   script:
-    - 'mvn versions:set -DnewVersion=1.1.1'
+    - 'mvn versions:set -DnewVersion=1.1.3'
     - 'mvn versions:update-child-modules'
     - 'mvn -DgitVer='''' clean deploy -s ci_settings.xml javadoc:javadoc'
   artifacts:
     paths:
       - '*/target/*.jar'
-      - '*/target/site/*'
+      - 'proxy-api/target/site/apidocs'
