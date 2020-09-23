@@ -9,6 +9,7 @@ development-job:
   except:
     - 'tags'
   script:
+    - 'mvn dependency:purge-local-repository -DactTransitively=false'
     - 'mvn versions:set -DnewVersion=1.2.0-SNAPSHOT'
     - 'mvn versions:update-child-modules'
     - 'mvn -DgitVer=git-$CI_COMMIT_SHORT_SHA- clean install -s ci_settings.xml'
@@ -21,6 +22,7 @@ release-job:
   only:
     - 'tags'
   script:
+    - 'mvn dependency:purge-local-repository -DactTransitively=false'
     - 'mvn versions:set -DnewVersion=1.2.0'
     - 'mvn versions:update-child-modules'
     - 'mvn -DgitVer='''' clean deploy -s ci_settings.xml'
