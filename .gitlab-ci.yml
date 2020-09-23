@@ -3,7 +3,7 @@ variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
 
-image: "maven:latest"
+image: "maven:3.6.3-jdk-8"
 
 development-job:
   except:
