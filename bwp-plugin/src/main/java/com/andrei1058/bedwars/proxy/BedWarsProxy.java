@@ -128,7 +128,7 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
             new SupportPAPI().register();
         }
 
-        Metrics m = new Metrics(this);
+        Metrics m = new Metrics(this, 6036);
         m.addCustomChart(new Metrics.SimplePie("default_language", () -> LanguageManager.get().getDefaultLanguage().getIso()));
         m.addCustomChart(new Metrics.SimplePie("party_adapter", () -> getParty().getClass().getName()));
         m.addCustomChart(new Metrics.SimplePie("level_adapter", () -> getLevelManager().getClass().getName()));

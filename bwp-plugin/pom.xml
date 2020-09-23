@@ -113,7 +113,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <compilerId>eclipse</compilerId>
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
@@ -149,7 +148,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>com.andrei1058.bedwars.proxy</shadedPattern>
+                            <shadedPattern>com.andrei1058.bedwars.proxy.metrics</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
