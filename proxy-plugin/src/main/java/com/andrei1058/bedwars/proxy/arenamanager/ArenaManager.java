@@ -2,7 +2,6 @@ package com.andrei1058.bedwars.proxy.arenamanager;
 
 import com.andrei1058.bedwars.proxy.api.*;
 import com.andrei1058.bedwars.proxy.api.event.ArenaCacheRemoveEvent;
-import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.andrei1058.bedwars.proxy.language.LanguageManager;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;

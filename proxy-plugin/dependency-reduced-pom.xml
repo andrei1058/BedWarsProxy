@@ -3,10 +3,10 @@
   <parent>
     <artifactId>proxy</artifactId>
     <groupId>com.andrei1058.bedwars</groupId>
-    <version>1.1.3-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>bwp-plugin</artifactId>
+  <artifactId>proxy-plugin</artifactId>
   <version>${parent.version}</version>
   <build>
     <resources>
@@ -19,22 +19,6 @@
       </resource>
     </resources>
     <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-compiler-eclipse</artifactId>
-            <version>2.8.8</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <compilerId>eclipse</compilerId>
-        </configuration>
-      </plugin>
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
         <version>3.0.0-M1</version>
@@ -85,12 +69,12 @@
       <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
     <repository>
-      <id>CodeMC</id>
-      <url>https://repo.codemc.org/repository/maven-public</url>
-    </repository>
-    <repository>
       <id>andrei1058-repo2</id>
       <url>https://repo.andrei1058.com/snapshots/</url>
+    </repository>
+    <repository>
+      <id>bungee-chat</id>
+      <url>https://oss.sonatype.org/content/repositories/public/</url>
     </repository>
   </repositories>
   <dependencies>
@@ -107,9 +91,39 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>net.md-5</groupId>
+      <artifactId>bungeecord-chat</artifactId>
+      <version>1.8-SNAPSHOT</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>gson</artifactId>
+          <groupId>com.google.code.gson</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>net.md-5</groupId>
+      <artifactId>bungeecord-api</artifactId>
+      <version>1.8-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>16.0.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.6</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
-      <version>1.15-R0.1-SNAPSHOT</version>
+      <artifactId>spigot</artifactId>
+      <version>1.8.8-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
