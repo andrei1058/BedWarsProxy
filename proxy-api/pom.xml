@@ -37,6 +37,11 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                    <excludes>
+                        <exclude>javax.*</exclude>
+                        <exclude>org.intellij.*</exclude>
+                        <exclude>org.jetbrains.*</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>

@@ -49,6 +49,11 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <compilerId>eclipse</compilerId>
+                    <excludes>
+                        <exclude>javax.*</exclude>
+                        <exclude>org.intellij.*</exclude>
+                        <exclude>org.jetbrains.*</exclude>
+                    </excludes>
                 </configuration>
                 <dependencies>
                     <dependency>
