@@ -123,7 +123,7 @@ public class MySQL implements Database{
                 cs.setFinalKills(uuid, rs.getInt("final_kills"));
                 cs.setLosses(uuid, rs.getInt("looses"));
                 cs.setDeaths(uuid, rs.getInt("deaths"));
-                cs.setFinalKills(uuid, rs.getInt("final_deaths"));
+                cs.setFinalDeaths(uuid, rs.getInt("final_deaths"));
                 cs.setBedsDestroyed(uuid, rs.getInt("beds_destroyed"));
                 cs.setGamesPlayed(uuid, rs.getInt("games_played"));
             }
