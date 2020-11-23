@@ -8,13 +8,16 @@ import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import me.clip.placeholderapi.libs.gson.JsonObject;
+import com.google.gson.JsonObject;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.json.simple.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.andrei1058.bedwars.proxy.BedWarsProxy.getParty;
@@ -184,13 +187,14 @@ public class LegacyArena implements CachedArena {
         }
 
         //pld,worldIdentifier,uuidUser,languageIso,targetPlayer
-        JsonObject json = new JsonObject();
-        json.addProperty("type", "PLD");
-        json.addProperty("uuid", player.getUniqueId().toString());
-        json.addProperty("lang_iso", LanguageManager.get().getPlayerLanguage(player).getIso());
-        json.addProperty("target", targetPlayer == null ? "" : targetPlayer);
-        json.addProperty("arena_identifier", getRemoteIdentifier());
-        as.getOut().println(json.toString());
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("type", "PLD");
+        map.put("uuid", player.getUniqueId().toString());
+        map.put("lang_iso", LanguageManager.get().getPlayerLanguage(player).getIso());
+        map.put("target", targetPlayer == null ? "" : targetPlayer);
+        map.put("arena_identifier", getRemoteIdentifier());
+        JSONObject json = new JSONObject(map);
+        as.getOut().println(json.toJSONString());
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(getServer());

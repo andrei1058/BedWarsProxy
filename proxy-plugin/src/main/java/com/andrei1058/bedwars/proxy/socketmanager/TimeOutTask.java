@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TimeOutTask implements Runnable {
 
-    private static List<CachedArena> toRemove = new ArrayList<>();
+    private static final List<CachedArena> toRemove = new ArrayList<>();
 
     @Override
     public void run() {
