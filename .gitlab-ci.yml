@@ -9,7 +9,7 @@ development-job:
   except:
     - 'tags'
   script:
-    - 'mvn versions:set -DnewVersion=1.2.1-SNAPSHOT'
+    - 'mvn versions:set -DnewVersion=1.2.2-SNAPSHOT'
     - 'mvn versions:update-child-modules'
     - 'mvn -DgitVer=git-$CI_COMMIT_SHORT_SHA- -U clean install -s ci_settings.xml'
   artifacts:
@@ -21,7 +21,7 @@ release-job:
   only:
     - 'tags'
   script:
-    - 'mvn versions:set -DnewVersion=1.2.1'
+    - 'mvn versions:set -DnewVersion=1.2.2'
     - 'mvn versions:update-child-modules'
     - 'mvn -DgitVer='''' -U clean deploy -s ci_settings.xml'
   after_script:
