@@ -47,6 +47,17 @@ public class SupportPAPI extends PlaceholderExpansion {
         }
 
         String replay = "";
+        switch (s){
+            case "current_online":
+                replay = String.valueOf(ArenaManager.getArenas().stream().mapToInt(CachedArena::getCurrentPlayers).sum());
+                break;
+            case "current_arenas":
+                replay = String.valueOf(ArenaManager.getArenas().size());
+                break;
+        }
+        if (!replay.isEmpty()) return s;
+        if (p == null) return null;
+        if (p.getUniqueId() == null) return null;
         switch (s) {
             case "stats_firstplay":
                 replay = new SimpleDateFormat(getMsg(p, Messages.FORMATTING_STATS_DATE_FORMAT)).format(BedWarsProxy.getStatsCache().getPlayerFirstPlay(p.getUniqueId()));
@@ -77,12 +88,6 @@ public class SupportPAPI extends PlaceholderExpansion {
                 break;
             case "stats_gamesplayed":
                 replay = String.valueOf(BedWarsProxy.getStatsCache().getPlayerGamesPlayed(p.getUniqueId()));
-                break;
-            case "current_online":
-                replay = String.valueOf(ArenaManager.getArenas().stream().mapToInt(CachedArena::getCurrentPlayers).sum());
-                break;
-            case "current_arenas":
-                replay = String.valueOf(ArenaManager.getArenas().size());
                 break;
             case "player_level":
                 replay = BedWarsProxy.getLevelManager().getLevel(p);
