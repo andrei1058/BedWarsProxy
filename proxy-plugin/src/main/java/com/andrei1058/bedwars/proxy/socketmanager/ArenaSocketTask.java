@@ -47,6 +47,10 @@ public class ArenaSocketTask implements Runnable {
                 final JsonObject json;
                 try {
                     JsonElement jse = new JsonParser().parse(message);
+                    if (jse.isJsonNull() || !jse.isJsonObject()){
+                        BedWarsProxy.getPlugin().getLogger().log(Level.WARNING, "Received bad data from: " + socket.getInetAddress().toString());
+                        continue;
+                    }
                     json = jse.getAsJsonObject();
                 } catch (JsonSyntaxException e) {
                     BedWarsProxy.getPlugin().getLogger().log(Level.WARNING, "Received bad data from: " + socket.getInetAddress().toString());
