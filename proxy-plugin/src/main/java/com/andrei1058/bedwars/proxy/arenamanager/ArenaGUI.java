@@ -23,6 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ArenaGUI {
 
@@ -45,7 +46,7 @@ public class ArenaGUI {
 
         arenas.removeIf(a -> a.getStatus() == ArenaStatus.PLAYING && !BedWarsProxy.config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_SHOW_PLAYING));
 
-        arenas = ArenaManager.getSorted(arenas);
+        arenas = arenas.stream().sorted(ArenaManager.getComparator()).collect(Collectors.toList());
 
         int arenaKey = 0;
         for (String useSlot : BedWarsProxy.config.getString(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_USE_SLOTS).split(",")) {

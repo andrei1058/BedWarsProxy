@@ -101,8 +101,8 @@ public class DynamicArenaSign extends PacketSign implements ArenaSign {
             sign.setStatus(SignStatus.NO_DATA);
             return;
         }
-        List<CachedArena> arenas = ArenaManager.getSorted(ArenaManager.getArenas()).stream().filter(p -> p.getArenaGroup().equals(sign.getGroup()))
-                .filter(p -> p.getStatus() == ArenaStatus.WAITING || p.getStatus() == ArenaStatus.STARTING).collect(Collectors.toList());
+        List<CachedArena> arenas = ArenaManager.getArenas().stream().filter(p -> p.getArenaGroup().equals(sign.getGroup()))
+                .filter(p -> p.getStatus() == ArenaStatus.WAITING || p.getStatus() == ArenaStatus.STARTING).sorted(ArenaManager.getComparator()).collect(Collectors.toList());
         if (arenas.isEmpty()) {
             sign.setStatus(SignStatus.NO_DATA);
             return;

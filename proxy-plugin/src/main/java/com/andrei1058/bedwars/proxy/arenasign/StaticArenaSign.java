@@ -118,11 +118,11 @@ public class StaticArenaSign extends PacketSign implements ArenaSign {
         }
         List<CachedArena> arenas;
         if (SignManager.get().getConfig().getBoolean(ConfigPath.SIGNS_SETTINGS_STATIC_SHOW_PLAYING)){
-            arenas = ArenaManager.getSorted(ArenaManager.getArenas()).stream().filter(p -> p.getArenaGroup().equals(sign.getGroup()))
+            arenas = ArenaManager.getArenas().stream().filter(p -> p.getArenaGroup().equals(sign.getGroup())).sorted(ArenaManager.getComparator())
                     .filter(p -> p.getStatus() == ArenaStatus.WAITING || p.getStatus() == ArenaStatus.STARTING || p.getStatus() == ArenaStatus.PLAYING).collect(Collectors.toList());
         } else {
-            arenas = ArenaManager.getSorted(ArenaManager.getArenas()).stream().filter(p -> p.getArenaGroup().equals(sign.getGroup()))
-                    .filter(p -> p.getStatus() == ArenaStatus.WAITING || p.getStatus() == ArenaStatus.STARTING).collect(Collectors.toList());
+            arenas = ArenaManager.getArenas().stream().filter(p -> p.getArenaGroup().equals(sign.getGroup()))
+                    .filter(p -> p.getStatus() == ArenaStatus.WAITING || p.getStatus() == ArenaStatus.STARTING).sorted(ArenaManager.getComparator()).collect(Collectors.toList());
         }
         if (arenas.isEmpty()) {
             sign.setStatus(SignStatus.NO_DATA);
