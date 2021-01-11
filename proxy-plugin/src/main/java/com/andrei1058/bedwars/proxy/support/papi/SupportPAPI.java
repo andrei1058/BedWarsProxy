@@ -6,6 +6,7 @@ import com.andrei1058.bedwars.proxy.api.CachedArena;
 import com.andrei1058.bedwars.proxy.api.Messages;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 
@@ -18,16 +19,19 @@ public class SupportPAPI extends PlaceholderExpansion {
         return true;
     }
 
+    @NotNull
     @Override
     public String getIdentifier() {
         return "bw1058";
     }
 
+    @NotNull
     @Override
     public String getAuthor() {
         return "andrei1058";
     }
 
+    @NotNull
     @Override
     public String getVersion() {
         return BedWarsProxy.getPlugin().getDescription().getVersion();

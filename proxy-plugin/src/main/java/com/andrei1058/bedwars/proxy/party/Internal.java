@@ -63,7 +63,11 @@ public class Internal implements Party {
 
     @Override
     public void addMember(UUID owner, Player member) {
-        getParty(owner).addMember(member);
+        if (owner == null || member == null) return;
+        InternalParty p = getParty(owner);
+        if (p == null) return;
+        p.addMember(member);
+
     }
 
     @Override
