@@ -55,7 +55,7 @@ public class SupportPAPI extends PlaceholderExpansion {
                 replay = String.valueOf(ArenaManager.getArenas().size());
                 break;
         }
-        if (!replay.isEmpty()) return s;
+        if (!replay.isEmpty()) return replay;
         if (p == null) return null;
         if (p.getUniqueId() == null) return null;
         switch (s) {
