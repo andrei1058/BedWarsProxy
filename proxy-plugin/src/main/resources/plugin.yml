@@ -6,3 +6,4 @@ author: andrei1058
 api-version: '1.13'
 softdepend:
   - Parties
+  - Partys
