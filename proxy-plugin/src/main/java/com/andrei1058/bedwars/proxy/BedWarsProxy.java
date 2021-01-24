@@ -18,6 +18,7 @@ import com.andrei1058.bedwars.proxy.levels.internal.LevelListeners;
 import com.andrei1058.bedwars.proxy.party.Internal;
 import com.andrei1058.bedwars.proxy.party.Parties;
 import com.andrei1058.bedwars.proxy.party.Party;
+import com.andrei1058.bedwars.proxy.party.Partys;
 import com.andrei1058.bedwars.proxy.socketmanager.ServerSocketTask;
 import com.andrei1058.bedwars.proxy.socketmanager.TimeOutTask;
 import com.andrei1058.bedwars.proxy.support.papi.SupportPAPI;
@@ -97,6 +98,9 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
             if (Bukkit.getPluginManager().getPlugin("Parties") != null) {
                 getLogger().info("Hook into Parties (by AlessioDP) support!");
                 party = new Parties();
+            } else if (Bukkit.getPluginManager().getPlugin("Partys") != null) {
+                getLogger().info("Hook into Parties (by Retr0) support!");
+                party = new Partys();
             }
         }
         if (party == null) {

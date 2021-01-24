@@ -156,6 +156,13 @@
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!-- hubmc.ro parties -->
+        <dependency>
+            <groupId>me.gamer.party</groupId>
+            <artifactId>party</artifactId>
+            <version>1.2</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
