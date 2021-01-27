@@ -20,14 +20,15 @@ public class Parties implements Party {
     @Override
     public boolean hasParty(UUID p) {
         PartyPlayer pp = api.getPartyPlayer(p);
-        return pp == null || (api.getParty(pp.getPartyName()) != null);
+        return pp != null && pp.isInParty();
     }
 
     @Override
     public int partySize(UUID p) {
         PartyPlayer pp = api.getPartyPlayer(p);
         if (pp == null) return 0;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyName());
+        if (pp.getPartyId() == null) return 0;
+        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
         if (party == null) return 0;
         return party.getMembers().size();
     }
@@ -36,7 +37,8 @@ public class Parties implements Party {
     public boolean isOwner(UUID p) {
         PartyPlayer pp = api.getPartyPlayer(p);
         if (pp == null) return false;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyName());
+        if (pp.getPartyId() == null) return false;
+        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
         if (party == null) return false;
         if (party.getLeader() == null) return false;
         return party.getLeader().equals(p);
@@ -47,9 +49,11 @@ public class Parties implements Party {
         ArrayList<UUID> players = new ArrayList<>();
         PartyPlayer pp = api.getPartyPlayer(p);
         if (pp == null) return players;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyName());
+        if (pp.getPartyId() == null) return players;
+        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
         if (party == null) return players;
-        return party.getMembers();
+        players.addAll(party.getMembers());
+        return players;
     }
 
     @Override
@@ -64,9 +68,10 @@ public class Parties implements Party {
     public void removeFromParty(UUID member) {
         PartyPlayer pp = api.getPartyPlayer(member);
         if (pp == null) return;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyName());
+        if (pp.getPartyId() == null) return;
+        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
         if (party == null) return;
-        if (party.getLeader() == member){
+        if (party.getLeader() != null && party.getLeader().equals(member)){
             disband(member);
         } else {
             party.removeMember(pp);
@@ -86,7 +91,8 @@ public class Parties implements Party {
     public void disband(UUID owner) {
         PartyPlayer pp = api.getPartyPlayer(owner);
         if (pp == null) return;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyName());
+        if (pp.getPartyId() == null) return;
+        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
         if (party == null) return;
         for (UUID mem : party.getMembers()) {
             Player p = Bukkit.getPlayer(mem);
@@ -101,7 +107,8 @@ public class Parties implements Party {
     public boolean isMember(UUID owner, UUID check) {
         PartyPlayer pp = api.getPartyPlayer(owner);
         if (pp == null) return false;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyName());
+        if (pp.getPartyId() == null) return false;
+        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
         if (party == null) return false;
         return party.getMembers().contains(check);
     }
@@ -110,7 +117,8 @@ public class Parties implements Party {
     public void removePlayer(UUID owner, UUID target) {
         PartyPlayer pp = api.getPartyPlayer(target);
         if (pp == null) return;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyName());
+        if (pp.getPartyId() == null) return;
+        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
         if (party == null) return;
         party.removeMember(pp);
         for (UUID mem : party.getMembers()) {
@@ -130,7 +138,8 @@ public class Parties implements Party {
     public UUID getOwner(UUID player) {
         PartyPlayer pp = api.getPartyPlayer(player);
         if (pp == null) return null;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyName());
+        if (pp.getPartyId() == null) return null;
+        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
         if (party == null) return null;
         if (party.getLeader() == null) return null;
         return party.getLeader();
