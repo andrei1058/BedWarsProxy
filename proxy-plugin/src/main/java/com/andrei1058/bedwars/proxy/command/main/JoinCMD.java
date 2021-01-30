@@ -50,7 +50,7 @@ public class JoinCMD extends SubCommand {
                 if (a.getArenaName().contains(args[0])) arenas.add(a);
             });
             arenas.removeIf(a -> !(a.getStatus() == ArenaStatus.WAITING || a.getStatus() == ArenaStatus.STARTING));
-            arenas.sort(Comparator.comparingInt(CachedArena::getCurrentPlayers));
+            arenas.sort(ArenaManager.getComparator());
             if (!arenas.isEmpty()){
                 arenas.get(0).addPlayer(p, null);
                 return;

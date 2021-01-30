@@ -65,6 +65,10 @@ public class ArenaManager implements BedWars.ArenaUtil {
                 } else if (o2.getStatus() == ArenaStatus.STARTING && o1.getStatus() != ArenaStatus.STARTING) {
                     return 1;
                 } else if (o1.getStatus() == ArenaStatus.WAITING && o2.getStatus() == ArenaStatus.WAITING) {
+                    // balance nodes
+                    if (o1.getServer().equals(o2.getServer())){
+                        return -1;
+                    }
                     return Integer.compare(o2.getCurrentPlayers(), o1.getCurrentPlayers());
                 } else if (o1.getStatus() == ArenaStatus.WAITING && o2.getStatus() != ArenaStatus.WAITING) {
                     return -1;
