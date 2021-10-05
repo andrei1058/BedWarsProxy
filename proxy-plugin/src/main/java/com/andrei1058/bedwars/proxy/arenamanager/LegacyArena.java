@@ -2,6 +2,7 @@ package com.andrei1058.bedwars.proxy.arenamanager;
 
 import com.andrei1058.bedwars.proxy.api.*;
 import com.andrei1058.bedwars.proxy.api.event.ArenaCacheUpdateEvent;
+import com.andrei1058.bedwars.proxy.api.event.PlayerArenaJoinEvent;
 import com.andrei1058.bedwars.proxy.api.event.PlayerReJoinEvent;
 import com.andrei1058.bedwars.proxy.language.LanguageManager;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
@@ -205,6 +206,7 @@ public class LegacyArena implements CachedArena {
     @Override
     public boolean addPlayer(Player player, String partyOwnerName) {
         ArenaSocketTask as = ArenaManager.getSocketByServer(getServer());
+
         if (as == null) {
             this.setStatus(ArenaStatus.UNKNOWN);
             ArenaCacheUpdateEvent e = new ArenaCacheUpdateEvent(this);
@@ -243,6 +245,10 @@ public class LegacyArena implements CachedArena {
             player.spigot().sendMessage(text);
             return false;
         }
+
+        PlayerArenaJoinEvent event = new PlayerArenaJoinEvent(player, this);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) return true;
 
         //pld,worldIdentifier,uuidUser,languageIso,partyOwner
 
