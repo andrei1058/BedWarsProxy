@@ -1,4 +1,3 @@
-![Header](https://i.imgur.com/9VG3mI5.png)
 
 [![Documentation](https://i.imgur.com/7QDbrIS.png)](https://andrei1058.gitbook.io/bedwarsproxy/) [![Report a Bug](https://i.imgur.com/Z1qOYLC.png)](https://gitlab.com/andrei1058/bedwarsproxy/-/issues) [![API](https://i.imgur.com/JfMTMMc.png)](http://javadoc.andrei1058.com/BedWarsProxy/) [![Discord](https://i.imgur.com/yBySzkU.png)](https://discord.gg/XdJfN2X)
 

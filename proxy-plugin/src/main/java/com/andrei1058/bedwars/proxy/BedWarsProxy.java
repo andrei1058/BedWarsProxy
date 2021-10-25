@@ -33,6 +33,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.event.Listener;
@@ -87,6 +88,7 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
         getLogger().info("Listening for BedWars1058 arenas on port: " + config.getInt(ConfigPath.GENERAL_CONFIGURATION_PORT));
 
         registerListeners(new LangListeners(), new ArenaSelectorListener(), new CacheListener());
+        //noinspection InstantiationOfUtilityClass
         new SoundsConfig();
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -131,9 +133,9 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
         }
 
         Metrics m = new Metrics(this, 6036);
-        m.addCustomChart(new Metrics.SimplePie("default_language", () -> LanguageManager.get().getDefaultLanguage().getIso()));
-        m.addCustomChart(new Metrics.SimplePie("party_adapter", () -> getParty().getClass().getName()));
-        m.addCustomChart(new Metrics.SimplePie("level_adapter", () -> getLevelManager().getClass().getName()));
+        m.addCustomChart(new SimplePie("default_language", () -> LanguageManager.get().getDefaultLanguage().getIso()));
+        m.addCustomChart(new SimplePie("party_adapter", () -> getParty().getClass().getName()));
+        m.addCustomChart(new SimplePie("level_adapter", () -> getLevelManager().getClass().getName()));
         SignManager.init();
 
         new SpigotUpdater(this, 66642, true).checkUpdate();
@@ -161,6 +163,7 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
         return materialAdapter;
     }
 
+    @SuppressWarnings("unused")
     public static BlockSupport getBlockAdapter() {
         return blockAdapter;
     }
