@@ -248,7 +248,9 @@ public class LegacyArena implements CachedArena {
 
         PlayerArenaJoinEvent event = new PlayerArenaJoinEvent(player, this);
         Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) return true;
+        if (event.isCancelled()) {
+            return false;
+        }
 
         //pld,worldIdentifier,uuidUser,languageIso,partyOwner
 
