@@ -6,7 +6,7 @@
 
     <groupId>com.andrei1058.bedwars</groupId>
     <artifactId>proxy</artifactId>
-    <version>1.2.3-SNAPSHOT</version>
+    <version>1.2.4</version>
     <modules>
         <module>proxy-api</module>
         <module>proxy-plugin</module>
