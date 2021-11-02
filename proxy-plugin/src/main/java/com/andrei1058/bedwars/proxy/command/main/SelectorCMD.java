@@ -1,10 +1,13 @@
 package com.andrei1058.bedwars.proxy.command.main;
 
+import com.andrei1058.bedwars.proxy.api.Messages;
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaGUI;
 import com.andrei1058.bedwars.proxy.command.SubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import static com.andrei1058.bedwars.proxy.language.Language.getMsg;
 
 public class SelectorCMD extends SubCommand {
     /**
@@ -28,7 +31,10 @@ public class SelectorCMD extends SubCommand {
         if (args.length == 1) {
             group = args[0];
         }
-
+        if (!p.hasPermission("bw.gui." + group.toLowerCase())) {
+            p.sendMessage(getMsg(p, Messages.COMMAND_NOT_FOUND_OR_INSUFF_PERMS));
+            return;
+        }
         ArenaGUI.openGui(p, group);
     }
 }

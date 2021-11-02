@@ -31,6 +31,10 @@ public class JoinCMD extends SubCommand {
             s.sendMessage(getMsg(p, Messages.COMMAND_JOIN_USAGE));
             return;
         }
+        if (!p.hasPermission("bw.join." + args[0].toLowerCase())) {
+            p.sendMessage(getMsg(p, Messages.COMMAND_NOT_FOUND_OR_INSUFF_PERMS));
+            return;
+        }
         if (args[0].equalsIgnoreCase("random")) {
             if (!ArenaManager.getInstance().joinRandomArena(p)) {
                 s.sendMessage(getMsg(p, Messages.COMMAND_JOIN_NO_EMPTY_FOUND));
