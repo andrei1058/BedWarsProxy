@@ -68,6 +68,9 @@ public class SupportPAPI extends PlaceholderExpansion {
             case "stats_kills":
                 replay = String.valueOf(BedWarsProxy.getStatsCache().getPlayerKills(p.getUniqueId()));
                 break;
+            case "stats_total_kills":
+                replay = String.valueOf(BedWarsProxy.getStatsCache().getPlayerKills(p.getUniqueId()) + BedWarsProxy.getStatsCache().getPlayerFinalKills(p.getUniqueId()));
+                break;
             case "stats_wins":
                 replay = String.valueOf(BedWarsProxy.getStatsCache().getPlayerWins(p.getUniqueId()));
                 break;
