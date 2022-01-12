@@ -55,7 +55,7 @@ public class StatsCache {
         try {
             connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS '" + table + "' (id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "name VARCHAR(200), uuid VARCHAR(200), first_play TIMESTAMP NULL DEFAULT NULL, last_play TIMESTAMP NULL DEFAULT NULL, wins INTEGER(200)," +
-                    " kills INTEGER(200), final_kills INTEGER(200), looses INTEGER(200), deaths INTEGER(200), final_deaths INTEGER(200), beds_destroyed INTEGER(200), games_played INTEGER(200));");
+                    " kills INTEGER(200), final_kills INTEGER(200), looses INTEGER(200), deaths INTEGER(200), final_deaths INTEGER(200), beds_destroyed INTEGER(200), games_played INTEGER(200), win_streak INTEGER(200));");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -115,7 +115,7 @@ public class StatsCache {
         if (isPlayerSet(player.getUniqueId())) return false;
         if (!isConnected()) connect();
 
-        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO '" + table + "' VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
+        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO '" + table + "' VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
             ps.setString(1, player.getName());
             ps.setString(2, player.getUniqueId().toString());
             ps.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
@@ -128,6 +128,7 @@ public class StatsCache {
             ps.setInt(10, 0);
             ps.setInt(11, 0);
             ps.setInt(12, 0);
+            ps.setInt(13, 0);//TODO:SET WINSTREAK TO 0
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -214,6 +215,18 @@ public class StatsCache {
         if (!isConnected()) connect();
         try (Statement s = connection.createStatement()) {
             s.executeUpdate("UPDATE '" + table + "' SET looses = looses + '" + amount + "' WHERE uuid = '" + uuid.toString() + "';");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Add amount to existing cache.
+     */
+    public void addWinStreak(UUID uuid, int amount) {
+        if (!isConnected()) connect();
+        try (Statement s = connection.createStatement()) {
+            s.executeUpdate("UPDATE '" + table + "' SET win_streak = win_streak + '" + amount + "' WHERE uuid = '" + uuid.toString() + "';");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -423,6 +436,25 @@ public class StatsCache {
     }
 
     /**
+     * Get cached value.
+     */
+    public int getWinStreak(UUID uuid) {
+        if (!isConnected()) connect();
+        try (Statement s = connection.createStatement()) {
+            ResultSet rs = s.executeQuery("SELECT win_streak FROM '" + table + "' WHERE uuid='" + uuid.toString() + "';");
+            if (rs.next()) {
+                int i = rs.getInt("win_streak");
+                rs.close();
+                return i;
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
      * Set first play.
      */
     public void setFirstPlay(UUID uuid, Timestamp time) {
@@ -539,6 +571,18 @@ public class StatsCache {
         if (!isConnected()) connect();
         try (Statement s = connection.createStatement()) {
             s.executeUpdate("UPDATE '" + table + "' SET games_played = '" + value + "' WHERE uuid = '" + uuid.toString() + "';");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set value.
+     */
+    public void setWinStreak(UUID uuid, int value) {
+        if (!isConnected()) connect();
+        try (Statement s = connection.createStatement()) {
+            s.executeUpdate("UPDATE '" + table + "' SET win_streak = '" + value + "' WHERE uuid = '" + uuid.toString() + "';");
         } catch (SQLException e) {
             e.printStackTrace();
         }

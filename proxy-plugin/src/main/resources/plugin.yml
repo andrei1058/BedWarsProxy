@@ -1,6 +1,6 @@
 name: BedWarsProxy
 version: ${gitVer}${project.version}
-description: Arena connecter for BedWars1058
+description: Arena connecter for HorizonBedWars
 main: com.andrei1058.bedwars.proxy.BedWarsProxy
 author: andrei1058
 api-version: '1.13'

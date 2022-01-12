@@ -102,11 +102,22 @@ public class MySQL implements Database{
         }
 
         try (Statement s = connection.createStatement()) {
+
             s.executeUpdate("CREATE TABLE IF NOT EXISTS player_language (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, uuid VARCHAR(200), " +
                     "iso VARCHAR(200));");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try (Statement s = connection.createStatement()) {
+
+            s.executeUpdate("CREATE TABLE IF NOT EXISTS WinStreaks (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+                    "name VARCHAR(200), uuid VARCHAR(200), win_streak INT(200));");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(BedWarsProxy.getPlugin(), new SessionKeeper(this), 20*60, 20*3600);
     }
@@ -126,6 +137,15 @@ public class MySQL implements Database{
                 cs.setFinalDeaths(uuid, rs.getInt("final_deaths"));
                 cs.setBedsDestroyed(uuid, rs.getInt("beds_destroyed"));
                 cs.setGamesPlayed(uuid, rs.getInt("games_played"));
+                cs.setWinStreak(uuid, rs.getInt("win_streak"));//TODO:WINSTREAK
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try (ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM WinStreaks WHERE uuid = '" + uuid.toString() + "';")) {
+            if (rs.next()) {
+                StatsCache cs = BedWarsProxy.getStatsCache();
+                cs.setWinStreak(uuid, rs.getInt("win_streak"));//TODO:WINSTREAK
             }
         } catch (SQLException e) {
             e.printStackTrace();
