@@ -80,7 +80,7 @@ public class MySQL implements Database{
             s.executeUpdate("CREATE TABLE IF NOT EXISTS global_stats (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
                     "name VARCHAR(200), uuid VARCHAR(200), first_play TIMESTAMP NULL DEFAULT NULL, " +
                     "last_play TIMESTAMP NULL DEFAULT NULL, wins INT(200), kills INT(200), " +
-                    "final_kills INT(200), looses INT(200), deaths INT(200), final_deaths INT(200), beds_destroyed INT(200), games_played INT(200));");
+                    "final_kills INT(200), looses INT(200), deaths INT(200), final_deaths INT(200), beds_destroyed INT(200), games_played INT(200), win_streak INT(200) DEFAULT 0);");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -110,8 +110,7 @@ public class MySQL implements Database{
         }
         try (Statement s = connection.createStatement()) {
 
-            s.executeUpdate("CREATE TABLE IF NOT EXISTS WinStreaks (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
-                    "name VARCHAR(200), uuid VARCHAR(200), win_streak INT(200));");
+            s.executeUpdate("ALTER TABLE global_stats ADD COLUMN IF NOT EXISTS win_streak INT(200) DEFAULT 0;");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -137,14 +136,6 @@ public class MySQL implements Database{
                 cs.setFinalDeaths(uuid, rs.getInt("final_deaths"));
                 cs.setBedsDestroyed(uuid, rs.getInt("beds_destroyed"));
                 cs.setGamesPlayed(uuid, rs.getInt("games_played"));
-                cs.setWinStreak(uuid, rs.getInt("win_streak"));//TODO:WINSTREAK
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try (ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM WinStreaks WHERE uuid = '" + uuid.toString() + "';")) {
-            if (rs.next()) {
-                StatsCache cs = BedWarsProxy.getStatsCache();
                 cs.setWinStreak(uuid, rs.getInt("win_streak"));//TODO:WINSTREAK
             }
         } catch (SQLException e) {
