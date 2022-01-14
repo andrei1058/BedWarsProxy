@@ -33,6 +33,10 @@
             <id>bungee-chat</id>
             <url>https://oss.sonatype.org/content/repositories/public/</url>
         </repository>
+        <repository>
+            <id>alessioDP-releases</id>
+            <url>https://repo.alessiodp.com/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -45,7 +49,7 @@
         <dependency>
             <groupId>com.alessiodp.parties</groupId>
             <artifactId>parties-api</artifactId>
-            <version>3.1.12</version>
+            <version>3.0.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
