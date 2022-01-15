@@ -92,13 +92,10 @@ public class SupportPAPI extends PlaceholderExpansion {
             case "stats_gamesplayed":
                 replay = String.valueOf(BedWarsProxy.getStatsCache().getPlayerGamesPlayed(p.getUniqueId()));
                 break;
-            case "stats_winstreak":
-                replay = String.valueOf(BedWarsProxy.getStatsCache().getWinStreak(p.getUniqueId()));
-                break;
             case "player_level":
                 replay = BedWarsProxy.getLevelManager().getLevel(p);
                 break;
-            case "player_level_raw":
+                case "player_level_raw":
                 replay = String.valueOf(BedWarsProxy.getLevelManager().getPlayerLevel(p));
                 break;
             case "player_progress":
