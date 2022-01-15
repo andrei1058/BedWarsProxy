@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.andrei1058.spigot.versionsupport</groupId>
             <artifactId>itemstack-version</artifactId>
-            <version>1.5.3-SNAPSHOT</version>
+            <version>1.6.3</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>com.andrei1058.spigot.versionsupport</groupId>
             <artifactId>sounds-version</artifactId>
-            <version>1.5.3-SNAPSHOT</version>
+            <version>1.6.3</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -75,7 +75,7 @@
         <dependency>
             <groupId>com.andrei1058.spigot.versionsupport</groupId>
             <artifactId>material-version</artifactId>
-            <version>1.5.3-SNAPSHOT</version>
+            <version>1.6.3</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -87,7 +87,7 @@
         <dependency>
             <groupId>com.andrei1058.spigot.versionsupport</groupId>
             <artifactId>block-version</artifactId>
-            <version>1.5.3-SNAPSHOT</version>
+            <version>1.6.3</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
