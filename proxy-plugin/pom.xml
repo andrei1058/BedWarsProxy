@@ -33,19 +33,29 @@
             <id>bungee-chat</id>
             <url>https://oss.sonatype.org/content/repositories/public/</url>
         </repository>
+        <repository>
+            <id>ajgeiss0702-releases</id>
+            <url>https://repo.ajg0702.us/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.9</version>
+            <version>2.11.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.alessiodp.parties</groupId>
             <artifactId>parties-api</artifactId>
-            <version>3.1.12</version>
+            <version>3.1.14</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.simonsator</groupId>
+            <artifactId>FakePAFSpigot</artifactId>
+            <version>1.0.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
