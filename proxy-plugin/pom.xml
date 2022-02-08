@@ -15,7 +15,7 @@
     <repositories>
         <repository>
             <id>andrei1058-repo</id>
-            <url>http://repo.andrei1058.com/releases</url>
+            <url>https://repo.andrei1058.com/releases</url>
         </repository>
         <repository>
             <id>codemc-repo</id>
@@ -23,7 +23,7 @@
         </repository>
         <repository>
             <id>placeholderapi</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <repository>
             <id>andrei1058-repo2</id>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>com.alessiodp.parties</groupId>
             <artifactId>parties-api</artifactId>
-            <version>3.1.12</version>
+            <version>3.1.14</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -99,7 +99,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>2.2.1</version>
+            <version>3.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
