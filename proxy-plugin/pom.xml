@@ -77,6 +77,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>de.simonsator</groupId>
+            <artifactId>DevelopmentPAFSpigot</artifactId>
+            <version>1.0.65</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.andrei1058.spigot.versionsupport</groupId>
             <artifactId>itemstack-version</artifactId>
             <version>1.6.3</version>

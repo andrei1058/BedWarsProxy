@@ -94,15 +94,18 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
 
         //Party support
         if (config.getYml().getBoolean(ConfigPath.GENERAL_CONFIGURATION_ALLOW_PARTIES)) {
-            if (Bukkit.getPluginManager().getPlugin("Parties") != null) {
+            if (Bukkit.getServer().getPluginManager().isPluginEnabled("Parties")) {
                 getLogger().info("Hook into Parties (by AlessioDP) support!");
                 party = new Parties();
-            } else if (Bukkit.getPluginManager().getPlugin("Partys") != null) {
+            } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("Partys")) {
                 getLogger().info("Hook into Parties (by Retr0) support!");
                 party = new Partys();
-            } else if (Bukkit.getPluginManager().getPlugin("Spigot-Party-API-PAF") != null) {
+            } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("Spigot-Party-API-PAF")) {
                 getLogger().info("Hook into Party and Friends Extended Edition for BungeeCord (by Simonsator) support!");
                 party = new PAFBungeeCordParty();
+            } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("PartyAndFriends")) {
+                getLogger().info("Hook into Party and Friends for Spigot (by Simonsator) support!");
+                party = new PAF();
             }
         }
         if (party == null) {
