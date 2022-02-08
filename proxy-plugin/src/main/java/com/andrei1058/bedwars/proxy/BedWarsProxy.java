@@ -10,19 +10,16 @@ import com.andrei1058.bedwars.proxy.command.party.PartyCommand;
 import com.andrei1058.bedwars.proxy.configuration.BedWarsConfig;
 import com.andrei1058.bedwars.proxy.configuration.ConfigPath;
 import com.andrei1058.bedwars.proxy.configuration.SoundsConfig;
+import com.andrei1058.bedwars.proxy.database.*;
 import com.andrei1058.bedwars.proxy.language.LangListeners;
 import com.andrei1058.bedwars.proxy.language.LanguageManager;
 import com.andrei1058.bedwars.proxy.levels.Level;
 import com.andrei1058.bedwars.proxy.levels.internal.InternalLevel;
 import com.andrei1058.bedwars.proxy.levels.internal.LevelListeners;
-import com.andrei1058.bedwars.proxy.party.Internal;
-import com.andrei1058.bedwars.proxy.party.Parties;
-import com.andrei1058.bedwars.proxy.party.Party;
-import com.andrei1058.bedwars.proxy.party.Partys;
+import com.andrei1058.bedwars.proxy.party.*;
 import com.andrei1058.bedwars.proxy.socketmanager.ServerSocketTask;
 import com.andrei1058.bedwars.proxy.socketmanager.TimeOutTask;
 import com.andrei1058.bedwars.proxy.support.papi.SupportPAPI;
-import com.andrei1058.bedwars.proxy.database.*;
 import com.andrei1058.spigot.updater.SpigotUpdater;
 import com.andrei1058.spigot.versionsupport.BlockSupport;
 import com.andrei1058.spigot.versionsupport.ItemStackSupport;
@@ -103,6 +100,9 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
             } else if (Bukkit.getPluginManager().getPlugin("Partys") != null) {
                 getLogger().info("Hook into Parties (by Retr0) support!");
                 party = new Partys();
+            } else if (Bukkit.getPluginManager().getPlugin("Spigot-Party-API-PAF") != null) {
+                getLogger().info("Hook into Party and Friends Extended Edition for BungeeCord (by Simonsator) support!");
+                party = new PAFBungeeCordParty();
             }
         }
         if (party == null) {
@@ -215,7 +215,7 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
         return ArenaManager.getInstance();
     }
 
-    public static BedWars getAPI(){
+    public static BedWars getAPI() {
         return BedWarsProxy.plugin;
     }
 }
