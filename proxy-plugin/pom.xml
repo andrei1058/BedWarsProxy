@@ -182,19 +182,12 @@
             <version>16.0.2</version>
             <scope>provided</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.google.common/google-collect -->
-        <!--<dependency>
-            <groupId>com.google.common</groupId>
-            <artifactId>google-collect</artifactId>
-            <version>0.5</version>
-        </dependency>-->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!-- hubmc.ro parties -->
         <dependency>
             <groupId>me.gamer.party</groupId>
             <artifactId>party</artifactId>
