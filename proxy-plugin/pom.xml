@@ -22,16 +22,8 @@
             <url>https://simonsator.de/repo/</url>
         </repository>
         <repository>
-            <id>andrei1058-repo</id>
-            <url>https://repo.andrei1058.com/releases</url>
-        </repository>
-        <repository>
             <id>codemc-repo</id>
             <url>https://repo.codemc.org/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>andrei1058-repo2</id>
-            <url>https://repo.andrei1058.com/snapshots/</url>
         </repository>
         <repository>
             <id>bungee-chat</id>
@@ -40,6 +32,14 @@
         <repository>
             <id>alessiodp-repo</id>
             <url>https://repo.alessiodp.com/releases/</url>
+        </repository>
+        <repository>
+            <id>andrei1058-repo</id>
+            <url>https://repo.andrei1058.com/releases</url>
+        </repository>
+        <repository>
+            <id>andrei1058-repo2</id>
+            <url>https://repo.andrei1058.com/snapshots/</url>
         </repository>
     </repositories>
 
