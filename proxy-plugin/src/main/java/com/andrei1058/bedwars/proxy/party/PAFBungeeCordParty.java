@@ -13,7 +13,7 @@ import java.util.UUID;
 public class PAFBungeeCordParty implements Party {
     @Override
     public boolean hasParty(UUID p) {
-        return getPAFParty(p) == null;
+        return getPAFParty(p) != null;
     }
 
     private PlayerParty getPAFParty(UUID p) {
