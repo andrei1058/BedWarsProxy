@@ -4,6 +4,7 @@ import de.simonsator.partyandfriends.spigot.api.pafplayers.PAFPlayer;
 import de.simonsator.partyandfriends.spigot.api.pafplayers.PAFPlayerManager;
 import de.simonsator.partyandfriends.spigot.api.party.PartyManager;
 import de.simonsator.partyandfriends.spigot.api.party.PlayerParty;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -50,22 +51,18 @@ public class PAFBungeeCordParty implements Party {
 
     @Override
     public void createParty(Player owner, Player... members) {
-
     }
 
     @Override
     public void addMember(UUID owner, Player member) {
-
     }
 
     @Override
     public void removeFromParty(UUID member) {
-
     }
 
     @Override
     public void disband(UUID owner) {
-
     }
 
     @Override
@@ -78,7 +75,6 @@ public class PAFBungeeCordParty implements Party {
 
     @Override
     public void removePlayer(UUID owner, UUID target) {
-
     }
 
     @Override

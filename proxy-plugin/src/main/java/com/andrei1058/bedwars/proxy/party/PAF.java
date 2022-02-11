@@ -56,8 +56,9 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
     public void createParty(Player owner, Player... members) {
         OnlinePAFPlayer pafPlayer = PAFPlayerManager.getInstance().getPlayer(owner);
         PartyManager.getInstance().createParty(pafPlayer);
+        PlayerParty party = pafPlayer.getParty();
         for (int i = 0; i < members.length; i++){
-            pafPlayer.getParty().addPlayer(PAFPlayerManager.getInstance().getPlayer(members[i]));
+            party.addPlayer(PAFPlayerManager.getInstance().getPlayer(members[i]));
         }
     }
 
@@ -69,14 +70,13 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
 
     @Override
     public void removeFromParty(UUID member) {
-        PlayerParty p = getPAFParty(member);
+        PlayerParty p = PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer(member)).getParty();
         p.leaveParty(PAFPlayerManager.getInstance().getPlayer(member));
-
     }
 
     @Override
     public void disband(UUID owner) {
-        PartyManager.getInstance().deleteParty(getPAFParty(owner));
+        PartyManager.getInstance().deleteParty(PartyManager.getInstance().getParty(PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer(owner))));
     }
 
     @Override
