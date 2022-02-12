@@ -20,6 +20,7 @@ public class BedWarsConfig extends PluginConfig {
         yml.addDefault(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_SERVER_IP, "yourServer.com");
         yml.addDefault("storeLink", "https://www.spigotmc.org/resources/authors/39904/");
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ALLOW_PARTIES, true);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_RANDOMARENAS, true);
         yml.addDefault("database.enable", false);
         yml.addDefault("database.host", "localhost");
         yml.addDefault("database.database", "bedWars");
