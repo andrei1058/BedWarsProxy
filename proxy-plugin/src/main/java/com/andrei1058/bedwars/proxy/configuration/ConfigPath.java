@@ -8,6 +8,7 @@ public class ConfigPath {
 
     public static final String GENERAL_CONFIGURATION_ALLOW_PARTIES = "allow-parties";
     public static final String GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_SERVER_IP = "server-ip";
+    public static final String GENERAL_CONFIGURATION_RANDOMARENAS = "random-selection";
 
     public static final String GENERAL_CONFIGURATION_ARENA_SELECTOR_PATH = "arena-gui";
     public static final String GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_SIZE = GENERAL_CONFIGURATION_ARENA_SELECTOR_PATH + ".settings.inv-size";

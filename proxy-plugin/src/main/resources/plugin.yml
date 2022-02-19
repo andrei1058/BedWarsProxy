@@ -7,3 +7,4 @@ api-version: '1.13'
 softdepend:
   - Parties
   - Partys
+  - PartyAndFriends

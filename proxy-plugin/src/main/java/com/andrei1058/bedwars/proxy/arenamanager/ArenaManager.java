@@ -3,15 +3,18 @@ package com.andrei1058.bedwars.proxy.arenamanager;
 import com.andrei1058.bedwars.proxy.api.*;
 import com.andrei1058.bedwars.proxy.api.event.ArenaCacheRemoveEvent;
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
+import com.andrei1058.bedwars.proxy.configuration.ConfigPath;
 import com.andrei1058.bedwars.proxy.language.LanguageManager;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.*;
 
+import static com.andrei1058.bedwars.proxy.BedWarsProxy.config;
 import static com.andrei1058.bedwars.proxy.BedWarsProxy.getParty;
 
 public class ArenaManager implements BedWars.ArenaUtil {
@@ -43,7 +46,9 @@ public class ArenaManager implements BedWars.ArenaUtil {
     }
 
     public CachedArena getArena(String server, String remoteIdentifier) {
+
         List<CachedArena> arenaList = getArenas();
+
         for (int i=0; i<arenaList.size(); i++) {
             if (i >= arenaList.size()) break;
             CachedArena ca = arenaList.get(i);
@@ -115,11 +120,18 @@ public class ArenaManager implements BedWars.ArenaUtil {
             p.sendMessage(LanguageManager.get().getMsg(p, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
         }
+
         List<CachedArena> arenaList = new ArrayList<>();
         getArenas().forEach(a -> {
             if (a.getArenaGroup().equalsIgnoreCase(group)) arenaList.add(a);
         });
         arenaList.sort(getComparator());
+
+        //shuffle if determined in config
+        if (config.getYml().getBoolean(ConfigPath.GENERAL_CONFIGURATION_RANDOMARENAS)){
+            Collections.shuffle(arenaList);
+        }
+
 
         int amount = BedWarsProxy.getParty().hasParty(p.getUniqueId()) ? BedWarsProxy.getParty().getMembers(p.getUniqueId()).size() : 1;
         for (CachedArena a : arenaList) {
