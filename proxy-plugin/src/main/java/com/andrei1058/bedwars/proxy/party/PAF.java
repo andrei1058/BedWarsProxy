@@ -71,7 +71,6 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
         party.addPlayer(PAFPlayerManager.getInstance().getPlayer(member));
         party.setPrivateState(true);
     }
-    }
 
     @Override
     public void removeFromParty(UUID member) {
