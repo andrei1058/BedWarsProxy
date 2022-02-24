@@ -2,15 +2,11 @@ package com.andrei1058.bedwars.proxy.party;
 
 import com.alessiodp.parties.api.interfaces.PartiesAPI;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import com.andrei1058.bedwars.proxy.api.Messages;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static com.andrei1058.bedwars.proxy.language.Language.getMsg;
 
 public class Parties implements Party {
 
@@ -78,41 +74,10 @@ public class Parties implements Party {
 
     @Override
     public void removeFromParty(UUID member) {
-        PartyPlayer pp = api.getPartyPlayer(member);
-        if (pp == null) return;
-        if (pp.getPartyId() == null) return;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
-        if (party == null) return;
-        if (party.getLeader() != null && party.getLeader().equals(member)){
-            disband(member);
-        } else {
-            party.removeMember(pp);
-            Player target = Bukkit.getPlayer(member);
-            if (target != null) {
-                for (UUID mem : party.getMembers()) {
-                    Player p = Bukkit.getPlayer(mem);
-                    if (p == null) continue;
-                    if (!p.isOnline()) continue;
-                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_LEAVE_SUCCESS).replace("{player}", target.getName()));
-                }
-            }
-        }
     }
 
     @Override
     public void disband(UUID owner) {
-        PartyPlayer pp = api.getPartyPlayer(owner);
-        if (pp == null) return;
-        if (pp.getPartyId() == null) return;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
-        if (party == null) return;
-        for (UUID mem : party.getMembers()) {
-            Player p = Bukkit.getPlayer(mem);
-            if (p == null) continue;
-            if (!p.isOnline()) continue;
-            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_DISBAND_SUCCESS));
-        }
-        party.delete();
     }
 
     @Override
@@ -127,18 +92,6 @@ public class Parties implements Party {
 
     @Override
     public void removePlayer(UUID owner, UUID target) {
-        PartyPlayer pp = api.getPartyPlayer(target);
-        if (pp == null) return;
-        if (pp.getPartyId() == null) return;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
-        if (party == null) return;
-        party.removeMember(pp);
-        for (UUID mem : party.getMembers()) {
-            Player p = Bukkit.getPlayer(mem);
-            if (p == null) continue;
-            if (!p.isOnline()) continue;
-            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_SUCCESS));
-        }
     }
 
     @Override
