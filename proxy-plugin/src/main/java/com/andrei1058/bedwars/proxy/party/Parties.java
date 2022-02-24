@@ -58,10 +58,24 @@ public class Parties implements Party {
 
     @Override
     public void createParty(Player owner, Player... members) {
+        if (api.isBungeeCordEnabled()) return; //party creation handled on bungee side
+        else
+        {
+            api.createParty("bedwars"+ owner.getUniqueId(), api.getPartyPlayer(owner.getUniqueId()));
+            for (Player player1 : members)
+                api.getParty("bedwars"+ owner.getUniqueId()).addMember(api.getPartyPlayer(player1.getUniqueId()));
+        }
     }
 
     @Override
     public void addMember(UUID owner, Player member) {
+        if (api.isBungeeCordEnabled()) return;//party operations handled on bungee side
+        else
+        {
+            String partyname = api.getPartyPlayer(owner.getUniqueId()).getPartyName();
+            api.getParty(partyname).addMember(api.getPartyPlayer(member.getUniqueId()));
+        }
+
     }
 
     @Override
