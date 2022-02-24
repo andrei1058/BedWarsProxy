@@ -68,7 +68,7 @@ public class Parties implements Party {
         if (api.isBungeeCordEnabled()) return; //party creation handled on bungee side
         else
         {
-            api.createParty("bedwars"+ owner.getUniqueId(), api.getPartyPlayer(owner.getUniqueId()));
+            api.createParty("bedwars", api.getPartyPlayer(owner.getUniqueId()));
             for (Player player1 : members)
                 api.getParty(owner.getUniqueId()).addMember(api.getPartyPlayer(player1.getUniqueId()));
         }
