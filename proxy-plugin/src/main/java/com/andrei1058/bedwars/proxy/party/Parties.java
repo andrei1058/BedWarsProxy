@@ -72,7 +72,7 @@ public class Parties implements Party {
         if (api.isBungeeCordEnabled()) return;//party operations handled on bungee side
         else
         {
-            String partyname = api.getPartyPlayer(owner.getUniqueId()).getPartyName();
+            String partyname = api.getPartyPlayer(owner).getPartyName();
             api.getParty(partyname).addMember(api.getPartyPlayer(member.getUniqueId()));
         }
 
