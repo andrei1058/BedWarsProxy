@@ -11,6 +11,7 @@ import java.util.UUID;
 public class Parties implements Party {
 
     //Support for Parties by AlessioDP
+    //Rewrite by JT122406
     PartiesAPI api = com.alessiodp.parties.api.Parties.getApi();
 
     @Override
