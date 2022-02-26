@@ -2,7 +2,6 @@ package com.andrei1058.bedwars.proxy.party;
 
 import com.alessiodp.parties.api.interfaces.PartiesAPI;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -12,6 +11,7 @@ import java.util.UUID;
 public class Parties implements Party {
 
     //Support for Parties by AlessioDP
+    //Rewrite by JT122406
     PartiesAPI api = com.alessiodp.parties.api.Parties.getApi();
 
     @Override
