@@ -1,8 +1,8 @@
 package com.andrei1058.bedwars.proxy.arenamanager;
 
+import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.andrei1058.bedwars.proxy.api.*;
 import com.andrei1058.bedwars.proxy.api.event.ArenaCacheRemoveEvent;
-import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.andrei1058.bedwars.proxy.configuration.ConfigPath;
 import com.andrei1058.bedwars.proxy.language.LanguageManager;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.*;
 
@@ -67,25 +66,34 @@ public class ArenaManager implements BedWars.ArenaUtil {
             public int compare(CachedArena o1, CachedArena o2) {
                 if (o1.getStatus() == ArenaStatus.STARTING && o2.getStatus() == ArenaStatus.STARTING) {
                     return Integer.compare(o2.getCurrentPlayers(), o1.getCurrentPlayers());
-                } else if (o1.getStatus() == ArenaStatus.STARTING && o2.getStatus() != ArenaStatus.STARTING) {
+                }
+                else if (o1.getStatus() == ArenaStatus.STARTING && o2.getStatus() != ArenaStatus.STARTING) {
                     return -1;
-                } else if (o2.getStatus() == ArenaStatus.STARTING && o1.getStatus() != ArenaStatus.STARTING) {
+                }
+                else if (o2.getStatus() == ArenaStatus.STARTING && o1.getStatus() != ArenaStatus.STARTING) {
                     return 1;
-                } else if (o1.getStatus() == ArenaStatus.WAITING && o2.getStatus() == ArenaStatus.WAITING) {
+                }
+                else if (o1.getStatus() == ArenaStatus.WAITING && o2.getStatus() == ArenaStatus.WAITING) {
                     // balance nodes
                     if (o1.getServer().equals(o2.getServer())){
                         return -1;
                     }
                     return Integer.compare(o2.getCurrentPlayers(), o1.getCurrentPlayers());
-                } else if (o1.getStatus() == ArenaStatus.WAITING && o2.getStatus() != ArenaStatus.WAITING) {
+                }
+                else if (o1.getStatus() == ArenaStatus.WAITING && o2.getStatus() != ArenaStatus.WAITING) {
                     return -1;
-                } else if (o2.getStatus() == ArenaStatus.WAITING && o1.getStatus() != ArenaStatus.WAITING) {
+                }
+                else if (o2.getStatus() == ArenaStatus.WAITING && o1.getStatus() != ArenaStatus.WAITING) {
                     return 1;
-                } else if (o1.getStatus() == ArenaStatus.PLAYING && o2.getStatus() == ArenaStatus.PLAYING) {
+                }
+                else if (o1.getStatus() == ArenaStatus.PLAYING && o2.getStatus() == ArenaStatus.PLAYING) {
                     return -1;
-                } else if (o1.getStatus() == ArenaStatus.PLAYING && o2.getStatus() != ArenaStatus.PLAYING) {
+                }
+                else if (o1.getStatus() == ArenaStatus.PLAYING && o2.getStatus() != ArenaStatus.PLAYING) {
                     return -1;
-                } else return 1;
+                }
+                else
+                    return 1;
             }
 
             @Override
@@ -116,27 +124,49 @@ public class ArenaManager implements BedWars.ArenaUtil {
      * Add a player to the most filled arena from a group.
      */
     public boolean joinRandomFromGroup(@NotNull Player p, String group) {
+        //rewrite by JT122406
+        //checks for party leader
         if (getParty().hasParty(p.getUniqueId()) && !getParty().isOwner(p.getUniqueId())) {
             p.sendMessage(LanguageManager.get().getMsg(p, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
         }
-
+        //puts only arenas from group into arraylist
         List<CachedArena> arenaList = new ArrayList<>();
-        getArenas().forEach(a -> {
-            if (a.getArenaGroup().equalsIgnoreCase(group)) arenaList.add(a);
-        });
-        arenaList.sort(getComparator());
+        for (CachedArena current : getArenas()) {
+            if (current.getArenaGroup().equalsIgnoreCase(group))
+                arenaList.add(current);
+        }
+
+        //removes arenas that are already in games or are full
+        for (int i = 0; i < arenaList.size(); i++) {
+            if ((arenaList.get(i).getStatus() != ArenaStatus.WAITING) || (arenaList.get(i).getCurrentPlayers() >= arenaList.get(i).getMaxPlayers())){
+                arenaList.remove(arenaList.get(i));
+                i--;
+            }
+        }
 
         //shuffle if determined in config
         if (config.getYml().getBoolean(ConfigPath.GENERAL_CONFIGURATION_RANDOMARENAS)){
             Collections.shuffle(arenaList);
+            //randomize it then we will sort by players in arena
         }
 
+        //Reorder based on players in game
+        for (int i = 0; i < arenaList.size(); i++){
+            for (int j = 0; j < arenaList.size(); j++){
+                if (j == i)
+                    continue;
+                else if (arenaList.get(i).getCurrentPlayers() < arenaList.get(j).getCurrentPlayers()){
+                    CachedArena temp = arenaList.get(i);
+                    arenaList.set(i, arenaList.get(j));
+                    arenaList.set(j, temp);
+                }
+            }
+        }
 
         int amount = BedWarsProxy.getParty().hasParty(p.getUniqueId()) ? BedWarsProxy.getParty().getMembers(p.getUniqueId()).size() : 1;
         for (CachedArena a : arenaList) {
-            if (a.getCurrentPlayers() >= a.getMaxPlayers()) continue;
-            if (a.getMaxPlayers() - a.getCurrentPlayers() >= amount) {
+            if ((a.getMaxPlayers() - a.getCurrentPlayers()) >= amount) {
                 a.addPlayer(p, null);
                 return true;
             }
@@ -160,17 +190,45 @@ public class ArenaManager implements BedWars.ArenaUtil {
      * Check if is the party owner first.
      */
     public boolean joinRandomArena(@NotNull Player p) {
+        //rewrite by JT122406
+        //verifies if party leader is one joining game
         if (getParty().hasParty(p.getUniqueId()) && !getParty().isOwner(p.getUniqueId())) {
             p.sendMessage(LanguageManager.get().getMsg(p, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
         }
         List<CachedArena> arenaList = new ArrayList<>(getArenas());
-        arenaList.sort(getComparator());
+
+
+        //removes arenas that are already in games or are full
+        for (int i = 0; i < arenaList.size(); i++) {
+            if ((arenaList.get(i).getStatus() != ArenaStatus.WAITING) || (arenaList.get(i).getCurrentPlayers() >= arenaList.get(i).getMaxPlayers())){
+                arenaList.remove(arenaList.get(i));
+                i--;
+            }
+        }
+
+        //shuffle if determined in config
+        if (config.getYml().getBoolean(ConfigPath.GENERAL_CONFIGURATION_RANDOMARENAS)){
+            Collections.shuffle(arenaList);
+            //randomize it then we will sort by players in arena
+        }
+
+        //Reorder based on players in game
+        for (int i = 0; i < arenaList.size(); i++){
+            for (int j = 0; j < arenaList.size(); j++){
+                if (j == i)
+                    continue;
+                else if (arenaList.get(i).getCurrentPlayers() < arenaList.get(j).getCurrentPlayers()){
+                    CachedArena temp = arenaList.get(i);
+                    arenaList.set(i, arenaList.get(j));
+                    arenaList.set(j, temp);
+                }
+            }
+        }
 
         int amount = BedWarsProxy.getParty().hasParty(p.getUniqueId()) ? BedWarsProxy.getParty().getMembers(p.getUniqueId()).size() : 1;
         for (CachedArena a : arenaList) {
-            if (a.getCurrentPlayers() >= a.getMaxPlayers()) continue;
-            if (a.getMaxPlayers() - a.getCurrentPlayers() >= amount) {
+            if ((a.getMaxPlayers() - a.getCurrentPlayers()) >= amount) {
                 a.addPlayer(p, null);
                 break;
             }
