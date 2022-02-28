@@ -13,8 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-import static com.andrei1058.bedwars.proxy.BedWarsProxy.config;
-import static com.andrei1058.bedwars.proxy.BedWarsProxy.getParty;
+import static com.andrei1058.bedwars.proxy.BedWarsProxy.*;
 
 public class ArenaManager implements BedWars.ArenaUtil {
 
@@ -126,6 +125,7 @@ public class ArenaManager implements BedWars.ArenaUtil {
     public boolean joinRandomFromGroup(@NotNull Player p, String group) {
         //rewrite by JT122406
         //checks for party leader
+
         if (getParty().hasParty(p.getUniqueId()) && !getParty().isOwner(p.getUniqueId())) {
             p.sendMessage(LanguageManager.get().getMsg(p, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
@@ -133,16 +133,8 @@ public class ArenaManager implements BedWars.ArenaUtil {
         //puts only arenas from group into arraylist
         List<CachedArena> arenaList = new ArrayList<>();
         for (CachedArena current : getArenas()) {
-            if (current.getArenaGroup().equalsIgnoreCase(group))
+            if ((current.getArenaGroup().equalsIgnoreCase(group)) && ((current.getStatus() == ArenaStatus.WAITING) || (current.getStatus() == ArenaStatus.STARTING) || (current.getCurrentPlayers() < current.getMaxPlayers())))
                 arenaList.add(current);
-        }
-
-        //removes arenas that are already in games or are full
-        for (int i = 0; i < arenaList.size(); i++) {
-            if ((arenaList.get(i).getStatus() != ArenaStatus.WAITING) || (arenaList.get(i).getStatus() != ArenaStatus.STARTING) || (arenaList.get(i).getCurrentPlayers() >= arenaList.get(i).getMaxPlayers())){
-                arenaList.remove(arenaList.get(i));
-                i--;
-            }
         }
 
         //shuffle if determined in config
@@ -200,15 +192,11 @@ public class ArenaManager implements BedWars.ArenaUtil {
             p.sendMessage(LanguageManager.get().getMsg(p, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
         }
-        List<CachedArena> arenaList = new ArrayList<>(getArenas());
-
-
-        //removes arenas that are already in games or are full
-        for (int i = 0; i < arenaList.size(); i++) {
-            if ((arenaList.get(i).getStatus() != ArenaStatus.WAITING) || (arenaList.get(i).getStatus() != ArenaStatus.STARTING) || (arenaList.get(i).getCurrentPlayers() >= arenaList.get(i).getMaxPlayers())){
-                arenaList.remove(arenaList.get(i));
-                i--;
-            }
+        //only adds arena that are joinable to arraylist
+        List<CachedArena> arenaList = new ArrayList<>();
+        for (CachedArena current : getArenas()) {
+            if (((current.getStatus() == ArenaStatus.WAITING) || (current.getStatus() == ArenaStatus.STARTING) || (current.getCurrentPlayers() < current.getMaxPlayers())))
+                arenaList.add(current);
         }
 
         //shuffle if determined in config
@@ -232,21 +220,7 @@ public class ArenaManager implements BedWars.ArenaUtil {
                     arenaList.set(i, temp);
                 }
             }
-            /*
-            if (i == arenaList.size() -1){
-                for (int h = 0; h < arenaList.size()-1; h++) {
-                    if (arenaList.get(h).getCurrentPlayers() <= arenaList.get(h+1).getCurrentPlayers()){
-                        continue;
-                    }
-                    else
-                    {
-                        i = 0; //restart if not good
-                        break;
-                    }
-                }
 
-            }
-        */
         }
 
         int amount = BedWarsProxy.getParty().hasParty(p.getUniqueId()) ? BedWarsProxy.getParty().getMembers(p.getUniqueId()).size() : 1;
