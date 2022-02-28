@@ -125,7 +125,6 @@ public class ArenaManager implements BedWars.ArenaUtil {
     public boolean joinRandomFromGroup(@NotNull Player p, String group) {
         //rewrite by JT122406
         //checks for party leader
-
         if (getParty().hasParty(p.getUniqueId()) && !getParty().isOwner(p.getUniqueId())) {
             p.sendMessage(LanguageManager.get().getMsg(p, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
@@ -136,7 +135,6 @@ public class ArenaManager implements BedWars.ArenaUtil {
             if ((current.getArenaGroup().equalsIgnoreCase(group)) && ((current.getStatus() == ArenaStatus.WAITING) || (current.getStatus() == ArenaStatus.STARTING) || (current.getCurrentPlayers() < current.getMaxPlayers())))
                 arenaList.add(current);
         }
-
         //shuffle if determined in config
         if (config.getYml().getBoolean(ConfigPath.GENERAL_CONFIGURATION_RANDOMARENAS)){
             Collections.shuffle(arenaList);
@@ -156,6 +154,7 @@ public class ArenaManager implements BedWars.ArenaUtil {
                     CachedArena temp = arenaList.get(j);
                     arenaList.set(j, arenaList.get(i));
                     arenaList.set(i, temp);
+
                 }
             }
         }
@@ -192,11 +191,13 @@ public class ArenaManager implements BedWars.ArenaUtil {
             p.sendMessage(LanguageManager.get().getMsg(p, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
         }
+
         //only adds arena that are joinable to arraylist
         List<CachedArena> arenaList = new ArrayList<>();
         for (CachedArena current : getArenas()) {
             if (((current.getStatus() == ArenaStatus.WAITING) || (current.getStatus() == ArenaStatus.STARTING) || (current.getCurrentPlayers() < current.getMaxPlayers())))
                 arenaList.add(current);
+
         }
 
         //shuffle if determined in config
