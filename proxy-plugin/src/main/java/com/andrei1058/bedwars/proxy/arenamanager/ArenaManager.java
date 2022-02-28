@@ -152,14 +152,18 @@ public class ArenaManager implements BedWars.ArenaUtil {
         }
 
         //Reorder based on players in game
-        for (int i = 0; i < arenaList.size(); i++){
-            for (int j = 0; j < arenaList.size(); j++){
+        for (int i = 0; i < arenaList.size(); i++) {
+            for (int j = 0; j < arenaList.size(); j++) {
                 if (j == i)
                     continue;
-                else if (arenaList.get(i).getCurrentPlayers() < arenaList.get(j).getCurrentPlayers()){
+                else if ((i < j) && (arenaList.get(i).getCurrentPlayers() < arenaList.get(j).getCurrentPlayers())) {
                     CachedArena temp = arenaList.get(i);
                     arenaList.set(i, arenaList.get(j));
                     arenaList.set(j, temp);
+                } else if ((j < i) && (arenaList.get(i).getCurrentPlayers() > arenaList.get(j).getCurrentPlayers())) {
+                    CachedArena temp = arenaList.get(j);
+                    arenaList.set(j, arenaList.get(i));
+                    arenaList.set(i, temp);
                 }
             }
         }
