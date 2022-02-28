@@ -139,7 +139,7 @@ public class ArenaManager implements BedWars.ArenaUtil {
 
         //removes arenas that are already in games or are full
         for (int i = 0; i < arenaList.size(); i++) {
-            if ((arenaList.get(i).getStatus() != ArenaStatus.WAITING) || (arenaList.get(i).getCurrentPlayers() >= arenaList.get(i).getMaxPlayers())){
+            if ((arenaList.get(i).getStatus() != ArenaStatus.WAITING) || (arenaList.get(i).getStatus() != ArenaStatus.STARTING) || (arenaList.get(i).getCurrentPlayers() >= arenaList.get(i).getMaxPlayers())){
                 arenaList.remove(arenaList.get(i));
                 i--;
             }
@@ -205,7 +205,7 @@ public class ArenaManager implements BedWars.ArenaUtil {
 
         //removes arenas that are already in games or are full
         for (int i = 0; i < arenaList.size(); i++) {
-            if ((arenaList.get(i).getStatus() != ArenaStatus.WAITING) || (arenaList.get(i).getCurrentPlayers() >= arenaList.get(i).getMaxPlayers())){
+            if ((arenaList.get(i).getStatus() != ArenaStatus.WAITING) || (arenaList.get(i).getStatus() != ArenaStatus.STARTING) || (arenaList.get(i).getCurrentPlayers() >= arenaList.get(i).getMaxPlayers())){
                 arenaList.remove(arenaList.get(i));
                 i--;
             }
