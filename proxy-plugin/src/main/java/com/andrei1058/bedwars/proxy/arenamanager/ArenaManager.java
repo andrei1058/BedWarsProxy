@@ -218,12 +218,31 @@ public class ArenaManager implements BedWars.ArenaUtil {
             for (int j = 0; j < arenaList.size(); j++){
                 if (j == i)
                     continue;
-                else if (arenaList.get(i).getCurrentPlayers() < arenaList.get(j).getCurrentPlayers()){
+                else if ((i < j) && (arenaList.get(i).getCurrentPlayers() < arenaList.get(j).getCurrentPlayers())){
                     CachedArena temp = arenaList.get(i);
                     arenaList.set(i, arenaList.get(j));
                     arenaList.set(j, temp);
+                }else if ((j < i)  && (arenaList.get(i).getCurrentPlayers() > arenaList.get(j).getCurrentPlayers())){
+                    CachedArena temp = arenaList.get(j);
+                    arenaList.set(j, arenaList.get(i));
+                    arenaList.set(i, temp);
                 }
             }
+            /*
+            if (i == arenaList.size() -1){
+                for (int h = 0; h < arenaList.size()-1; h++) {
+                    if (arenaList.get(h).getCurrentPlayers() <= arenaList.get(h+1).getCurrentPlayers()){
+                        continue;
+                    }
+                    else
+                    {
+                        i = 0; //restart if not good
+                        break;
+                    }
+                }
+
+            }
+        */
         }
 
         int amount = BedWarsProxy.getParty().hasParty(p.getUniqueId()) ? BedWarsProxy.getParty().getMembers(p.getUniqueId()).size() : 1;
