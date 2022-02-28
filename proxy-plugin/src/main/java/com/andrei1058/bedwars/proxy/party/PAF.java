@@ -55,17 +55,21 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
     @Override
     public void createParty(Player owner, Player... members) {
         OnlinePAFPlayer pafPlayer = PAFPlayerManager.getInstance().getPlayer(owner);
-        PartyManager.getInstance().createParty(pafPlayer);
-        PlayerParty party = pafPlayer.getParty();
-        for (int i = 0; i < members.length; i++){
-            party.addPlayer(PAFPlayerManager.getInstance().getPlayer(members[i]));
+        PlayerParty party = PartyManager.getInstance().createParty(pafPlayer);
+        party.setPrivateState(false);
+        for (Player p1 : members){
+            party.addPlayer(PAFPlayerManager.getInstance().getPlayer(p1));
         }
+        party.setPrivateState(true);
     }
 
     @Override
     public void addMember(UUID owner, Player member) {
         OnlinePAFPlayer pafPlayer = PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer(owner));
-        pafPlayer.getParty().addPlayer(PAFPlayerManager.getInstance().getPlayer(member));
+        PlayerParty party = pafPlayer.getParty();
+        party.setPrivateState(false);
+        party.addPlayer(PAFPlayerManager.getInstance().getPlayer(member));
+        party.setPrivateState(true);
     }
 
     @Override
@@ -105,7 +109,7 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
             Player p = Bukkit.getPlayer(p2);
             OnlinePAFPlayer partypl= PAFPlayerManager.getInstance().getPlayer(p);
             if (partypl.getParty().isLeader(partypl)){
-                return  getMembers(player).get(i);
+                return getMembers(player).get(i);
             }
         }
         return player;
