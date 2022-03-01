@@ -2,146 +2,130 @@ package com.andrei1058.bedwars.proxy.party;
 
 import com.alessiodp.parties.api.interfaces.PartiesAPI;
 import com.alessiodp.parties.api.interfaces.PartyPlayer;
-import com.andrei1058.bedwars.proxy.api.Messages;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static com.andrei1058.bedwars.proxy.language.Language.getMsg;
+import org.bukkit.entity.Player;
 
 public class Parties implements Party {
-
-    //Support for Parties by AlessioDP
     PartiesAPI api = com.alessiodp.parties.api.Parties.getApi();
 
-    @Override
     public boolean hasParty(UUID p) {
         PartyPlayer pp = api.getPartyPlayer(p);
         return pp != null && pp.isInParty();
     }
 
-    @Override
     public int partySize(UUID p) {
-        PartyPlayer pp = api.getPartyPlayer(p);
-        if (pp == null) return 0;
-        if (pp.getPartyId() == null) return 0;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
-        if (party == null) return 0;
-        return party.getMembers().size();
-    }
-
-    @Override
-    public boolean isOwner(UUID p) {
-        PartyPlayer pp = api.getPartyPlayer(p);
-        if (pp == null) return false;
-        if (pp.getPartyId() == null) return false;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
-        if (party == null) return false;
-        if (party.getLeader() == null) return false;
-        return party.getLeader().equals(p);
-    }
-
-    @Override
-    public List<UUID> getMembers(UUID p) {
-        ArrayList<UUID> players = new ArrayList<>();
-        PartyPlayer pp = api.getPartyPlayer(p);
-        if (pp == null) return players;
-        if (pp.getPartyId() == null) return players;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
-        if (party == null) return players;
-        players.addAll(party.getMembers());
-        return players;
-    }
-
-    @Override
-    public void createParty(Player owner, Player... members) {
-    }
-
-    @Override
-    public void addMember(UUID owner, Player member) {
-    }
-
-    @Override
-    public void removeFromParty(UUID member) {
-        PartyPlayer pp = api.getPartyPlayer(member);
-        if (pp == null) return;
-        if (pp.getPartyId() == null) return;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
-        if (party == null) return;
-        if (party.getLeader() != null && party.getLeader().equals(member)){
-            disband(member);
+        if (!hasParty(p)) {
+            return 0;
         } else {
-            party.removeMember(pp);
-            Player target = Bukkit.getPlayer(member);
-            if (target != null) {
-                for (UUID mem : party.getMembers()) {
-                    Player p = Bukkit.getPlayer(mem);
-                    if (p == null) continue;
-                    if (!p.isOnline()) continue;
-                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_LEAVE_SUCCESS).replace("{player}", target.getName()));
+            PartyPlayer pp = api.getPartyPlayer(p);
+            if (pp == null) {
+                return 0;
+            } else if (pp.getPartyId() == null) {
+                return 0;
+            } else {
+                com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
+                return party == null ? 0 : party.getMembers().size();
+            }
+        }
+    }
+
+    public boolean isOwner(UUID p) {
+        if (!hasParty(p)) {
+            return false;
+        } else {
+            PartyPlayer pp = api.getPartyPlayer(p);
+            if (pp == null) {
+                return false;
+            } else if (pp.getPartyId() == null) {
+                return false;
+            } else {
+                com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
+                if (party == null) {
+                    return false;
+                } else {
+                    return party.getLeader() == null ? false : party.getLeader().equals(p);
                 }
             }
         }
     }
 
-    @Override
-    public void disband(UUID owner) {
-        PartyPlayer pp = api.getPartyPlayer(owner);
-        if (pp == null) return;
-        if (pp.getPartyId() == null) return;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
-        if (party == null) return;
-        for (UUID mem : party.getMembers()) {
-            Player p = Bukkit.getPlayer(mem);
-            if (p == null) continue;
-            if (!p.isOnline()) continue;
-            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_DISBAND_SUCCESS));
+    public List<UUID> getMembers(UUID p) {
+        ArrayList<UUID> players = new ArrayList();
+        if (!hasParty(p)) {
+            return players;
+        } else {
+            com.alessiodp.parties.api.interfaces.Party party = api.getParty(api.getPartyPlayer(p).getPartyId());
+            UUID[] array = new UUID[party.getMembers().size()];
+            party.getMembers().toArray(array);
+
+            for(int i = 0; i < array.length; ++i) {
+                players.add(array[i]);
+            }
+
+            return players;
         }
-        party.delete();
     }
 
-    @Override
+    public void createParty(Player owner, Player... members) {
+        if (!api.isBungeeCordEnabled()) {
+            api.createParty(null, api.getPartyPlayer(owner.getUniqueId()));
+            Player[] var6 = members;
+            int var5 = members.length;
+
+            for(int var4 = 0; var4 < var5; ++var4) {
+                Player player1 = var6[var4];
+                this.api.getParty(api.getPartyPlayer(owner.getUniqueId()).getPartyId()).addMember(api.getPartyPlayer(player1.getUniqueId()));
+            }
+
+        }
+    }
+
+    public void addMember(UUID owner, Player member) {
+        if (!api.isBungeeCordEnabled()) {
+            api.getParty(api.getPartyPlayer(owner).getPartyId()).addMember(api.getPartyPlayer(member.getUniqueId()));
+        }
+    }
+
+    public void removeFromParty(UUID member) {
+    }
+
+    public void disband(UUID owner) {
+    }
+
     public boolean isMember(UUID owner, UUID check) {
         PartyPlayer pp = api.getPartyPlayer(owner);
-        if (pp == null) return false;
-        if (pp.getPartyId() == null) return false;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
-        if (party == null) return false;
-        return party.getMembers().contains(check);
-    }
-
-    @Override
-    public void removePlayer(UUID owner, UUID target) {
-        PartyPlayer pp = api.getPartyPlayer(target);
-        if (pp == null) return;
-        if (pp.getPartyId() == null) return;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
-        if (party == null) return;
-        party.removeMember(pp);
-        for (UUID mem : party.getMembers()) {
-            Player p = Bukkit.getPlayer(mem);
-            if (p == null) continue;
-            if (!p.isOnline()) continue;
-            p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_SUCCESS));
+        if (pp == null) {
+            return false;
+        } else if (pp.getPartyId() == null) {
+            return false;
+        } else {
+            com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
+            return party == null ? false : party.getMembers().contains(check);
         }
     }
 
-    @Override
+    public void removePlayer(UUID owner, UUID target) {
+    }
+
     public boolean isInternal() {
         return false;
     }
 
-    @Override
     public UUID getOwner(UUID player) {
         PartyPlayer pp = api.getPartyPlayer(player);
-        if (pp == null) return null;
-        if (pp.getPartyId() == null) return null;
-        com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
-        if (party == null) return null;
-        if (party.getLeader() == null) return null;
-        return party.getLeader();
+        if (pp == null) {
+            return null;
+        } else if (pp.getPartyId() == null) {
+            return null;
+        } else {
+            com.alessiodp.parties.api.interfaces.Party party = api.getParty(pp.getPartyId());
+            if (party == null) {
+                return null;
+            } else {
+                return party.getLeader() == null ? null : party.getLeader();
+            }
+        }
     }
 }
