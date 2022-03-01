@@ -131,43 +131,33 @@ public class ArenaManager implements BedWars.ArenaUtil {
         }
         //puts only arenas from group into arraylist
         List<CachedArena> arenaList = new ArrayList<>();
+        int amount = BedWarsProxy.getParty().hasParty(p.getUniqueId()) ? BedWarsProxy.getParty().getMembers(p.getUniqueId()).size() : 1;
         for (CachedArena current : getArenas()) {
-            if ((current.getArenaGroup().equalsIgnoreCase(group)) && ((current.getStatus() == ArenaStatus.WAITING) || (current.getStatus() == ArenaStatus.STARTING) || (current.getCurrentPlayers() < current.getMaxPlayers())))
+            if ((current.getArenaGroup().equalsIgnoreCase(group)) && ((current.getMaxPlayers() - current.getCurrentPlayers()) >= amount) && (((current.getStatus() == ArenaStatus.WAITING) || (current.getStatus() == ArenaStatus.STARTING))))
                 arenaList.add(current);
         }
+
+        if (arenaList.isEmpty()){
+            p.sendMessage(LanguageManager.get().getMsg(p, Messages.COMMAND_JOIN_NO_EMPTY_FOUND));
+            return true;
+        }
+
         //shuffle if determined in config
         if (config.getYml().getBoolean(ConfigPath.GENERAL_CONFIGURATION_RANDOMARENAS)){
             Collections.shuffle(arenaList);
             //randomize it then we will sort by players in arena
         }
 
+
+        CachedArena hold = arenaList.get(0);
         //Reorder based on players in game
-        for (int i = 0; i < arenaList.size(); i++) {
-            for (int j = 0; j < arenaList.size(); j++) {
-                if (j == i)
-                    continue;
-                else if ((i < j) && (arenaList.get(i).getCurrentPlayers() < arenaList.get(j).getCurrentPlayers())) {
-                    CachedArena temp = arenaList.get(i);
-                    arenaList.set(i, arenaList.get(j));
-                    arenaList.set(j, temp);
-                } else if ((j < i) && (arenaList.get(i).getCurrentPlayers() > arenaList.get(j).getCurrentPlayers())) {
-                    CachedArena temp = arenaList.get(j);
-                    arenaList.set(j, arenaList.get(i));
-                    arenaList.set(i, temp);
-
-                }
-            }
+        for (int i = 1; i < arenaList.size(); i++) {
+            if (arenaList.get(i).getCurrentPlayers() > hold.getCurrentPlayers())
+                hold = arenaList.get(i);
         }
-
-        int amount = BedWarsProxy.getParty().hasParty(p.getUniqueId()) ? BedWarsProxy.getParty().getMembers(p.getUniqueId()).size() : 1;
-        for (CachedArena a : arenaList) {
-            if ((a.getMaxPlayers() - a.getCurrentPlayers()) >= amount) {
-                a.addPlayer(p, null);
-                return true;
-            }
-        }
-        p.sendMessage(LanguageManager.get().getMsg(p, Messages.COMMAND_JOIN_NO_EMPTY_FOUND));
+        hold.addPlayer(p, null);
         return true;
+
     }
 
     /**
@@ -186,18 +176,22 @@ public class ArenaManager implements BedWars.ArenaUtil {
      */
     public boolean joinRandomArena(@NotNull Player p) {
         //rewrite by JT122406
-        //verifies if party leader is one joining game
+        //checks for party leader
         if (getParty().hasParty(p.getUniqueId()) && !getParty().isOwner(p.getUniqueId())) {
             p.sendMessage(LanguageManager.get().getMsg(p, Messages.COMMAND_JOIN_DENIED_NOT_PARTY_LEADER));
             return false;
         }
-
-        //only adds arena that are joinable to arraylist
+        //puts only arenas from group into arraylist
         List<CachedArena> arenaList = new ArrayList<>();
+        int amount = BedWarsProxy.getParty().hasParty(p.getUniqueId()) ? BedWarsProxy.getParty().getMembers(p.getUniqueId()).size() : 1;
         for (CachedArena current : getArenas()) {
-            if (((current.getStatus() == ArenaStatus.WAITING) || (current.getStatus() == ArenaStatus.STARTING) || (current.getCurrentPlayers() < current.getMaxPlayers())))
+            if (((current.getMaxPlayers() - current.getCurrentPlayers()) >= amount) && (((current.getStatus() == ArenaStatus.WAITING) || (current.getStatus() == ArenaStatus.STARTING))))
                 arenaList.add(current);
+        }
 
+        if (arenaList.isEmpty()){
+            p.sendMessage(LanguageManager.get().getMsg(p, Messages.COMMAND_JOIN_NO_EMPTY_FOUND));
+            return true;
         }
 
         //shuffle if determined in config
@@ -206,31 +200,14 @@ public class ArenaManager implements BedWars.ArenaUtil {
             //randomize it then we will sort by players in arena
         }
 
+
+        CachedArena hold = arenaList.get(0);
         //Reorder based on players in game
-        for (int i = 0; i < arenaList.size(); i++){
-            for (int j = 0; j < arenaList.size(); j++){
-                if (j == i)
-                    continue;
-                else if ((i < j) && (arenaList.get(i).getCurrentPlayers() < arenaList.get(j).getCurrentPlayers())){
-                    CachedArena temp = arenaList.get(i);
-                    arenaList.set(i, arenaList.get(j));
-                    arenaList.set(j, temp);
-                }else if ((j < i)  && (arenaList.get(i).getCurrentPlayers() > arenaList.get(j).getCurrentPlayers())){
-                    CachedArena temp = arenaList.get(j);
-                    arenaList.set(j, arenaList.get(i));
-                    arenaList.set(i, temp);
-                }
-            }
-
+        for (int i = 1; i < arenaList.size(); i++) {
+            if (arenaList.get(i).getCurrentPlayers() > hold.getCurrentPlayers())
+                hold = arenaList.get(i);
         }
-
-        int amount = BedWarsProxy.getParty().hasParty(p.getUniqueId()) ? BedWarsProxy.getParty().getMembers(p.getUniqueId()).size() : 1;
-        for (CachedArena a : arenaList) {
-            if ((a.getMaxPlayers() - a.getCurrentPlayers()) >= amount) {
-                a.addPlayer(p, null);
-                break;
-            }
-        }
+        hold.addPlayer(p, null);
         return true;
     }
 
