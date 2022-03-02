@@ -63,7 +63,6 @@ public class Parties implements Party {
             for(int i = 0; i < array.length; ++i) {
                 players.add(array[i]);
             }
-
             return players;
         }
     }
@@ -92,6 +91,7 @@ public class Parties implements Party {
     }
 
     public void disband(UUID owner) {
+        //config option here to determine party leave together or not
     }
 
     public boolean isMember(UUID owner, UUID check) {
