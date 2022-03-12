@@ -12,16 +12,16 @@ import java.util.List;
 import java.util.UUID;
 
 public class PAFBungeeCordParty implements Party {
-    @Override
-    public boolean hasParty(UUID p) {
-        return getPAFParty(p) == null;
-    }
 
     private PlayerParty getPAFParty(UUID p) {
         PAFPlayer pafPlayer = PAFPlayerManager.getInstance().getPlayer(p);
         return PartyManager.getInstance().getParty(pafPlayer);
     }
 
+    @Override
+    public boolean hasParty(UUID p) {
+        return getPAFParty(p) != null;
+    }
 
     @Override
     public int partySize(UUID p) {
