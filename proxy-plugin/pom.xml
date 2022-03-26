@@ -14,10 +14,6 @@
 
     <repositories>
         <repository>
-            <id>placeholderapi</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <repository>
             <id>simonsators-repo</id>
             <url>https://simonsator.de/repo/</url>
         </repository>
@@ -35,11 +31,11 @@
         </repository>
         <repository>
             <id>andrei1058-repo</id>
-            <url>https://repo.andrei1058.com/releases</url>
+            <url>https://repo.andrei1058.dev/releases</url>
         </repository>
         <repository>
             <id>andrei1058-repo2</id>
-            <url>https://repo.andrei1058.com/snapshots/</url>
+            <url>https://repo.andrei1058.dev/snapshots/</url>
         </repository>
     </repositories>
 
@@ -143,13 +139,7 @@
         <dependency>
             <groupId>com.andrei1058.spigot.signapi</groupId>
             <artifactId>signs-api</artifactId>
-            <version>dev-1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.andrei1058.spigot.updater</groupId>
-            <artifactId>update-checker</artifactId>
-            <version>[1.0,)</version>
+            <version>22.3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -184,14 +174,8 @@
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <artifactId>spigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.gamer.party</groupId>
-            <artifactId>party</artifactId>
-            <version>1.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

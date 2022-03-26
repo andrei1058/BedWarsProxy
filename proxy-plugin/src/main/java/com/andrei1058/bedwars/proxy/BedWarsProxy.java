@@ -20,7 +20,6 @@ import com.andrei1058.bedwars.proxy.party.*;
 import com.andrei1058.bedwars.proxy.socketmanager.ServerSocketTask;
 import com.andrei1058.bedwars.proxy.socketmanager.TimeOutTask;
 import com.andrei1058.bedwars.proxy.support.papi.SupportPAPI;
-import com.andrei1058.spigot.updater.SpigotUpdater;
 import com.andrei1058.spigot.versionsupport.BlockSupport;
 import com.andrei1058.spigot.versionsupport.ItemStackSupport;
 import com.andrei1058.spigot.versionsupport.MaterialSupport;
@@ -97,9 +96,6 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
             if (Bukkit.getServer().getPluginManager().isPluginEnabled("Parties")) {
                 getLogger().info("Hook into Parties (by AlessioDP) support!");
                 party = new Parties();
-            } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("Partys")) {
-                getLogger().info("Hook into Parties (by Retr0) support!");
-                party = new Partys();
             } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("Spigot-Party-API-PAF")) {
                 getLogger().info("Hook into Party and Friends Extended Edition for BungeeCord (by Simonsator) support!");
                 party = new PAFBungeeCordParty();
@@ -140,8 +136,6 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
         m.addCustomChart(new SimplePie("party_adapter", () -> getParty().getClass().getName()));
         m.addCustomChart(new SimplePie("level_adapter", () -> getLevelManager().getClass().getName()));
         SignManager.init();
-
-        new SpigotUpdater(this, 66642, true).checkUpdate();
     }
 
     @Override
