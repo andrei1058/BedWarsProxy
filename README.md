@@ -1,5 +1,5 @@
 
-[![Documentation](https://i.imgur.com/7QDbrIS.png)](https://andrei1058.gitbook.io/bedwarsproxy/) [![Report a Bug](https://i.imgur.com/Z1qOYLC.png)](https://gitlab.com/andrei1058/bedwarsproxy/-/issues) [![API](https://i.imgur.com/JfMTMMc.png)](http://javadoc.andrei1058.com/BedWarsProxy/) [![Discord](https://i.imgur.com/yBySzkU.png)](https://discord.gg/XdJfN2X)
+[![Documentation](https://i.imgur.com/7QDbrIS.png)](https://andrei1058.gitbook.io/bedwarsproxy/) [![Report a Bug](https://i.imgur.com/Z1qOYLC.png)](https://gitlab.com/andrei1058/bedwarsproxy/-/issues) [![API](https://i.imgur.com/JfMTMMc.png)](http://javadoc.andrei1058.dev/BedWarsProxy/) [![Discord](https://i.imgur.com/yBySzkU.png)](https://discord.gg/XdJfN2X)
 
 **BedWarsProxy** is a plugin for Bungeecord networks that are running BedWars1058 in BUNGEE mode. This plugin provides features for lobby servers: join gui/ signs, placeholders and more.
 
@@ -29,7 +29,7 @@ All the information you need can be found on its [documentation/ wiki](https://a
 ```xml
 <repository>
     <id>andrei1058-releases</id>
-    <url>https://repo.andrei1058.com/releases/</url>
+    <url>https://repo.andrei1058.dev/releases/</url>
 </repository>
 <dependency>
     <groupId>com.andrei1058.bedwars</groupId>
