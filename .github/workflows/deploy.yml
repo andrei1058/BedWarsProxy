@@ -2,7 +2,7 @@ name: Deploy with Maven
 
 on:
   push:
-    branches: [testworkflow]
+    branches: [production]
 
 jobs:
   build:
