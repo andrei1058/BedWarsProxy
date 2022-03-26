@@ -1,4 +1,4 @@
-name: Deploy with Maven
+name: Compile with Maven
 
 on:
   push:
