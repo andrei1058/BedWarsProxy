@@ -4,7 +4,6 @@ on:
   push:
     branches-ignore:
       - production
-      - master
   pull_request:
     branches-ignore:
       - production
@@ -23,7 +22,7 @@ jobs:
         with:
           java-version: '17.0.2'
           distribution: 'adopt'
-      - name: Compile with Maven
+      - name: Deploy snapshot with Maven
         env:
           MVN_REPO_USER: ${{ secrets.MVN_REPO_USER }}
           MVN_REPO_PASS: ${{ secrets.MVN_REPO_PASS }}
@@ -34,5 +33,5 @@ jobs:
           export UPDATE_VERSION=`jq '.version' version.json | tr -d '"'`
           mvn versions:set -DnewVersion=$UPDATE-VERSION-SNAPSHOT
           mvn versions:update-child-modules
-          mvn clean install -s ci_settings.xml
+          mvn clean deploy -s ci_settings.xml
           echo "UPDATE_VERSION=$UPDATE_VERSION" >> $GITHUB_ENV
