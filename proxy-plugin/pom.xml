@@ -147,12 +147,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.andrei1058.spigot.updater</groupId>
-            <artifactId>update-checker</artifactId>
-            <version>[1.0,)</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.andrei1058.bedwars</groupId>
             <artifactId>proxy-api</artifactId>
             <version>${project.version}</version>
