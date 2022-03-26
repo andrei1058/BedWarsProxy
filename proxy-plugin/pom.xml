@@ -35,11 +35,11 @@
         </repository>
         <repository>
             <id>andrei1058-repo</id>
-            <url>https://repo.andrei1058.com/releases</url>
+            <url>https://repo.andrei1058.dev/releases</url>
         </repository>
         <repository>
             <id>andrei1058-repo2</id>
-            <url>https://repo.andrei1058.com/snapshots/</url>
+            <url>https://repo.andrei1058.dev/snapshots/</url>
         </repository>
     </repositories>
 
