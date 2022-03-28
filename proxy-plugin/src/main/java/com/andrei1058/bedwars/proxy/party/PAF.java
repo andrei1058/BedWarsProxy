@@ -24,28 +24,18 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
     }
 
     @Override
-    public int partySize(UUID p) {
-        PlayerParty party = getPAFParty(p);
-        if (party == null)
-            return 0;
-        return party.getAllPlayers().size();
-    }
+    public int partySize(UUID p) {return getPAFParty(p).getAllPlayers().size();}
 
     @Override
     public boolean isOwner(UUID p) {
         OnlinePAFPlayer pafPlayer = PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer(p));
-        PlayerParty party = PartyManager.getInstance().getParty(pafPlayer);
-        if (party == null)
-            return false;
-        return party.isLeader(pafPlayer);
+        return PartyManager.getInstance().getParty(pafPlayer).isLeader(pafPlayer);
     }
 
     @Override
     public List<UUID> getMembers(UUID owner) {
         ArrayList<UUID> playerList = new ArrayList<>();
         PlayerParty party = getPAFParty(owner);
-        if (party == null)
-            return playerList;
         for (OnlinePAFPlayer players : party.getAllPlayers()) {
             playerList.add(players.getPlayer().getUniqueId());
         }
@@ -55,17 +45,21 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
     @Override
     public void createParty(Player owner, Player... members) {
         OnlinePAFPlayer pafPlayer = PAFPlayerManager.getInstance().getPlayer(owner);
-        PartyManager.getInstance().createParty(pafPlayer);
-        PlayerParty party = pafPlayer.getParty();
-        for (int i = 0; i < members.length; i++){
-            party.addPlayer(PAFPlayerManager.getInstance().getPlayer(members[i]));
+        PlayerParty party = PartyManager.getInstance().createParty(pafPlayer);
+        party.setPrivateState(false);
+        for (Player p1 : members){
+            party.addPlayer(PAFPlayerManager.getInstance().getPlayer(p1));
         }
+        party.setPrivateState(true);
     }
 
     @Override
     public void addMember(UUID owner, Player member) {
         OnlinePAFPlayer pafPlayer = PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer(owner));
-        pafPlayer.getParty().addPlayer(PAFPlayerManager.getInstance().getPlayer(member));
+        PlayerParty party = pafPlayer.getParty();
+        party.setPrivateState(false);
+        party.addPlayer(PAFPlayerManager.getInstance().getPlayer(member));
+        party.setPrivateState(true);
     }
 
     @Override
@@ -81,16 +75,12 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
 
     @Override
     public boolean isMember(UUID owner, UUID check) {
-        PlayerParty party = getPAFParty(owner);
-        if (party == null)
-            return false;
-        return party.isInParty(PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer("check")));
+        return getPAFParty(owner).isInParty(PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer(check)));
     }
 
     @Override
     public void removePlayer(UUID owner, UUID target) {
-        PlayerParty p = getPAFParty(owner);
-        p.leaveParty(PAFPlayerManager.getInstance().getPlayer(target));
+        getPAFParty(owner).leaveParty(PAFPlayerManager.getInstance().getPlayer(target));
     }
 
     @Override
@@ -100,14 +90,6 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
 
     @Override
     public UUID getOwner(UUID player) {
-        for (int i = 0; i < getMembers(player).size(); i++){
-            UUID p2 = getMembers(player).get(i);
-            Player p = Bukkit.getPlayer(p2);
-            OnlinePAFPlayer partypl= PAFPlayerManager.getInstance().getPlayer(p);
-            if (partypl.getParty().isLeader(partypl)){
-                return  getMembers(player).get(i);
-            }
-        }
-        return player;
+        return getPAFParty(player).getLeader().getUniqueId();
     }
 }
