@@ -102,6 +102,9 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
             } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("PartyAndFriends")) {
                 getLogger().info("Hook into Party and Friends for Spigot (by Simonsator) support!");
                 party = new PAF();
+            } else  if (Bukkit.getServer().getPluginManager().isPluginEnabled("PartyAndFriendsGUI")){
+                getLogger().info("Hook into DataCallBackAPI for Party and Friends Bungee (by Simonsator) support!");
+                party = new PAFDataCallBack();
             }
         }
         if (party == null) {
