@@ -187,6 +187,12 @@ public class LegacyArena implements CachedArena {
             return false;
         }
 
+        PlayerArenaJoinEvent event = new PlayerArenaJoinEvent(player, this, true);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return false;
+        }
+
         //pld,worldIdentifier,uuidUser,languageIso,targetPlayer
         HashMap<String, Object> map = new HashMap<>();
         map.put("type", "PLD");
