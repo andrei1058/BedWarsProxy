@@ -13,6 +13,7 @@ public class PlayerArenaJoinEvent extends Event implements Cancellable {
     private boolean cancelled;
     private Player player;
     private CachedArena arena;
+    private boolean spectator = false;
 
     /**
      * Called when a player joins an arena.
@@ -24,6 +25,11 @@ public class PlayerArenaJoinEvent extends Event implements Cancellable {
     public PlayerArenaJoinEvent(Player player, CachedArena arena) {
         this.player = player;
         this.arena = arena;
+    }
+
+    public PlayerArenaJoinEvent(Player player, CachedArena arena, boolean spectator) {
+        this(player, arena);
+        this.spectator = spectator;
     }
 
     /**
@@ -42,6 +48,15 @@ public class PlayerArenaJoinEvent extends Event implements Cancellable {
      */
     public CachedArena getArena() {
         return arena;
+    }
+
+    /**
+     * Check if the player has joined as spectator.
+     *
+     * @return true if the player is a spectator, otherwise false.
+     */
+    public boolean isSpectator() {
+        return spectator;
     }
 
     /**
