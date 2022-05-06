@@ -1,12 +1,12 @@
 package com.andrei1058.bedwars.proxy.arenamanager;
 
+import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.andrei1058.bedwars.proxy.api.*;
 import com.andrei1058.bedwars.proxy.api.event.ArenaCacheUpdateEvent;
 import com.andrei1058.bedwars.proxy.api.event.PlayerArenaJoinEvent;
 import com.andrei1058.bedwars.proxy.api.event.PlayerReJoinEvent;
 import com.andrei1058.bedwars.proxy.language.LanguageManager;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
-import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.gson.JsonObject;
@@ -15,10 +15,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import static com.andrei1058.bedwars.proxy.BedWarsProxy.getParty;
@@ -195,7 +194,7 @@ public class LegacyArena implements CachedArena {
         map.put("target", targetPlayer == null ? "" : targetPlayer);
         map.put("arena_identifier", getRemoteIdentifier());
         JSONObject json = new JSONObject(map);
-        as.getOut().println(json.toJSONString());
+        as.getOut().println(json);
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(getServer());
@@ -260,7 +259,7 @@ public class LegacyArena implements CachedArena {
         json.addProperty("lang_iso", LanguageManager.get().getPlayerLanguage(player).getIso());
         json.addProperty("target", partyOwnerName == null ? "" : partyOwnerName);
         json.addProperty("arena_identifier", getRemoteIdentifier());
-        as.getOut().println(json.toString());
+        as.getOut().println(json);
         //noinspection UnstableApiUsage
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
@@ -298,7 +297,7 @@ public class LegacyArena implements CachedArena {
         json.addProperty("lang_iso", BedWarsProxy.getAPI().getLanguageUtil().getPlayerLanguage(player).getIso());
         json.addProperty("target", "");
         json.addProperty("arena_identifier", getRemoteIdentifier());
-        as.getOut().println(json.toString());
+        as.getOut().println(json);
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(getServer());
