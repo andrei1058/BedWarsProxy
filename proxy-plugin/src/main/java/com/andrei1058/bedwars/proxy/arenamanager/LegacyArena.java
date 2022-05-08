@@ -235,7 +235,6 @@ public class LegacyArena implements CachedArena {
                         addPlayer(pl, player.getName());
                     }
                 }
-                getParty().disband(player.getUniqueId());
             }
         }
 
