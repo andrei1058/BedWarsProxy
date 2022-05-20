@@ -34,14 +34,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
-public class BedWarsProxy extends JavaPlugin implements BedWars {
+public class BedWarsProxy extends JavaPlugin{
 
     private static BedWarsProxy plugin;
+    private static BedWars api;
     public static BedWarsConfig config;
     private static Database remoteDatabase = null;
     private static StatsCache statsCache;
@@ -57,6 +59,8 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
     @Override
     public void onLoad() {
         plugin = this;
+        api = new API();
+        Bukkit.getServicesManager().register(BedWars.class, api, this, ServicePriority.Highest);
         // Setup languages
     }
 
@@ -202,17 +206,8 @@ public class BedWarsProxy extends JavaPlugin implements BedWars {
         BedWarsProxy.remoteDatabase = remoteDatabase;
     }
 
-    @Override
-    public LanguageUtil getLanguageUtil() {
-        return LanguageManager.get();
-    }
-
-    @Override
-    public ArenaUtil getArenaUtil() {
-        return ArenaManager.getInstance();
-    }
 
     public static BedWars getAPI() {
-        return BedWarsProxy.plugin;
+        return api;
     }
 }
