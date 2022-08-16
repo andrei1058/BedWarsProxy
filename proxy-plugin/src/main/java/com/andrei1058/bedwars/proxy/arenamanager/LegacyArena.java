@@ -235,7 +235,6 @@ public class LegacyArena implements CachedArena {
                         addPlayer(pl, player.getName());
                     }
                 }
-                getParty().disband(player.getUniqueId());
             }
         }
 
@@ -250,6 +249,10 @@ public class LegacyArena implements CachedArena {
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return false;
+        }
+
+        if (null == partyOwnerName) {
+            getParty().disband(player.getUniqueId());
         }
 
         //pld,worldIdentifier,uuidUser,languageIso,partyOwner
