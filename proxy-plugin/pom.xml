@@ -49,7 +49,7 @@
         <dependency>
             <groupId>de.simonsator</groupId>
             <artifactId>Party-and-Friends-MySQL-Edition-Spigot-API</artifactId>
-            <version>1.5.3</version>
+            <version>1.5.4-RELEASE</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -187,7 +187,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.0.0-M2</version>
+                <version>3.0.0</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
@@ -195,7 +195,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.4.1</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
@@ -203,7 +203,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.1</version>
                 <configuration>
                     <relocations>
                         <relocation>
