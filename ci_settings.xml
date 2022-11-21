@@ -1,0 +1,20 @@
+<settings>
+    <servers>
+        <server>
+            <id>gitlab-maven</id>
+            <configuration>
+                <httpHeaders>
+                    <property>
+                        <name>Job-Token</name>
+                        <value>${env.CI_JOB_TOKEN}</value>
+                    </property>
+                </httpHeaders>
+            </configuration>
+        </server>
+        <server>
+            <id>ftp-repo</id>
+            <username>${env.FTP_USR}</username>
+            <password>${env.FTP_PASS}</password>
+        </server>
+    </servers>
+</settings>
