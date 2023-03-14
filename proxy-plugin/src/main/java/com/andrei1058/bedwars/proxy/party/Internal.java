@@ -155,6 +155,14 @@ public class Internal implements Party {
         return p.getOwner();
     }
 
+    @Override
+    public void promote(UUID owner, UUID target) {
+        InternalParty p = getParty(owner);
+        if (p != null){
+            p.owner = target;
+        }
+    }
+
     private InternalParty getParty(UUID owner) {
         for (InternalParty p : parties) {
             if (p.getOwner().equals(owner)) return p;

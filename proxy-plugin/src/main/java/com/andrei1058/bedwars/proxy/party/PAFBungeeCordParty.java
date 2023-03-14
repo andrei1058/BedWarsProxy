@@ -13,8 +13,7 @@ import java.util.UUID;
 public class PAFBungeeCordParty implements Party {
 
     private PlayerParty getPAFParty(UUID p) {
-        PAFPlayer pafPlayer = PAFPlayerManager.getInstance().getPlayer(p);
-        return PartyManager.getInstance().getParty(pafPlayer);
+        return PartyManager.getInstance().getParty(PAFPlayerManager.getInstance().getPlayer(p));
     }
 
     @Override
@@ -76,5 +75,10 @@ public class PAFBungeeCordParty implements Party {
     @Override
     public UUID getOwner(UUID player) {
         return getPAFParty(player).getLeader().getUniqueId();
+    }
+
+    @Override
+    public void promote(UUID owner, UUID target) {
+
     }
 }

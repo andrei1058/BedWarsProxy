@@ -14,8 +14,7 @@ import java.util.UUID;
 public class PAF implements Party{ //Party And Friends Support Added by JT122406
 
     private PlayerParty getPAFParty(UUID p) {
-        OnlinePAFPlayer pafPlayer = PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer(p));
-        return PartyManager.getInstance().getParty(pafPlayer);
+        return PartyManager.getInstance().getParty(PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer(p)));
     }
 
     @Override
@@ -44,8 +43,7 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
 
     @Override
     public void createParty(Player owner, Player... members) {
-        OnlinePAFPlayer pafPlayer = PAFPlayerManager.getInstance().getPlayer(owner);
-        PlayerParty party = PartyManager.getInstance().createParty(pafPlayer);
+        PlayerParty party = PartyManager.getInstance().createParty(PAFPlayerManager.getInstance().getPlayer(owner));
         party.setPrivateState(false);
         for (Player p1 : members){
             party.addPlayer(PAFPlayerManager.getInstance().getPlayer(p1));
@@ -90,5 +88,10 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
     @Override
     public UUID getOwner(UUID player) {
         return getPAFParty(player).getLeader().getUniqueId();
+    }
+
+    @Override
+    public void promote(UUID owner, UUID target) {
+        getPAFParty(owner).setLeader(PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer(target)));
     }
 }

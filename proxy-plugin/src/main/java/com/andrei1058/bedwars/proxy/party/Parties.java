@@ -144,4 +144,9 @@ public class Parties implements Party {
         if (party.getLeader() == null) return null;
         return party.getLeader();
     }
+
+    @Override
+    public void promote(UUID owner, UUID target) {
+
+    }
 }

@@ -70,6 +70,15 @@ public class Messages {
     public static String COMMAND_PARTY_REMOVE_USAGE = "cmd-party-remove-usage";
     public static String COMMAND_PARTY_REMOVE_SUCCESS = "cmd-party-remove";
     public static String COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER = "cmd-party-remove-not-in";
+    public static String COMMAND_PARTY_PROMOTE_USAGE = "cmd-party-promote-usage";
+    public static String COMMAND_PARTY_PROMOTE_ALREADY_LEADER = "cmd-party-promote-already-owner";
+    public static String COMMAND_PARTY_PROMOTE_SUCCESS = "cmd-party-promote";
+    public static String COMMAND_PARTY_PROMOTE_SUCCESS_TARGET = "cmd-party-promote-target";
+    public static String COMMAND_PARTY_PROMOTE_SUCCESS_MEMBERS = "cmd-party-promote-members";
+    public static String COMMAND_PARTY_INFO_OWNER = "cmd-party-info-owner";
+    public static String COMMAND_PARTY_INFO_MEMBERS = "cmd-party-info-members";
+    public static String COMMAND_PARTY_INFO_PLAYER = "cmd-party-info-player";
+
 
 
     // signs related

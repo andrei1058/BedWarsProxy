@@ -76,6 +76,14 @@ public class English extends Language {
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_USAGE, "{prefix}&7Usage: &e/party remove <player>");
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_SUCCESS, "{prefix}&7{player} &ewas removed from the party,");
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER, "{prefix}&7{player} &eis not in your party!");
+        yml.addDefault(Messages.COMMAND_PARTY_PROMOTE_USAGE, "{prefix}&7Usage: &e/party promote <player>");
+        yml.addDefault(Messages.COMMAND_PARTY_PROMOTE_ALREADY_LEADER, "{prefix}&7{player} &eis already the leader of the party!");
+        yml.addDefault(Messages.COMMAND_PARTY_PROMOTE_SUCCESS, "{prefix}&7{player} &ewas promoted to leader of the party!");
+        yml.addDefault(Messages.COMMAND_PARTY_PROMOTE_SUCCESS_TARGET, "{prefix}&7{player} &ehas promoted you to leader of the party!");
+        yml.addDefault(Messages.COMMAND_PARTY_PROMOTE_SUCCESS_MEMBERS, "{prefix}&7{player} &ehas been promoted to leader of the party!");
+        yml.addDefault(Messages.COMMAND_PARTY_INFO_OWNER, "{prefix} &eOwner of the party is: &7{owner}");
+        yml.addDefault(Messages.COMMAND_PARTY_INFO_MEMBERS,"{prefix} &eParty Members are : ");
+        yml.addDefault(Messages.COMMAND_PARTY_INFO_PLAYER, "&7{player}");
         yml.addDefault(Messages.COMMAND_TP_USAGE, "{prefix}&7Usage: &e/bw tp <name>");
         yml.addDefault(Messages.COMMAND_TP_NOT_FOUND, "{prefix}&7{player}&e was not found in bed-wars arenas.");
         yml.addDefault(Messages.COMMAND_TP_FAIL2, "{prefix}&7{player}&e was found on &7{server}&e but you can't join at this time.");

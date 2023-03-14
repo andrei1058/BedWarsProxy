@@ -66,4 +66,9 @@ public class NoParty implements Party {
     public UUID getOwner(UUID player) {
         return null;
     }
+
+    @Override
+    public void promote(UUID owner, UUID target) {
+
+    }
 }

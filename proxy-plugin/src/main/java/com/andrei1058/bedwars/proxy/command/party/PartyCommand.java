@@ -19,9 +19,11 @@ public class PartyCommand extends ParentCommand {
         addSubCommand(new LeaveCMD("leave", ""));
         addSubCommand(new DisbandCMD("disband", ""));
         addSubCommand(new RemoveCMD("remove", ""));
+        addSubCommand(new PromoteCMD("promote", ""));
+        addSubCommand(new InfoCMD("info", ""));
+        addSubCommand(new InfoCMD("list", ""));
     }
 
-    //owner, target
     private static HashMap<UUID, UUID> partySessionRequest = new HashMap<>();
 
     @Override

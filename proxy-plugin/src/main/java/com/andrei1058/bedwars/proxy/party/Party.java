@@ -30,4 +30,7 @@ public interface Party {
     boolean isInternal();
 
     UUID getOwner(UUID player);
+
+    void promote(UUID owner, UUID target);
+
 }
