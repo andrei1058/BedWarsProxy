@@ -5,6 +5,7 @@ import com.andrei1058.bedwars.proxy.arenamanager.ArenaManager;
 import com.andrei1058.bedwars.proxy.api.CachedArena;
 import com.andrei1058.bedwars.proxy.api.Messages;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -93,10 +94,13 @@ public class SupportPAPI extends PlaceholderExpansion {
                 replay = String.valueOf(BedWarsProxy.getStatsCache().getPlayerGamesPlayed(p.getUniqueId()));
                 break;
             case "player_level":
-                replay = BedWarsProxy.getLevelManager().getLevel(p);
+                replay = BedWarsProxy.getLevelManager().getLevel(p).isEmpty() ? BedWarsProxy.config.getString("levels-settings.default-name").replace("{number}", String.valueOf(1)) : BedWarsProxy.getLevelManager().getLevel(p);
                 break;
-                case "player_level_raw":
-                replay = String.valueOf(BedWarsProxy.getLevelManager().getPlayerLevel(p));
+            case "player_level_strip":
+                replay = BedWarsProxy.getLevelManager().getLevel(p).isEmpty() ? BedWarsProxy.config.getString("levels-settings.default-name").replace("{number}", String.valueOf(1)).replaceAll("\\[", "").replaceAll("]","") : BedWarsProxy.getLevelManager().getLevel(p).replaceAll("\\[", "").replaceAll("]","");
+                break;
+            case "player_level_raw":
+                replay = String.valueOf(BedWarsProxy.getLevelManager().getPlayerLevel(p)).isEmpty() ? String.valueOf(1) : String.valueOf(BedWarsProxy.getLevelManager().getPlayerLevel(p));
                 break;
             case "player_progress":
                 replay = BedWarsProxy.getLevelManager().getProgressBar(p);
@@ -116,6 +120,6 @@ public class SupportPAPI extends PlaceholderExpansion {
                 replay = String.valueOf(BedWarsProxy.getLevelManager().getRequiredXp(p));
                 break;
         }
-        return replay;
+        return ChatColor.translateAlternateColorCodes('&',replay);
     }
 }

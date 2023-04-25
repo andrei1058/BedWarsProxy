@@ -31,6 +31,7 @@ public class BedWarsConfig extends PluginConfig {
         yml.options().copyDefaults(true);
 
         yml.addDefault("levels-settings.default-name", "&7[{number}✩] ");
+        yml.addDefault("levels-settings.default-level-up-requirement", 1000);
         yml.addDefault("levels-settings.progress-bar-symbol", "■");
         yml.addDefault("levels-settings.progress-bar-unlocked-color", "&b");
         yml.addDefault("levels-settings.progress-bar-locked-color", "&7");
