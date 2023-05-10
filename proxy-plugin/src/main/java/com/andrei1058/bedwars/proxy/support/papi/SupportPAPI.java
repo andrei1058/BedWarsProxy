@@ -96,8 +96,14 @@ public class SupportPAPI extends PlaceholderExpansion {
             case "player_level":
                 replay = BedWarsProxy.getLevelManager().getLevel(p).isEmpty() ? BedWarsProxy.config.getString("levels-settings.default-name").replace("{number}", String.valueOf(1)) : BedWarsProxy.getLevelManager().getLevel(p);
                 break;
+            case "player_level_trim":
+                replay = BedWarsProxy.getLevelManager().getLevel(p).isEmpty() ? BedWarsProxy.config.getString("levels-settings.default-name").replace("{number}", String.valueOf(1)).trim() : BedWarsProxy.getLevelManager().getLevel(p).trim();
+                break;
             case "player_level_strip":
                 replay = BedWarsProxy.getLevelManager().getLevel(p).isEmpty() ? BedWarsProxy.config.getString("levels-settings.default-name").replace("{number}", String.valueOf(1)).replaceAll("\\[", "").replaceAll("]","") : BedWarsProxy.getLevelManager().getLevel(p).replaceAll("\\[", "").replaceAll("]","");
+                break;
+            case "player_level_strip_trim":
+                replay = BedWarsProxy.getLevelManager().getLevel(p).isEmpty() ? BedWarsProxy.config.getString("levels-settings.default-name").replace("{number}", String.valueOf(1)).replaceAll("\\[", "").replaceAll("]","").trim() : BedWarsProxy.getLevelManager().getLevel(p).replaceAll("\\[", "").replaceAll("]","").trim();
                 break;
             case "player_level_raw":
                 replay = String.valueOf(BedWarsProxy.getLevelManager().getPlayerLevel(p)).isEmpty() ? String.valueOf(1) : String.valueOf(BedWarsProxy.getLevelManager().getPlayerLevel(p));

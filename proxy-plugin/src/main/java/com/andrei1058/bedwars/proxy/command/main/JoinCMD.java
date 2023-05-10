@@ -27,6 +27,7 @@ public class JoinCMD extends SubCommand {
     public void execute(CommandSender s, String[] args) {
         if (s instanceof ConsoleCommandSender) return;
         Player p = (Player) s;
+
         if (args.length < 1) {
             s.sendMessage(getMsg(p, Messages.COMMAND_JOIN_USAGE));
             return;

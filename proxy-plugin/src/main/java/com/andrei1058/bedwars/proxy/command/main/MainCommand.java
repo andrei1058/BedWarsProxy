@@ -36,6 +36,11 @@ public class MainCommand extends ParentCommand {
         if (s instanceof ConsoleCommandSender) return;
         Player p = (Player) s;
 
+        if(!p.hasPermission("vronti.owner")){
+            p.sendMessage("\"Unknown command. Type \"/help\" for help.\"");
+            return;
+        }
+
         s.sendMessage(" ");
         s.sendMessage("§8§l|-" + " §6" + BedWarsProxy.getPlugin().getDescription().getName() + " v" + BedWarsProxy.getPlugin().getDescription().getVersion() + " §7- §cCommands");
         s.sendMessage(" ");
