@@ -2,7 +2,6 @@ package com.andrei1058.bedwars.proxy.command.main;
 
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.andrei1058.bedwars.proxy.command.SubCommand;
-import com.andrei1058.bedwars.proxy.language.Language;
 import com.andrei1058.bedwars.proxy.api.Messages;
 import com.andrei1058.bedwars.proxy.language.LanguageManager;
 import org.bukkit.Bukkit;
@@ -44,7 +43,6 @@ public class LangCMD extends SubCommand {
                 p.sendMessage(getMsg(p, Messages.COMMAND_LANG_LIST_FORMAT).replace("{iso}", l.getIso()).replace("{name}", l.getLangName()));
             }
             p.sendMessage(getMsg(p, Messages.COMMAND_LANG_USAGE));
-            return;
         } else if (LanguageManager.get().isLanguageExist(args[0])) {
             LanguageManager.get().setPlayerLanguage(p, args[0], false);
             Bukkit.getScheduler().runTaskLater(BedWarsProxy.getPlugin(), () -> p.sendMessage(getMsg(p, Messages.COMMAND_LANG_SELECTED_SUCCESSFULLY)), 10L);

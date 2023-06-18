@@ -140,7 +140,7 @@ public class StatsCache {
      */
     public void addBedsDestroyed(UUID uuid, int amount) {
         if (!isConnected()) connect();
-        try (Statement s = connection.createStatement();) {
+        try (Statement s = connection.createStatement()) {
             s.executeUpdate("UPDATE '" + table + "' SET beds_destroyed = beds_destroyed + '" + amount + "' WHERE uuid = '" + uuid.toString() + "';");
         } catch (SQLException e) {
             e.printStackTrace();

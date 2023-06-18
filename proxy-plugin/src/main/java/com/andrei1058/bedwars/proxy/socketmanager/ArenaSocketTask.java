@@ -12,7 +12,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,7 +34,7 @@ public class ArenaSocketTask implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(socket.toString());
+        System.out.println(socket);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.andrei1058.bedwars.proxy;
 
 import com.andrei1058.bedwars.proxy.api.BedWars;
-import com.andrei1058.bedwars.proxy.arenamanager.ArenaManager;
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaSelectorListener;
 import com.andrei1058.bedwars.proxy.arenasign.SignManager;
 import com.andrei1058.bedwars.proxy.command.RejoinCommand;

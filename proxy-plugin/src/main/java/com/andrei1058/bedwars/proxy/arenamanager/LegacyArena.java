@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import static com.andrei1058.bedwars.proxy.BedWarsProxy.getParty;
@@ -269,7 +268,7 @@ public class LegacyArena implements CachedArena {
         json.addProperty("lang_iso", LanguageManager.get().getPlayerLanguage(player).getIso());
         json.addProperty("target", partyOwnerName == null ? "" : partyOwnerName);
         json.addProperty("arena_identifier", getRemoteIdentifier());
-        as.getOut().println(json.toString());
+        as.getOut().println(json);
         //noinspection UnstableApiUsage
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
@@ -307,7 +306,7 @@ public class LegacyArena implements CachedArena {
         json.addProperty("lang_iso", BedWarsProxy.getAPI().getLanguageUtil().getPlayerLanguage(player).getIso());
         json.addProperty("target", "");
         json.addProperty("arena_identifier", getRemoteIdentifier());
-        as.getOut().println(json.toString());
+        as.getOut().println(json);
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(getServer());

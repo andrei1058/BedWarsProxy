@@ -9,6 +9,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class MainCommand extends ParentCommand {
 
@@ -22,7 +23,7 @@ public class MainCommand extends ParentCommand {
     public MainCommand(String name) {
         super(name);
         instance = this;
-        setAliases(Arrays.asList("bedwars"));
+        setAliases(Collections.singletonList("bedwars"));
         addSubCommand(new SelectorCMD("gui", ""));
         addSubCommand(new LangCMD("lang", ""));
         addSubCommand(new LangCMD("language", ""));

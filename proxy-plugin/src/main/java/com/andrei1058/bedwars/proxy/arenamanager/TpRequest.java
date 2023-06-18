@@ -27,7 +27,7 @@ public class TpRequest {
         jo.addProperty("requester", requester.toString());
 
         for (ArenaSocketTask ast : ArenaManager.getInstance().getSocketByServer().values()) {
-            ast.getOut().println(jo.toString());
+            ast.getOut().println(jo);
         }
             this.millis = System.currentTimeMillis()+3000;
     }
