@@ -4,9 +4,4 @@ description: Arena connecter for BedWars1058
 main: com.andrei1058.bedwars.proxy.BedWarsProxy
 author: andrei1058
 api-version: '1.13'
-softdepend:
-  - Parties
-  - Partys
-  - PartyAndFriends
-  - PlaceholderAPI
-  - Spigot-Party-API-PAF
+softdepend: ['PlaceholderAPI', 'Spigot-Party-API-PAF', 'Parties', 'PartyAndFriends']
