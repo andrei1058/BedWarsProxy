@@ -6,6 +6,9 @@ import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.andrei1058.bedwars.proxy.configuration.ConfigPath;
 import com.andrei1058.bedwars.proxy.language.LanguageManager;
 import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
+import dev.andrei1058.bedwars.common.api.arena.DisplayableArena;
+import dev.andrei1058.bedwars.proxy.api.arena.ProxiedGame;
+import dev.andrei1058.bedwars.proxy.arena.ArenaService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -58,7 +61,126 @@ public class ArenaManager implements BedWars.ArenaUtil {
     }
 
     public static List<CachedArena> getArenas() {
-        return Collections.unmodifiableList(getInstance().arenas);
+        List<CachedArena> mocked = new LinkedList<>();
+        for (DisplayableArena game : ArenaService.getInstance().getArenas()) {
+            mocked.add(new CachedArena() {
+                @Override
+                public String getRemoteIdentifier() {
+                    return game.getGameId().toString();
+                }
+
+                @Override
+                public String getArenaName() {
+                    return game.getDisplayName(null);
+                }
+
+                @Override
+                public String getServer() {
+                    return ((ProxiedGame) game).getServer().getName();
+                }
+
+                @Override
+                public String getDisplayName(Language lang) {
+                    return game.getDisplayName(null);
+                }
+
+                @Override
+                public String getArenaGroup() {
+                    return game.getGroup();
+                }
+
+                @Override
+                public String getDisplayGroup(Language lang) {
+                    return game.getGroup();
+                }
+
+                @Override
+                public void setArenaGroup(String group) {
+
+                }
+
+                @Override
+                public void setArenaName(String newName) {
+
+                }
+
+                @Override
+                public ArenaStatus getStatus() {
+                    return ArenaStatus.WAITING;
+                }
+
+                @Override
+                public String getDisplayStatus(Language lang) {
+                    return "waiting";
+                }
+
+                @Override
+                public void setStatus(ArenaStatus arenaStatus) {
+
+                }
+
+                @Override
+                public int getMaxPlayers() {
+                    return 0;
+                }
+
+                @Override
+                public int getCurrentPlayers() {
+                    return 1;
+                }
+
+                @Override
+                public long getLastUpdate() {
+                    return System.currentTimeMillis();
+                }
+
+                @Override
+                public void setCurrentPlayers(int players) {
+
+                }
+
+                @Override
+                public void setLastUpdate(long time) {
+
+                }
+
+                @Override
+                public void setMaxPlayers(int players) {
+
+                }
+
+                @Override
+                public int getMaxInTeam() {
+                    return 23;
+                }
+
+                @Override
+                public void setMaxInTeam(int max) {
+
+                }
+
+                @Override
+                public boolean addSpectator(Player player, String targetPlayer) {
+                    return false;
+                }
+
+                @Override
+                public boolean addPlayer(Player player, String partyOwnerName) {
+                    return false;
+                }
+
+                @Override
+                public boolean reJoin(RemoteReJoin player) {
+                    return false;
+                }
+
+                @Override
+                public boolean equals(CachedArena arena) {
+                    return false;
+                }
+            });
+        }
+        return mocked;
     }
 
     public static Comparator<? super CachedArena> getComparator() {

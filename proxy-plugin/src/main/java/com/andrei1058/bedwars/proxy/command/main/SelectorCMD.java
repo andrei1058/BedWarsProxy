@@ -2,9 +2,14 @@ package com.andrei1058.bedwars.proxy.command.main;
 
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaGUI;
 import com.andrei1058.bedwars.proxy.command.SubCommand;
+import dev.andrei1058.bedwars.common.api.locale.LocaleAdapter;
+import dev.andrei1058.bedwars.common.selector.SelectorManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public class SelectorCMD extends SubCommand {
     /**
@@ -28,7 +33,22 @@ public class SelectorCMD extends SubCommand {
         if (args.length == 1) {
             group = args[0];
         }
+        SelectorManager.getINSTANCE().openToPlayer(p.getPlayer(), new LocaleAdapter() {
+            @Override
+            public String getCode() {
+                return "en";
+            }
 
-        ArenaGUI.openGui(p, group);
+            @Override
+            public @Nullable String getPlayerLocale(UUID player) {
+                return null;
+            }
+
+            @Override
+            public void savePlayerLocale(UUID player, @Nullable String iso) {
+
+            }
+        }, "main");
+//        ArenaGUI.openGui(p, group);
     }
 }

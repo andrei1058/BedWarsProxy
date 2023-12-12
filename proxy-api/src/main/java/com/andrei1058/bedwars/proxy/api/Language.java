@@ -2,6 +2,7 @@ package com.andrei1058.bedwars.proxy.api;
 
 import java.util.List;
 
+@Deprecated
 public interface Language {
 
     /**

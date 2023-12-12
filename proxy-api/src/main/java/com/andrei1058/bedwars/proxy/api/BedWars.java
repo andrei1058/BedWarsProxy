@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.UUID;
 
+@Deprecated
 public interface BedWars {
 
     /**

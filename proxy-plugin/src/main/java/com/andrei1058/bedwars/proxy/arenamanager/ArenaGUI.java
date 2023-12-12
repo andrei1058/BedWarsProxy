@@ -79,7 +79,7 @@ public class ArenaGUI {
                     continue;
             }
 
-            i = BedWarsProxy.getItemAdapter().createItem(yml.getString(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_MATERIAL.replace("%path%", status)),
+            i = BedWarsProxy.getItemStackSupport().createItem(yml.getString(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_MATERIAL.replace("%path%", status)),
                     1, (byte) yml.getInt(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_DATA.replace("%path%", status)));
             if (i == null) i = new ItemStack(Material.BEDROCK);
 
@@ -108,9 +108,9 @@ public class ArenaGUI {
                 im.setLore(lore);
                 i.setItemMeta(im);
             }
-            i = BedWarsProxy.getItemAdapter().addTag(i, "server", ca.getServer());
-            i = BedWarsProxy.getItemAdapter().addTag(i, "world_identifier", ca.getRemoteIdentifier());
-            i = BedWarsProxy.getItemAdapter().addTag(i, "cancelClick", "true");
+            i = BedWarsProxy.getItemStackSupport().addTag(i, "server", ca.getServer());
+            i = BedWarsProxy.getItemStackSupport().addTag(i, "world_identifier", ca.getRemoteIdentifier());
+            i = BedWarsProxy.getItemStackSupport().addTag(i, "cancelClick", "true");
 
             ((Inventory)data[0]).setItem(slot, i);
             arenaKey++;
@@ -123,10 +123,10 @@ public class ArenaGUI {
         if (size > 54) size = 54;
         Inventory inv = Bukkit.createInventory(new SelectorHolder(), size, Language.getMsg(p, Messages.ARENA_GUI_INV_NAME));
 
-        ItemStack i = BedWarsProxy.getItemAdapter().createItem(yml.getString(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_MATERIAL.replace("%path%", "skipped-slot")),
+        ItemStack i = BedWarsProxy.getItemStackSupport().createItem(yml.getString(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_MATERIAL.replace("%path%", "skipped-slot")),
                 1, (byte) yml.getInt(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_STATUS_DATA.replace("%path%", "skipped-slot")));
         if (i == null) i = new ItemStack(Material.BEDROCK);
-        i = BedWarsProxy.getItemAdapter().addTag(i, "cancelClick", "true");
+        i = BedWarsProxy.getItemStackSupport().addTag(i, "cancelClick", "true");
 
         if (i.getItemMeta() != null){
             ItemMeta im = i.getItemMeta();

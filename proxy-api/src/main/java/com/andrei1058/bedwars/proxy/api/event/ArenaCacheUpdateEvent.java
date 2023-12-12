@@ -4,6 +4,7 @@ import com.andrei1058.bedwars.proxy.api.CachedArena;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+@Deprecated
 public class ArenaCacheUpdateEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();

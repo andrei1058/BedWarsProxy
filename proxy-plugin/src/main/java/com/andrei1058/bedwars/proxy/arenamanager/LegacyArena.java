@@ -9,20 +9,21 @@ import com.andrei1058.bedwars.proxy.socketmanager.ArenaSocketTask;
 import com.andrei1058.bedwars.proxy.BedWarsProxy;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.json.simple.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import static com.andrei1058.bedwars.proxy.BedWarsProxy.getParty;
 
+@Deprecated
 public class LegacyArena implements CachedArena {
 
     private String remoteIdentifier;
@@ -200,8 +201,8 @@ public class LegacyArena implements CachedArena {
         map.put("lang_iso", LanguageManager.get().getPlayerLanguage(player).getIso());
         map.put("target", targetPlayer == null ? "" : targetPlayer);
         map.put("arena_identifier", getRemoteIdentifier());
-        JSONObject json = new JSONObject(map);
-        as.getOut().println(json.toJSONString());
+
+        as.getOut().println(new Gson().toJson(map));
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(getServer());

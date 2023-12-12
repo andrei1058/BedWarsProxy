@@ -1,5 +1,6 @@
 package com.andrei1058.bedwars.proxy.api;
 
+@Deprecated
 public class Messages {
 
     public static final String ARENA_DISPLAY_GROUP_PATH = "display-group-";

@@ -21,15 +21,15 @@ public class SoundsConfig {
     @SuppressWarnings("WeakerAccess")
     public static void saveDefaultSounds() {
         YamlConfiguration yml = sounds.getYml();
-        yml.addDefault("rejoin-denied", String.valueOf(BedWarsProxy.getSoundAdapter().getForCurrentVersion("VILLAGER_NO", "ENTITY_VILLAGER_NO", "ENTITY_VILLAGER_NO")));
-        yml.addDefault("rejoin-allowed", String.valueOf(BedWarsProxy.getSoundAdapter().getForCurrentVersion("SLIME_WALK", "ENTITY_SLIME_JUMP", "ENTITY_SLIME_JUMP")));
-        yml.addDefault("spectate-denied", String.valueOf(BedWarsProxy.getSoundAdapter().getForCurrentVersion("VILLAGER_NO", "ENTITY_VILLAGER_NO", "ENTITY_VILLAGER_NO")));
-        yml.addDefault("spectate-allowed", String.valueOf(BedWarsProxy.getSoundAdapter().getForCurrentVersion("SLIME_WALK", "ENTITY_SLIME_JUMP", "ENTITY_SLIME_JUMP")));
-        yml.addDefault("join-denied", String.valueOf(BedWarsProxy.getSoundAdapter().getForCurrentVersion("VILLAGER_NO", "ENTITY_VILLAGER_NO", "ENTITY_VILLAGER_NO")));
-        yml.addDefault("join-allowed", String.valueOf(BedWarsProxy.getSoundAdapter().getForCurrentVersion("SLIME_WALK", "ENTITY_SLIME_JUMP", "ENTITY_SLIME_JUMP")));
-        yml.addDefault("spectator-gui-click", String.valueOf(BedWarsProxy.getSoundAdapter().getForCurrentVersion("SLIME_WALK", "ENTITY_SLIME_JUMP", "ENTITY_SLIME_JUMP")));
-        yml.addDefault("arena-selector-open", String.valueOf(BedWarsProxy.getSoundAdapter().getForCurrentVersion("CHICKEN_EGG_POP", "ENTITY_CHICKEN_EGG", "ENTITY_CHICKEN_EGG")));
-        yml.addDefault("stats-gui-open", String.valueOf(BedWarsProxy.getSoundAdapter().getForCurrentVersion("CHICKEN_EGG_POP", "ENTITY_CHICKEN_EGG", "ENTITY_CHICKEN_EGG")));
+        yml.addDefault("rejoin-denied", Sound.ENTITY_VILLAGER_NO);
+        yml.addDefault("rejoin-allowed", Sound.ENTITY_SLIME_JUMP);
+        yml.addDefault("spectate-denied", Sound.ENTITY_VILLAGER_NO);
+        yml.addDefault("spectate-allowed", Sound.ENTITY_SLIME_JUMP);
+        yml.addDefault("join-denied", Sound.ENTITY_VILLAGER_NO);
+        yml.addDefault("join-allowed", Sound.ENTITY_SLIME_JUMP);
+        yml.addDefault("spectator-gui-click", Sound.ENTITY_SLIME_JUMP);
+        yml.addDefault("arena-selector-open", Sound.ENTITY_CHICKEN_EGG);
+        yml.addDefault("stats-gui-open", Sound.ENTITY_CHICKEN_EGG);
         yml.options().copyDefaults(true);
         sounds.save();
     }

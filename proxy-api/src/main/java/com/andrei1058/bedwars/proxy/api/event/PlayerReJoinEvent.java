@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+@Deprecated
 public class PlayerReJoinEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();

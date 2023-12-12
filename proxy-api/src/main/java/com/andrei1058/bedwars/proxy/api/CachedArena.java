@@ -2,6 +2,7 @@ package com.andrei1058.bedwars.proxy.api;
 
 import org.bukkit.entity.Player;
 
+@Deprecated
 public interface CachedArena {
 
     String getRemoteIdentifier();

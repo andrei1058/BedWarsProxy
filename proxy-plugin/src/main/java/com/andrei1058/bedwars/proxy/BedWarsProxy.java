@@ -1,7 +1,6 @@
 package com.andrei1058.bedwars.proxy;
 
 import com.andrei1058.bedwars.proxy.api.BedWars;
-import com.andrei1058.bedwars.proxy.arenamanager.ArenaManager;
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaSelectorListener;
 import com.andrei1058.bedwars.proxy.arenasign.SignManager;
 import com.andrei1058.bedwars.proxy.command.RejoinCommand;
@@ -20,10 +19,14 @@ import com.andrei1058.bedwars.proxy.party.*;
 import com.andrei1058.bedwars.proxy.socketmanager.ServerSocketTask;
 import com.andrei1058.bedwars.proxy.socketmanager.TimeOutTask;
 import com.andrei1058.bedwars.proxy.support.papi.SupportPAPI;
-import com.andrei1058.spigot.versionsupport.BlockSupport;
 import com.andrei1058.spigot.versionsupport.ItemStackSupport;
-import com.andrei1058.spigot.versionsupport.MaterialSupport;
-import com.andrei1058.spigot.versionsupport.SoundSupport;
+import dev.andrei1058.bedwars.common.CommonManager;
+import dev.andrei1058.bedwars.common.api.CommonProvider;
+import dev.andrei1058.bedwars.common.api.arena.DisplayableArena;
+import dev.andrei1058.bedwars.common.messaging.MessagingCommonManager;
+import dev.andrei1058.bedwars.common.selector.SelectorManager;
+import dev.andrei1058.bedwars.proxy.arena.ArenaService;
+import dev.andrei1058.bedwars.proxy.messaging.ConnectorMessaging;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -39,6 +42,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 
 public class BedWarsProxy extends JavaPlugin{
 
@@ -48,13 +52,14 @@ public class BedWarsProxy extends JavaPlugin{
     private static Database remoteDatabase = null;
     private static StatsCache statsCache;
 
-    private static SoundSupport soundAdapter;
-    private static MaterialSupport materialAdapter;
-    private static BlockSupport blockAdapter;
-    private static ItemStackSupport itemAdapter;
-
     private static Party party;
     private static Level levelManager;
+
+    private static ItemStackSupport itemStackSupport;
+
+    public static ItemStackSupport getItemStackSupport() {
+        return itemStackSupport;
+    }
 
     @Override
     public void onLoad() {
@@ -66,11 +71,8 @@ public class BedWarsProxy extends JavaPlugin{
 
     @Override
     public void onEnable() {
-        soundAdapter = SoundSupport.SupportBuilder.load();
-        materialAdapter = MaterialSupport.SupportBuilder.load();
-        blockAdapter = BlockSupport.SupportBuilder.load();
-        itemAdapter = ItemStackSupport.SupportBuilder.load();
 
+        itemStackSupport = ItemStackSupport.SupportBuilder.load();
         LanguageManager.init();
         config = new BedWarsConfig();
         if (config.getBoolean("database.enable")) {
@@ -140,6 +142,16 @@ public class BedWarsProxy extends JavaPlugin{
         m.addCustomChart(new SimplePie("party_adapter", () -> getParty().getClass().getName()));
         m.addCustomChart(new SimplePie("level_adapter", () -> getLevelManager().getClass().getName()));
         SignManager.init();
+
+        ArenaService.init();
+        CommonManager.init(new CommonProvider() {
+            @Override
+            public Collection<DisplayableArena> getGames() {
+                return ArenaService.getInstance().getArenas();
+            }
+        }, true, this);
+        SelectorManager.init(this, "");
+        ConnectorMessaging.init();
     }
 
     @Override
@@ -158,23 +170,6 @@ public class BedWarsProxy extends JavaPlugin{
 
     public static StatsCache getStatsCache() {
         return statsCache;
-    }
-
-    public static MaterialSupport getMaterialAdapter() {
-        return materialAdapter;
-    }
-
-    @SuppressWarnings("unused")
-    public static BlockSupport getBlockAdapter() {
-        return blockAdapter;
-    }
-
-    public static ItemStackSupport getItemAdapter() {
-        return itemAdapter;
-    }
-
-    public static SoundSupport getSoundAdapter() {
-        return soundAdapter;
     }
 
     private static void registerListeners(@NotNull Listener... listeners) {

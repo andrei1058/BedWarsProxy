@@ -30,10 +30,10 @@ public class ArenaSelectorListener implements Listener {
             if (i == null) return;
             if (i.getType() == Material.AIR) return;
 
-            if (!BedWarsProxy.getItemAdapter().hasTag(i, "server")) return;
-            if (!BedWarsProxy.getItemAdapter().hasTag(i, "world_identifier")) return;
-            String server = BedWarsProxy.getItemAdapter().getTag(i, "server");
-            String identifier = BedWarsProxy.getItemAdapter().getTag(i, "world_identifier");
+            if (!BedWarsProxy.getItemStackSupport().hasTag(i, "server")) return;
+            if (!BedWarsProxy.getItemStackSupport().hasTag(i, "world_identifier")) return;
+            String server = BedWarsProxy.getItemStackSupport().getTag(i, "server");
+            String identifier = BedWarsProxy.getItemStackSupport().getTag(i, "world_identifier");
 
             CachedArena a = ArenaManager.getInstance().getArena(server, identifier);
             if (a == null) return;

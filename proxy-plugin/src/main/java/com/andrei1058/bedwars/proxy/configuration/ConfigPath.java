@@ -2,6 +2,7 @@ package com.andrei1058.bedwars.proxy.configuration;
 
 public class ConfigPath {
 
+    public static final String GENERAL_CONFIGURATION_BUNGEE_OPTION_SERVER_ID = "bungee-settings.server-id";
     public static final String GENERAL_CONFIGURATION_DISABLED_LANGUAGES = "disabled-languages";
     public static final String GENERAL_CONFIGURATION_PORT = "port";
     public static final String GENERAL_ENABLE_PARTY_CMD = "enable-party-cmd";
