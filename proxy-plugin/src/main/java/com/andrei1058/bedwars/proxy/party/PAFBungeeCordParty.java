@@ -29,7 +29,7 @@ public class PAFBungeeCordParty implements Party {
 
     @Override
     public boolean isOwner(UUID p) {
-        PlayerParty playerParty = getPAFParty(player);
+        PlayerParty playerParty = getPAFParty(p);
         if (playerParty == null) {
             return null;
         }
@@ -64,7 +64,7 @@ public class PAFBungeeCordParty implements Party {
 
     @Override
     public boolean isMember(UUID owner, UUID check) {
-        PlayerParty playerParty = getPAFParty(player);
+        PlayerParty playerParty = getPAFParty(owner);
         if (playerParty == null) {
             return null;
         }
