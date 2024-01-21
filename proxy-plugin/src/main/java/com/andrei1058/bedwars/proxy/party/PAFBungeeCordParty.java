@@ -29,8 +29,11 @@ public class PAFBungeeCordParty implements Party {
 
     @Override
     public boolean isOwner(UUID p) {
-        PAFPlayer pafPlayer = PAFPlayerManager.getInstance().getPlayer(p);
-        return PartyManager.getInstance().getParty(pafPlayer).isLeader(pafPlayer);
+        PlayerParty playerParty = getPAFParty(player);
+        if (playerParty == null) {
+            return null;
+        }
+        return playerParty.isLeader(pafPlayer);
     }
 
     @Override
@@ -61,7 +64,11 @@ public class PAFBungeeCordParty implements Party {
 
     @Override
     public boolean isMember(UUID owner, UUID check) {
-        return getPAFParty(owner).isInParty(PAFPlayerManager.getInstance().getPlayer(check));
+        PlayerParty playerParty = getPAFParty(player);
+        if (playerParty == null) {
+            return null;
+        }
+        return playerParty.isInParty(PAFPlayerManager.getInstance().getPlayer(check));
     }
 
     @Override
@@ -75,6 +82,10 @@ public class PAFBungeeCordParty implements Party {
 
     @Override
     public UUID getOwner(UUID player) {
-        return getPAFParty(player).getLeader().getUniqueId();
+        PlayerParty playerParty = getPAFParty(player);
+        if (playerParty == null) {
+            return null;
+        }
+        return playerParty.getLeader().getUniqueId();
     }
 }
