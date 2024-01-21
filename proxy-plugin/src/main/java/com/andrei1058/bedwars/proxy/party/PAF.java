@@ -89,6 +89,10 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
 
     @Override
     public UUID getOwner(UUID player) {
-        return getPAFParty(player).getLeader().getUniqueId();
+        PlayerParty playerParty = getPAFParty(player);
+        if (playerParty == null) {
+            return null;
+        }
+        return playerParty.getLeader().getUniqueId();
     }
 }
