@@ -74,12 +74,20 @@ public class PAF implements Party{ //Party And Friends Support Added by JT122406
 
     @Override
     public boolean isMember(UUID owner, UUID check) {
-        return getPAFParty(owner).isInParty(PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer(check)));
+        PlayerParty playerParty = getPAFParty(owner);
+        if (playerParty == null) {
+            return null;
+        }
+        return playerParty.isInParty(PAFPlayerManager.getInstance().getPlayer(Bukkit.getPlayer(check)));
     }
 
     @Override
     public void removePlayer(UUID owner, UUID target) {
-        getPAFParty(owner).leaveParty(PAFPlayerManager.getInstance().getPlayer(target));
+        PlayerParty playerParty = getPAFParty(owner);
+        if (playerParty == null) {
+            return null;
+        }
+        playerParty.leaveParty(PAFPlayerManager.getInstance().getPlayer(target));
     }
 
     @Override
