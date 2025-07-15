@@ -50,6 +50,7 @@
                 <version>3.3.2</version>
                 <configuration>
                     <show>private</show>  <!--javadoc shows all classes and members-->
+                    <skip>true</skip>
                 </configuration>
             </plugin>
             <plugin>
