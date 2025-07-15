@@ -1,7 +1,6 @@
 package com.andrei1058.bedwars.proxy;
 
 import com.andrei1058.bedwars.proxy.api.BedWars;
-import com.andrei1058.bedwars.proxy.arenamanager.ArenaManager;
 import com.andrei1058.bedwars.proxy.arenamanager.ArenaSelectorListener;
 import com.andrei1058.bedwars.proxy.arenasign.SignManager;
 import com.andrei1058.bedwars.proxy.command.RejoinCommand;
@@ -20,10 +19,7 @@ import com.andrei1058.bedwars.proxy.party.*;
 import com.andrei1058.bedwars.proxy.socketmanager.ServerSocketTask;
 import com.andrei1058.bedwars.proxy.socketmanager.TimeOutTask;
 import com.andrei1058.bedwars.proxy.support.papi.SupportPAPI;
-import com.andrei1058.spigot.versionsupport.BlockSupport;
-import com.andrei1058.spigot.versionsupport.ItemStackSupport;
-import com.andrei1058.spigot.versionsupport.MaterialSupport;
-import com.andrei1058.spigot.versionsupport.SoundSupport;
+import com.andrei1058.spigot.versionsupport.*;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -70,6 +66,10 @@ public class BedWarsProxy extends JavaPlugin{
         materialAdapter = MaterialSupport.SupportBuilder.load();
         blockAdapter = BlockSupport.SupportBuilder.load();
         itemAdapter = ItemStackSupport.SupportBuilder.load();
+
+        if (null == soundAdapter)   {
+            soundAdapter = new sound_v1_18_R1();
+        }
 
         LanguageManager.init();
         config = new BedWarsConfig();
