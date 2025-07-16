@@ -35,13 +35,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.util.logging.Logger;
 
-public class BedWarsProxy extends JavaPlugin{
+public class BedWarsProxy extends JavaPlugin {
 
     private static BedWarsProxy plugin;
     private static BedWars api;
     public static BedWarsConfig config;
-    private static Database remoteDatabase = null;
+    private static Database remoteDatabase;
     private static StatsCache statsCache;
 
     private static SoundSupport soundAdapter;
@@ -52,93 +53,43 @@ public class BedWarsProxy extends JavaPlugin{
     private static Party party;
     private static Level levelManager;
 
+    private static final Logger LOGGER = Logger.getLogger("BedWarsProxy");
+
     @Override
     public void onLoad() {
         plugin = this;
         api = new API();
         Bukkit.getServicesManager().register(BedWars.class, api, this, ServicePriority.Highest);
-        // Setup languages
     }
 
     @Override
     public void onEnable() {
-        soundAdapter = SoundSupport.SupportBuilder.load();
-        materialAdapter = MaterialSupport.SupportBuilder.load();
-        blockAdapter = BlockSupport.SupportBuilder.load();
-        itemAdapter = ItemStackSupport.SupportBuilder.load();
-
-        if (null == soundAdapter)   {
-            soundAdapter = new sound_v1_18_R1();
-        }
-
+        loadSupportAdapters();
         LanguageManager.init();
+
         config = new BedWarsConfig();
-        if (config.getBoolean("database.enable")) {
-            Bukkit.getScheduler().runTaskAsynchronously(this, () -> remoteDatabase = new MySQL());
-        } else {
-            remoteDatabase = new NoDatabase();
-        }
+        initDatabase();
+
         statsCache = new StatsCache();
+        setupSocketCommunication();
 
-        if (!ServerSocketTask.init(config.getInt(ConfigPath.GENERAL_CONFIGURATION_PORT))) {
-            getLogger().severe("Could not register port: " + config.getInt(ConfigPath.GENERAL_CONFIGURATION_PORT));
-            getLogger().severe("Please change it in config! Port already in use!");
-        }
+        registerListeners(
+                new LangListeners(),
+                new ArenaSelectorListener(),
+                new CacheListener()
+        );
 
-        getLogger().info("Listening for BedWars1058 arenas on port: " + config.getInt(ConfigPath.GENERAL_CONFIGURATION_PORT));
-
-        registerListeners(new LangListeners(), new ArenaSelectorListener(), new CacheListener());
-        //noinspection InstantiationOfUtilityClass
         new SoundsConfig();
-
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-
         Bukkit.getScheduler().runTaskTimer(this, new TimeOutTask(), 20L, 10L);
 
-        //Party support
-        if (config.getYml().getBoolean(ConfigPath.GENERAL_CONFIGURATION_ALLOW_PARTIES)) {
-            if (Bukkit.getServer().getPluginManager().isPluginEnabled("Parties")) {
-                getLogger().info("Hook into Parties (by AlessioDP) support!");
-                party = new Parties();
-            } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("Spigot-Party-API-PAF")) {
-                getLogger().info("Hook into Party and Friends Extended Edition for BungeeCord (by Simonsator) support!");
-                party = new PAFBungeeCordParty();
-            } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("PartyAndFriends")) {
-                getLogger().info("Hook into Party and Friends for Spigot (by Simonsator) support!");
-                party = new PAF();
-            }
-        }
-        if (party == null) {
-            party = new Internal();
-            getLogger().info("Loading internal Party system. /party");
-        }
-
+        setupParties();
         levelManager = new InternalLevel();
         Bukkit.getPluginManager().registerEvents(new LevelListeners(), this);
 
-        try {
-            Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-            bukkitCommandMap.setAccessible(true);
-            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
-            commandMap.register("bw", new MainCommand("bw"));
-            commandMap.register("rejoin", new RejoinCommand("rejoin"));
-            if (config.getBoolean(ConfigPath.GENERAL_ENABLE_PARTY_CMD)) {
-                commandMap.register("party", new PartyCommand("party"));
-            }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        /* PlaceholderAPI Support */
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            getLogger().info("Hook into PlaceholderAPI support!");
-            new SupportPAPI().register();
-        }
-
-        Metrics m = new Metrics(this, 6036);
-        m.addCustomChart(new SimplePie("default_language", () -> LanguageManager.get().getDefaultLanguage().getIso()));
-        m.addCustomChart(new SimplePie("party_adapter", () -> getParty().getClass().getName()));
-        m.addCustomChart(new SimplePie("level_adapter", () -> getLevelManager().getClass().getName()));
+        registerCommands();
+        registerPlaceholders();
+        setupMetrics();
         SignManager.init();
     }
 
@@ -146,6 +97,102 @@ public class BedWarsProxy extends JavaPlugin{
     public void onDisable() {
         ServerSocketTask.stopTasks();
         Bukkit.getScheduler().cancelTasks(this);
+    }
+
+    private void loadSupportAdapters() {
+        soundAdapter = SoundSupport.SupportBuilder.load();
+        materialAdapter = MaterialSupport.SupportBuilder.load();
+        blockAdapter = BlockSupport.SupportBuilder.load();
+        itemAdapter = ItemStackSupport.SupportBuilder.load();
+
+        if (soundAdapter == null) {
+            soundAdapter = new sound_v1_18_R1();
+        }
+    }
+
+    private void initDatabase() {
+        if (config.getBoolean("database.enable")) {
+            Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+                LOGGER.info("Connecting to MySQL database...");
+                remoteDatabase = new MySQL();
+                if (remoteDatabase instanceof NoDatabase) {
+                    LOGGER.warning("Failed to connect to MySQL. Using NoDatabase fallback.");
+                } else {
+                    LOGGER.info("Successfully connected to MySQL.");
+                }
+            });
+        } else {
+            LOGGER.info("Database is disabled in config. Using NoDatabase.");
+            remoteDatabase = new NoDatabase();
+        }
+    }
+
+    private void setupSocketCommunication() {
+        int port = config.getInt(ConfigPath.GENERAL_CONFIGURATION_PORT);
+        if (!ServerSocketTask.init(port)) {
+            LOGGER.severe("Could not register port: " + port);
+            LOGGER.severe("Please change it in config! Port already in use!");
+        } else {
+            LOGGER.info("Listening for BedWars1058 arenas on port: " + port);
+        }
+    }
+
+    private void setupParties() {
+        if (!config.getYml().getBoolean(ConfigPath.GENERAL_CONFIGURATION_ALLOW_PARTIES)) {
+            party = new Internal();
+            LOGGER.info("Parties disabled. Using internal Party system.");
+            return;
+        }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("Parties")) {
+            LOGGER.info("Hooked into Parties (by AlessioDP).");
+            party = new Parties();
+        } else if (Bukkit.getPluginManager().isPluginEnabled("Spigot-Party-API-PAF")) {
+            LOGGER.info("Hooked into Party and Friends Extended Edition for BungeeCord.");
+            party = new PAFBungeeCordParty();
+        } else if (Bukkit.getPluginManager().isPluginEnabled("PartyAndFriends")) {
+            LOGGER.info("Hooked into Party and Friends for Spigot.");
+            party = new PAF();
+        } else {
+            party = new Internal();
+            LOGGER.info("No external party plugin found. Using internal Party system.");
+        }
+    }
+
+    private void registerCommands() {
+        try {
+            Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            bukkitCommandMap.setAccessible(true);
+            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+            commandMap.register("bw", new MainCommand("bw"));
+            commandMap.register("rejoin", new RejoinCommand("rejoin"));
+
+            if (config.getBoolean(ConfigPath.GENERAL_ENABLE_PARTY_CMD)) {
+                commandMap.register("party", new PartyCommand("party"));
+            }
+        } catch (Exception e) {
+            LOGGER.log(java.util.logging.Level.SEVERE, "Failed to register commands.", e);
+        }
+    }
+
+    private void registerPlaceholders() {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            LOGGER.info("Hooked into PlaceholderAPI.");
+            new SupportPAPI().register();
+        }
+    }
+
+    private void setupMetrics() {
+        Metrics metrics = new Metrics(this, 6036);
+        metrics.addCustomChart(new SimplePie("default_language", () -> LanguageManager.get().getDefaultLanguage().getIso()));
+        metrics.addCustomChart(new SimplePie("party_adapter", () -> getParty().getClass().getName()));
+        metrics.addCustomChart(new SimplePie("level_adapter", () -> getLevelManager().getClass().getName()));
+    }
+
+    private static void registerListeners(@NotNull Listener... listeners) {
+        for (Listener listener : listeners) {
+            Bukkit.getPluginManager().registerEvents(listener, getPlugin());
+        }
     }
 
     public static Plugin getPlugin() {
@@ -164,7 +211,6 @@ public class BedWarsProxy extends JavaPlugin{
         return materialAdapter;
     }
 
-    @SuppressWarnings("unused")
     public static BlockSupport getBlockAdapter() {
         return blockAdapter;
     }
@@ -175,12 +221,6 @@ public class BedWarsProxy extends JavaPlugin{
 
     public static SoundSupport getSoundAdapter() {
         return soundAdapter;
-    }
-
-    private static void registerListeners(@NotNull Listener... listeners) {
-        for (Listener listener : listeners) {
-            Bukkit.getPluginManager().registerEvents(listener, getPlugin());
-        }
     }
 
     public static Party getParty() {
@@ -195,17 +235,16 @@ public class BedWarsProxy extends JavaPlugin{
      * Create a text component.
      */
     @NotNull
-    public static TextComponent createTC(String text, String suggest, String shot_text) {
+    public static TextComponent createTC(String text, String suggest, String hoverText) {
         TextComponent tx = new TextComponent(text);
         tx.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggest));
-        tx.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(shot_text).create()));
+        tx.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
         return tx;
     }
 
     public static void setRemoteDatabase(Database remoteDatabase) {
         BedWarsProxy.remoteDatabase = remoteDatabase;
     }
-
 
     public static BedWars getAPI() {
         return api;
